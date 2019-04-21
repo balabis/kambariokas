@@ -1,36 +1,86 @@
-{% extends 'base.html.twig' %}
+{% extends 'authentication.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
-{% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+{% block pageHeading %}Login Page Heading{% endblock %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail" class="sr-only">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+{% block headerText %}Login Page text{% endblock %}
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+{% block signin_up %}Sign in with{% endblock %}
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
+{% block orsignin_up %}Or sign in with credentials{% endblock %}
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
+{% block form %}
+    <form role="form" method="POST">
+        {% if error %}#}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <input
+                        class="form-control"
+                        placeholder="Email"
+                        type="email"
+                        value="{{ last_username }}"
+                        name="email"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                </div>
+                <input
+                        class="form-control"
+                        placeholder="Password"
+                        type="password"
+                        name="password"
+                />
+
+            </div>
+        </div>
+        <div class="custom-control custom-control-alternative custom-checkbox">
+            <input
+                    class="custom-control-input"
+                    id=" customCheckLogin"
+                    type="checkbox"
+            />
+            <label class="custom-control-label" for=" customCheckLogin">
+                <span class="text-muted">Remember me</span>
             </label>
         </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary my-4">
+                Sign in
+            </button>
+        </div>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}">
+    </form>
 {% endblock %}
+
+{% block formFootnotes %}
+    <div class="row mt-3">
+        <div class="col-6">
+            <a href="#" class="text-light"
+            >
+                <small>Forgot password?</small>
+            </a
+            >
+        </div>
+        <div class="col-6 text-right">
+            <a href="{{ path('register') }}" class="text-light"
+            >
+                <small>Create new account</small>
+            </a
+            >
+        </div>
+    </div>
+{% endblock %}
+
+
+
