@@ -94,6 +94,4 @@ class ProvidedAnswer
 
         return $this;
     }
-
-
 }

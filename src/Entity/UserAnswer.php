@@ -114,5 +114,4 @@ class UserAnswer
 
         return $this;
     }
-
 }
