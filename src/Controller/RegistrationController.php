@@ -25,18 +25,16 @@ class RegistrationController extends AbstractController
       LoginFormAuthenticator $authenticator
     ): Response {
 
-        //check if user is already signed in - then redirect to homepage
         $authenticated = $this->isGranted('ROLE_USER');
         if ($authenticated) {
             return $this->redirectToRoute('home');
         }
-        
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
             $user->setPassword(
               $passwordEncoder->encodePassword(
                 $user,
@@ -48,17 +46,15 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
             return $guardHandler->authenticateUserAndHandleSuccess(
               $user,
               $request,
               $authenticator,
-              'main' // firewall name in security.yaml
+              'main'
             );
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('security/register.html.twig', [
           'registrationForm' => $form->createView(),
         ]);
     }
