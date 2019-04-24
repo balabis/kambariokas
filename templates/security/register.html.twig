@@ -6,11 +6,11 @@
 
 {% block headerText %}Register Page text{% endblock %}
 
-{% block signin_up %}Sign up with{% endblock %}
 
-{% block orsignin_up %}Or sign up with credentials{% endblock %}
 
-{#change layout of form_row#}
+{% block orsignin_up %}Sign up with credentials{% endblock %}
+
+
 {% form_theme registrationForm _self %}
     {%- block form_row -%}
         {%- set widget_attr = {} -%}
@@ -37,7 +37,6 @@
         {%- endif -%}
     {%- endblock form_errors -%}
 
-{#end of layout change#}
 
 {% block authenticationForm %}
 
@@ -66,25 +65,6 @@
             }) }}
         </div>
     </div>
-    {#    <div class="text-muted font-italic">#}
-    {#        <small>password strength:<span class="text-success font-weight-700">strong</span></small>#}
-    {#    </div>#}
-    {#    <div class="row my-4">#}
-    {#        <div class="col-12">#}
-    {#            <div class="custom-control custom-control-alternative custom-checkbox">#}
-    {#                <input#}
-    {#                        class="custom-control-input"#}
-    {#                        id="customCheckRegister"#}
-    {#                        type="checkbox"#}
-    {#                />#}
-    {#                <label class="custom-control-label" for="customCheckRegister">#}
-    {#                        <span class="text-muted">I agree with the#}
-    {#                            <a href="#!">Privacy Policy</a>#}
-    {#                        </span>#}
-    {#                </label>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
     <div class="text-center">
         <button class="btn btn-primary mt-4">
             Create account
