@@ -1,14 +1,14 @@
 {% extends 'authentication.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'Register'|trans }}{% endblock %}
 
-{% block pageHeading %}Register Page Heading{% endblock %}
+{% block pageHeading %}{{ 'Register page heading'|trans }}{% endblock %}
 
-{% block headerText %}Register Page text{% endblock %}
+{% block headerText %}{{ 'Register page text'|trans }}{% endblock %}
 
 
 
-{% block orsignin_up %}Sign up with credentials{% endblock %}
+{% block orsignin_up %}{{ 'Sign up with credentials'|trans }}{% endblock %}
 
 
 {% form_theme registrationForm _self %}
@@ -31,7 +31,7 @@
         {%- if errors|length > 0 -%}
 
             {%- for error in errors -%}
-                <div class="alert alert-warning">{{ error.message }}</div>
+                <div class="alert alert-warning">{{ error.message|trans }}</div>
             {%- endfor -%}
 
         {%- endif -%}
@@ -67,7 +67,7 @@
     </div>
     <div class="text-center">
         <button class="btn btn-primary mt-4">
-            Create account
+            {{ 'Register'|trans }}
         </button>
     </div>
 

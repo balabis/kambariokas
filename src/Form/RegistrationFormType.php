@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class RegistrationFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
             ->add('email', EmailType::class)

@@ -1,17 +1,17 @@
 {% extends 'authentication.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'Login'|trans }}!{% endblock %}
 
-{% block pageHeading %}Login Page Heading{% endblock %}
+{% block pageHeading %}{{ 'Login page heading'|trans }}{% endblock %}
 
-{% block headerText %}Login Page text{% endblock %}
+{% block headerText %}{{ 'Login page text'|trans }}{% endblock %}
 
-{% block orsignin_up %}Sign in with credentials{% endblock %}
+{% block orsignin_up %}{{ 'Sign in with credentials'|trans }}{% endblock %}
 
 {% block authenticationForm %}
     <form role="form" method="POST">
         {% if error %}
-            <div class="alert alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="alert alert-warning">{{ error.messageKey|trans }}</div>
         {% endif %}
         <div class="form-group mb-3">
             <div class="input-group input-group-alternative">
@@ -20,7 +20,7 @@
                 </div>
                 <input
                         class="form-control"
-                        placeholder="Email"
+                        placeholder="{{ 'Email'|trans }}"
                         type="email"
                         value="{{ last_username }}"
                         name="email"
@@ -34,7 +34,7 @@
                 </div>
                 <input
                         class="form-control"
-                        placeholder="Password"
+                        placeholder="{{ 'Password'|trans }}"
                         type="password"
                         name="password"
                 />
@@ -43,7 +43,7 @@
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary my-4">
-                Sign in
+                {{ 'Login'|trans }}
             </button>
         </div>
         <input type="hidden" name="_csrf_token"
@@ -59,7 +59,7 @@
         <div class="col-6 text-right">
             <a href="{{ path('register') }}" class="text-light"
             >
-                <small>Create new account</small>
+                <small>{{ 'Create new accout'|trans }}</small>
             </a
             >
         </div>
