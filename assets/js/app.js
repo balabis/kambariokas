@@ -1,18 +1,3 @@
-// const $ = require('jquery');
-// this "modifies" the jquery module: adding behavior to it
-// the bootstrap module doesn't export/return anything
-// require('bootstrap');
-
-// require('../css/app.scss');
-
-// or you can include specific pieces
-// require('bootstrap/js/dist/tooltip');
-// require('bootstrap/js/dist/popover');
-
-// $(document).ready(function () {
-//     $('[data-toggle="popover"]').popover();
-// });
-
 /*!
 
 =========================================================
@@ -31,23 +16,18 @@
 
 */
 
-//
-// Bootstrap Datepicker
-//
-
 
 'use strict';
 
 var $ = require('jquery');
 require('bootstrap');
-//require images
 require('../img/images');
 require('../css/app.min.css');
-
-
 require('@fortawesome/fontawesome-free/scss/fontawesome.scss');
 require('@fortawesome/fontawesome-free/js/all.js');
 
+
+// Bootstrap Datepicker
 var Datepicker = (function () {
 
     // Variables
@@ -227,45 +207,6 @@ if ($map.length) {
     google.maps.event.addDomListener(window, 'load', initMap);
 }
 
-// //
-// // Headroom - show/hide navbar on scroll
-// //
-//
-// 'use strict';
-//
-// var Headroom = (function() {
-//
-// 	// Variables
-//
-// 	var $headroom = $('#navbar-main');
-//
-//
-// 	// Methods
-//
-// 	function init($this) {
-//
-//     var headroom = new Headroom(document.querySelector("#navbar-main"), {
-//         offset: 300,
-//         tolerance: {
-//             up: 30,
-//             down: 30
-//         },
-//     });
-//
-//
-//
-// 	// Events
-//
-// 	if ($headroom.length) {
-// 		headroom.init();
-// 	}
-//
-// })();
-
-//
-// Navbar
-//
-
 'use strict';
 
 var Navbar = (function () {
@@ -359,31 +300,6 @@ var NavbarCollapse = (function () {
 'use strict';
 
 var noUiSlider = (function () {
-
-    // Variables
-
-    // var $sliderContainer = $('.input-slider-container'),
-    // 		$slider = $('.input-slider'),
-    // 		$sliderId = $slider.attr('id'),
-    // 		$sliderMinValue = $slider.data('range-value-min');
-    // 		$sliderMaxValue = $slider.data('range-value-max');;
-
-
-    // // Methods
-    //
-    // function init($this) {
-    // 	$this.on('focus blur', function(e) {
-    //       $this.parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
-    //   }).trigger('blur');
-    // }
-    //
-    //
-    // // Events
-    //
-    // if ($input.length) {
-    // 	init($input);
-    // }
-
 
     if ($(".input-slider-container")[0]) {
         $('.input-slider-container').each(function () {

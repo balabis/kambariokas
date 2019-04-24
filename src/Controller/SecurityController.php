@@ -15,15 +15,14 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        //check if user is already signed in - then redirect to homepage
+
         $authenticated = $this->isGranted('ROLE_USER');
         if ($authenticated) {
             return $this->redirectToRoute('home');
         }
 
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
+
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig',
