@@ -14,19 +14,17 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistrationController extends AbstractController
 {
-
     /**
      * @Route("/register", name="register")
      */
     public function register(
-      Request $request,
-      UserPasswordEncoderInterface $passwordEncoder,
-      GuardAuthenticatorHandler $guardHandler,
-      LoginFormAuthenticator $authenticator
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        GuardAuthenticatorHandler $guardHandler,
+        LoginFormAuthenticator $authenticator
     ): Response {
 
-        $authenticated = $this->isGranted('ROLE_USER');
-        if ($authenticated) {
+        if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('home');
         }
 
@@ -36,10 +34,10 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
-              $passwordEncoder->encodePassword(
-                $user,
-                $form->get('plainPassword')->getData()
-              )
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
             );
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -47,15 +45,15 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             return $guardHandler->authenticateUserAndHandleSuccess(
-              $user,
-              $request,
-              $authenticator,
-              'main'
+                $user,
+                $request,
+                $authenticator,
+                'main'
             );
         }
 
         return $this->render('security/register.html.twig', [
-          'registrationForm' => $form->createView(),
+            'registrationForm' => $form->createView(),
         ]);
     }
 }

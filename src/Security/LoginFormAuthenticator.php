@@ -21,7 +21,6 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
-
     use TargetPathTrait;
 
     private $entityManager;
@@ -33,10 +32,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $passwordEncoder;
 
     public function __construct(
-      EntityManagerInterface $entityManager,
-      UrlGeneratorInterface $urlGenerator,
-      CsrfTokenManagerInterface $csrfTokenManager,
-      UserPasswordEncoderInterface $passwordEncoder
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $urlGenerator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UserPasswordEncoderInterface $passwordEncoder
     ) {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
@@ -47,19 +46,19 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function supports(Request $request)
     {
         return 'login' === $request->attributes->get('_route')
-          && $request->isMethod('POST');
+            && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
     {
         $credentials = [
-          'email' => $request->request->get('email'),
-          'password' => $request->request->get('password'),
-          'csrf_token' => $request->request->get('_csrf_token'),
+            'email' => $request->request->get('email'),
+            'password' => $request->request->get('password'),
+            'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
-          Security::LAST_USERNAME,
-          $credentials['email']
+            Security::LAST_USERNAME,
+            $credentials['email']
         );
 
         return $credentials;
@@ -73,7 +72,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         $user = $this->entityManager->getRepository(User::class)
-          ->findOneBy(['email' => $credentials['email']]);
+            ->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
             // fail authentication with a custom error
@@ -85,22 +84,19 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user,
-          $credentials['password']);
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
     public function onAuthenticationSuccess(
-      Request $request,
-      TokenInterface $token,
-      $providerKey
+        Request $request,
+        TokenInterface $token,
+        $providerKey
     ) {
-        if ($targetPath = $this->getTargetPath($request->getSession(),
-          $providerKey)) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
 
         return new RedirectResponse($this->urlGenerator->generate('home'));
-
     }
 
     protected function getLoginUrl()

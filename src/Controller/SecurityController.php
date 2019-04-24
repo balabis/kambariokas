@@ -9,15 +9,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-
     /**
      * @Route("/login", name="login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-
-        $authenticated = $this->isGranted('ROLE_USER');
-        if ($authenticated) {
+        if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('home');
         }
 
@@ -25,7 +22,6 @@ class SecurityController extends AbstractController
 
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig',
-          ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 }
