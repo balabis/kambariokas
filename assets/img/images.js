@@ -1,2 +1,2 @@
-require('./icons/common/github.svg');
-require('./icons/common/google.svg');
+require('./icons/github.svg');
+require('./icons/google.svg');
