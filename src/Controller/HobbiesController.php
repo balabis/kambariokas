@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\UserHobby;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,20 +16,35 @@ class HobbiesController extends AbstractController
      */
     public function index(EntityManagerInterface $em)
     {
-        $hobbies = $this->getAllHobbies($em);
-        return $this->render('matching/hobbies.html.twig', [
-            'hobbiesList' => $hobbies,
-        ]);
+        $userHobbies = $this->getUserHobbiesById($em, 1);
+        if ($userHobbies != null) {
+            $hobbies = $this->getAllHobbies($em);
+            return $this->render('matching/hobbies.html.twig', [
+                'hobbiesList' => $hobbies,
+            ]);
+        } else {
+            $response = $this->forward('App\Controller\MatchingController::getResponseFromHobbies', [
+            ]);
+            return $response;
+        }
     }
 
     /**
      * @param EntityManagerInterface $em
      * @return array
      */
-    public function getAllHobbies(EntityManagerInterface $em) :array
+    private function getAllHobbies(EntityManagerInterface $em) :array
     {
         $repository = $em->getRepository(Hobby::class);
         $hobbies = $repository->findAll();
         return $hobbies;
+    }
+
+    private function getUserHobbiesById(EntityManagerInterface $em, int $id) : ?array
+    {
+        //TODO: get specified hobbies by user id
+        $repository = $em->getRepository(UserHobby::class);
+        //$userHobbies = $repository->findOneBy($id);
+        return null;
     }
 }

@@ -16,7 +16,7 @@ class MatchingController extends AbstractController
     {
         $user = $this->getPossibleRoommates($em);
         return $this->render('matching/match.html.twig', [
-            'someVariable' => $user[1]->getValue(),
+            'someVariable' => $user[0]->getValue(),
         ]);
     }
 
@@ -25,5 +25,12 @@ class MatchingController extends AbstractController
         $repository = $em->getRepository(User::class);
         $users = $repository->findAll();
         return $users;
+    }
+
+    public function getResponseFromHobbies()
+    {
+        return $this->render('matching/match.html.twig', [
+            'someVariable' => 3,
+        ]);
     }
 }
