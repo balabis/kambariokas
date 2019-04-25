@@ -21,7 +21,7 @@
 
 var $ = require('jquery');
 require('bootstrap');
-require('../css/app.min.css');
+require('../css/app.css');
 require('@fortawesome/fontawesome-free/scss/fontawesome.scss');
 require('@fortawesome/fontawesome-free/js/all.js');
 
