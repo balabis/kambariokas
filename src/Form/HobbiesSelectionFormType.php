@@ -11,31 +11,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class HobbiesSelectionFormType extends AbstractType
 {
 
-    const BASKETBALL = 'basketball';
-    const EATING = 'eating';
-    const FILMS = 'films';
-    const DOSOMETHING = 'something';
+    const VLINIUS = 0;
+    const KAUNAS = 1;
+    const KLAIPEDA = 2;
+    const SIAULIAI = 3;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ChoseYourHobbies', ChoiceType::class, [
+            ->add('ChoseYourCity', ChoiceType::class, [
                 'choices' => [
-                    'basketball' => self::BASKETBALL,
-                    'eating' => self::EATING,
-                    'films' => self::FILMS,
-                    'something' => self::DOSOMETHING,
+                    'Vilnius' => self::VLINIUS,
+                    'Kaunas' => self::KAUNAS,
+                    'Klaipeda' => self::KLAIPEDA,
+                    'Siauliai' => self::SIAULIAI,
                 ],
-                'expanded'  => true,
-                'multiple'  => true,
             ])
-            ->add('Save', SubmitType::class)
-        ;
+            ->add('Save', SubmitType::class);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
 
