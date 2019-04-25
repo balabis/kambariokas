@@ -9,16 +9,6 @@ use App\Entity\User;
 
 class MatchingController extends AbstractController
 {
-    /**
-     * @Route("/match", name="matching")
-     */
-    public function index(EntityManagerInterface $em)
-    {
-        $user = $this->getPossibleRoommates($em);
-        return $this->render('matching/match.html.twig', [
-            'someVariable' => $user[0]->getValue(),
-        ]);
-    }
 
     private function getPossibleRoommates(EntityManagerInterface $em)
     {
@@ -30,7 +20,7 @@ class MatchingController extends AbstractController
     public function getResponseFromHobbies()
     {
         return $this->render('matching/match.html.twig', [
-            'someVariable' => 3,
+            'someVariable' => 'useris turi hobiu',
         ]);
     }
 }

@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for hobby in hobbiesList %}
-        <li><input class="fa fa-check-square" type="checkbox"> {{ hobby.getTitle() }}</li>
-    {% endfor %}
-    <button type="submit">Pasirikti</button>
+  {{ form_start(hobbiesForm) }}
+    {{ form_widget(hobbiesForm) }}
+    {{ form_end(hobbiesForm) }}
 {% endblock %}

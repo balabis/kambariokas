@@ -4,23 +4,26 @@
 namespace App\Controller;
 
 use App\Entity\UserHobby;
+use App\Form\HobbiesSelectionFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Hobby;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class HobbiesController extends AbstractController
 {
     /**
-     * @Route("/hobbies", name="hobbies")
+     * @Route("/match", name="matching")
      */
     public function index(EntityManagerInterface $em)
     {
-        $userHobbies = $this->getUserHobbiesById($em, 1);
-        if ($userHobbies != null) {
-            $hobbies = $this->getAllHobbies($em);
+        if ($this->checkIfUserHaveHobbies($em, 103) == null) {
+           // $hobbies = $this->getAllHobbies($em);
+            $form = $this->createForm(HobbiesSelectionFormType::class);
             return $this->render('matching/hobbies.html.twig', [
-                'hobbiesList' => $hobbies,
+                'hobbiesForm' => $form->createView()
             ]);
         } else {
             $response = $this->forward('App\Controller\MatchingController::getResponseFromHobbies', [
@@ -36,15 +39,36 @@ class HobbiesController extends AbstractController
     private function getAllHobbies(EntityManagerInterface $em) :array
     {
         $repository = $em->getRepository(Hobby::class);
-        $hobbies = $repository->findAll();
-        return $hobbies;
+        return $repository->findAll();
     }
 
-    private function getUserHobbiesById(EntityManagerInterface $em, int $id) : ?array
+    /**
+     * @param EntityManagerInterface $em
+     * @param int $id
+     * @return bool
+     */
+    private function checkIfUserHaveHobbies(EntityManagerInterface $em, int $id) : bool
     {
-        //TODO: get specified hobbies by user id
         $repository = $em->getRepository(UserHobby::class);
-        //$userHobbies = $repository->findOneBy($id);
-        return null;
+        if ($repository->findOneBy(['userId' => $id]) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @Route("/hobbies", name="addHobbies")
+     */
+    public function addHobbiesForUsers(EntityManagerInterface $em)
+    {
+
+
+
+       // $userHobby = new UserHobby();
+      //  $userHobby->setUserId(random_int(1, 100));
+       // $userHobby->setHobbyId(2);
+       // $em->persist($userHobby);
+       // $em->flush();
+        return new Response('it works!');
     }
 }
