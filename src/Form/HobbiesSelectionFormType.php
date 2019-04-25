@@ -32,6 +32,10 @@ class HobbiesSelectionFormType extends AbstractType
             ->add('Save', SubmitType::class)
         ;
     }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
 

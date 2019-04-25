@@ -20,7 +20,6 @@ class HobbiesController extends AbstractController
     public function index(EntityManagerInterface $em)
     {
         if ($this->checkIfUserHaveHobbies($em, 103) == null) {
-           // $hobbies = $this->getAllHobbies($em);
             $form = $this->createForm(HobbiesSelectionFormType::class);
             return $this->render('matching/hobbies.html.twig', [
                 'hobbiesForm' => $form->createView()
@@ -30,16 +29,6 @@ class HobbiesController extends AbstractController
             ]);
             return $response;
         }
-    }
-
-    /**
-     * @param EntityManagerInterface $em
-     * @return array
-     */
-    private function getAllHobbies(EntityManagerInterface $em) :array
-    {
-        $repository = $em->getRepository(Hobby::class);
-        return $repository->findAll();
     }
 
     /**
@@ -59,16 +48,8 @@ class HobbiesController extends AbstractController
     /**
      * @Route("/hobbies", name="addHobbies")
      */
-    public function addHobbiesForUsers(EntityManagerInterface $em)
+    public function addHobbiesForUsers()
     {
-
-
-
-       // $userHobby = new UserHobby();
-      //  $userHobby->setUserId(random_int(1, 100));
-       // $userHobby->setHobbyId(2);
-       // $em->persist($userHobby);
-       // $em->flush();
         return new Response('it works!');
     }
 }
