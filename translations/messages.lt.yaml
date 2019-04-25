@@ -1,0 +1,19 @@
+Brand name: Pavadinimas
+Authors: Autoriai
+Welcome: Sveiki
+Register: Registruotis
+Login: Prisijungti
+Logout: Atsijungti
+Login page heading: Prisijungimo puslapio pavadinimas [TODO]
+Register page heading: Registracijos puslapio pavadinimas [TODO]
+Login page text: Prisijungimo puslapio tekstas [TODO]
+Register page text: Registracijos puslapio tekstas [TODO]
+Sign in with credentials: Prisijungti naudojant el. paštą ir slaptažodį
+Sign up with credentials: Registruotis naudojant el. paštą ir slaptažodį
+Email: El. paštas
+Password: Slaptažodis
+Plain password: Slaptažodis
+Create new accout: Neturite paskyros? Registruotis
+
+Email could not be found.: Nėra registruoto vartotojo tokiu el. paštu
+Invalid credentials.: Neteisingas slaptažodis

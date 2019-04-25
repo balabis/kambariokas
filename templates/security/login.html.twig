@@ -1,0 +1,70 @@
+{% extends 'authentication.html.twig' %}
+
+{% block title %}{{ 'Login'|trans }}!{% endblock %}
+
+{% block pageHeading %}{{ 'Login page heading'|trans }}{% endblock %}
+
+{% block headerText %}{{ 'Login page text'|trans }}{% endblock %}
+
+{% block orsignin_up %}{{ 'Sign in with credentials'|trans }}{% endblock %}
+
+{% block authenticationForm %}
+    <form role="form" method="POST">
+        {% if error %}
+            <div class="alert alert-warning">{{ error.messageKey|trans }}</div>
+        {% endif %}
+        <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <input
+                        class="form-control"
+                        placeholder="{{ 'Email'|trans }}"
+                        type="email"
+                        value="{{ last_username }}"
+                        name="email"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                </div>
+                <input
+                        class="form-control"
+                        placeholder="{{ 'Password'|trans }}"
+                        type="password"
+                        name="password"
+                />
+
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary my-4">
+                {{ 'Login'|trans }}
+            </button>
+        </div>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}">
+    </form>
+{% endblock %}
+
+{% block formFootnotes %}
+    <div class="row mt-3">
+        <div class="col-6">
+
+        </div>
+        <div class="col-6 text-right">
+            <a href="{{ path('register') }}" class="text-light"
+            >
+                <small>{{ 'Create new accout'|trans }}</small>
+            </a
+            >
+        </div>
+    </div>
+{% endblock %}
+
+
+

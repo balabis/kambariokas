@@ -13,8 +13,10 @@ class HomeController extends AbstractController
      */
     public function index()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('home/index.html.twig', [
-            'someVariable' => 'NFQ Akademija',
+          'someVariable' => 'NFQ Akademija',
         ]);
     }
 }
