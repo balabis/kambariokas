@@ -43,6 +43,7 @@ class MatchingController extends AbstractController
     {
         return $this->getDoctrine()
             ->getRepository(City::class)
-            ->find($city)->getTitle();
+            ->find($city)
+            ->getTitle();
     }
 }
