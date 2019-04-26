@@ -49,9 +49,10 @@ class CityController extends AbstractController
         $em->flush();
     }
 
-    public function getUserCityById(User $user) : string
+    public function getUserCityById(User $user) : ?string
     {
-        return $this->getDoctrine()
+        return $this
+            ->getDoctrine()
             ->getRepository(User::class)
             ->findBy(['email' => $user->getEmail()])[0]
             ->getCityCode();
