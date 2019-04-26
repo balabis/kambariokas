@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +19,7 @@ class MatchingController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $emails = $this->getPossibleMatch($city, $entityManager);
         return $this->render('matching/match.html.twig', [
-            'someVariable' => $city,
+            'cityName' => $this->getCityNameById($city),
             'emails' => $emails
         ]);
     }
@@ -36,5 +37,12 @@ class MatchingController extends AbstractController
             }
         }
         return $usersEmail;
+    }
+
+    private function getCityNameById($city) : string
+    {
+        return $this->getDoctrine()
+            ->getRepository(City::class)
+            ->find($city)->getTitle();
     }
 }

@@ -2,8 +2,8 @@
 
 {% block body %}
 
-    <div>Kiti useriai is miesto:{{ someVariable }}</div>
+    <div>Kiti useriai is miesto:{{ cityName }}</div>
     {% for email in emails %}
-        <li>{{ email }}</li>
+        <li>{{ email }}<button class="btn">Like</button> <button class="btn">Not like</button> </li>
     {% endfor %}
 {% endblock %}

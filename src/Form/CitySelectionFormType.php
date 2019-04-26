@@ -11,10 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CitySelectionFormType extends AbstractType
 {
 
-    const VLINIUS = 0;
+    const VLINIUS = 2;
     const KAUNAS = 1;
-    const KLAIPEDA = 2;
-    const SIAULIAI = 3;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -23,8 +21,6 @@ class CitySelectionFormType extends AbstractType
                 'choices' => [
                     'Vilnius' => self::VLINIUS,
                     'Kaunas' => self::KAUNAS,
-                    'Klaipeda' => self::KLAIPEDA,
-                    'Siauliai' => self::SIAULIAI,
                 ],
             ])
             ->add('Save', SubmitType::class);
