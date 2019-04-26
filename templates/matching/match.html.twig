@@ -2,5 +2,8 @@
 
 {% block body %}
 
-    <div>{{ someVariable }}</div>
+    <div>Kiti useriai is miesto:{{ someVariable }}</div>
+    {% for email in emails %}
+        <li>{{ email }}</li>
+    {% endfor %}
 {% endblock %}

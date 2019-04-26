@@ -24,8 +24,11 @@ class CityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->setUserCity($this->getUser(), $form->getData()["ChoseYourCity"], $em);
-            //return $this->forward()
+            $city = $form->getData()["ChoseYourCity"];
+            $this->setUserCity($this->getUser(), $city, $em);
+            return $this->forward('App\Controller\MatchingController::getResponseFromHobbies', [
+                'city' => $city
+            ]);
         }
 
         return $this->render('matching/hobbies.html.twig', [
