@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ questionnaireTitle|trans }}{% endblock %}
+
+{% block body %}
+    {{ dump(questions) }}
+{% endblock %}
