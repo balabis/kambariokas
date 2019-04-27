@@ -6,9 +6,9 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserAnswerRepository")
+ * @ORM\Entity(repositoryClass="QuestionAnswerRepository")
  */
-class UserAnswer
+class QuestionAnswers
 {
     use TimestampableEntity;
     /**
@@ -28,16 +28,9 @@ class UserAnswer
     private $questionId;
 
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\ManyToOne(targetEntity="QuestionAnswers.php")
+     * @ORM\Column(type="string", length=255)
      */
-    private $questionAnswerId;
-
-    /**
-     * @ORM\Column(type="uuid")
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     */
-    private $userId;
+    private $answerText;
 
     public function getId()
     {
@@ -56,26 +49,14 @@ class UserAnswer
         return $this;
     }
 
-    public function getQuestionAnswerId(): ?int
+    public function getAnswerText(): ?string
     {
-        return $this->questionAnswerId;
+        return $this->answerText;
     }
 
-    public function setQuestionAnswerId(int $questionAnswerId): self
+    public function setAnswerText(string $answerText): self
     {
-        $this->questionAnswerId = $questionAnswerId;
-
-        return $this;
-    }
-
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    public function setUserId($userId): self
-    {
-        $this->userId = $userId;
+        $this->answerText = $answerText;
 
         return $this;
     }
