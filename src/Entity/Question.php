@@ -27,6 +27,12 @@ class Question
      */
     private $questionText;
 
+    /**
+     * @ORM\Column(type="uuid")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire")
+     */
+    private $questionnaireId;
+
     public function getId()
     {
         return $this->id;
@@ -40,6 +46,18 @@ class Question
     public function setQuestionText(string $questionText): self
     {
         $this->questionText = $questionText;
+
+        return $this;
+    }
+
+    public function getQuestionnaireId()
+    {
+        return $this->questionnaireId;
+    }
+
+    public function setQuestionnaireId($questionnaireId): self
+    {
+        $this->questionnaireId = $questionnaireId;
 
         return $this;
     }
