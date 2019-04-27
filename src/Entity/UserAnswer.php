@@ -22,13 +22,13 @@ class UserAnswer
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid")
      * @ORM\ManyToOne(targetEntity="App\Entity\Question")
      */
     private $questionId;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid")
      * @ORM\ManyToOne(targetEntity="QuestionAnswers.php")
      */
     private $questionAnswerId;
