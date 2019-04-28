@@ -19,18 +19,16 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    /**
-     * @return Question[] Returns an array of Question objects
-     */
-
-    public function findQuestionsByQuestionnaire($questionnaireId)
+    public function findQuestionsByQuestionnaireWithAnswers($questionnaireId)
     {
         return $this->createQueryBuilder('q')
-            ->andWhere('q.questionnaireId = :val')
-            ->setParameter('val', $questionnaireId)
+            // p.category refers to the "category" property on product
+            ->innerJoin('q.answers', 'c')
+            // selects all the category data to avoid the query
+            ->addSelect('c')
+            ->andWhere('q.questionnaireId = :questionnaireId')
+            ->setParameter('questionnaireId', $questionnaireId)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-
 }

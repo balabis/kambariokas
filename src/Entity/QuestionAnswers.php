@@ -22,7 +22,7 @@ class QuestionAnswers
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid")
      * @ORM\ManyToOne(targetEntity="App\Entity\Question")
      */
     private $questionId;
@@ -32,17 +32,23 @@ class QuestionAnswers
      */
     private $answerText;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Question", inversedBy="answers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $question;
+
     public function getId()
     {
         return $this->id;
     }
 
-    public function getQuestionId(): ?int
+    public function getQuestionId()
     {
         return $this->questionId;
     }
 
-    public function setQuestionId(int $questionId): self
+    public function setQuestionId($questionId): self
     {
         $this->questionId = $questionId;
 
@@ -57,6 +63,18 @@ class QuestionAnswers
     public function setAnswerText(string $answerText): self
     {
         $this->answerText = $answerText;
+
+        return $this;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?Question $question): self
+    {
+        $this->question = $question;
 
         return $this;
     }

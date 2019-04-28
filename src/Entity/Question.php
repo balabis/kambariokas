@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,6 +34,11 @@ class Question
      */
     private $questionnaireId;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\QuestionAnswers", mappedBy="question", fetch="EXTRA_LAZY")
+     */
+    private $answers;
+
     public function getId()
     {
         return $this->id;
@@ -60,5 +66,10 @@ class Question
         $this->questionnaireId = $questionnaireId;
 
         return $this;
+    }
+
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
     }
 }
