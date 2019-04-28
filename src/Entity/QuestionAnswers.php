@@ -6,7 +6,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="QuestionAnswerRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\QuestionAnswerRepository")
  */
 class QuestionAnswers
 {

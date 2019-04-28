@@ -22,9 +22,7 @@ class QuestionRepository extends ServiceEntityRepository
     public function findQuestionsByQuestionnaireWithAnswers($questionnaireId)
     {
         return $this->createQueryBuilder('q')
-            // p.category refers to the "category" property on product
             ->innerJoin('q.answers', 'c')
-            // selects all the category data to avoid the query
             ->addSelect('c')
             ->andWhere('q.questionnaireId = :questionnaireId')
             ->setParameter('questionnaireId', $questionnaireId)
