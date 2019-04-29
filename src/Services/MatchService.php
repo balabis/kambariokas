@@ -4,7 +4,6 @@
 namespace App\Services;
 
 use App\Entity\User;
-use App\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
