@@ -19,10 +19,7 @@ class MatchingController extends AbstractController
         $getMatchEmails = $service->getPossibleMatch($this->getUser(), $entityManager);
 
         return $this->render('matching/match.html.twig', [
-            'cityName' => $entityManager
-                ->getRepository(City::class)
-                ->find($this->getUser()->getCityCode())
-                ->getTitle(),
+            'cityName' => $this->getUser()->getCityCode(),
             'emails' => $getMatchEmails
         ]);
     }

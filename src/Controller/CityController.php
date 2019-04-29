@@ -19,7 +19,6 @@ class CityController extends AbstractController
     public function index(EntityManagerInterface $em, Request $request, CityService $service)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         if ($service->getCityCodeByUserEmail($this->getUser(), $em) == null) {
             $form = $this->createForm(CitySelectionFormType::class);
             $form->handleRequest($request);

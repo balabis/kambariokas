@@ -9,16 +9,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CitySelectionFormType extends AbstractType
 {
-    const VILNIUS = 2;
-    const KAUNAS = 1;
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('ChoseYourCity', ChoiceType::class, [
                 'choices' => [
-                    'Vilnius' => self::VILNIUS,
-                    'Kaunas' => self::KAUNAS,
+                    'Vilnius' => 'Vilnius',
+                    'Kaunas' => 'Kaunas',
+                    'Klaipėda' => 'Klaipėda',
+                    'Šiauliai' => 'Šiauliai',
+                    'Panevėžys' => 'Panevėžys',
+                    'Alytus' => 'Alytus',
+                    'Marijampolė' => 'Marijampolė',
+                    'Mažeikiai' => 'Mažeikiai',
+                    'Jonava' => 'Jonava',
+                    'Utena' => 'Utena',
+                    'Kėdainiai' => 'Kėdainiai',
+                    'Tauragė' => 'Tauragė',
+                    'Telšiai' => 'Telšiai',
+
                 ],
             ])
             ->add('Save', SubmitType::class);
