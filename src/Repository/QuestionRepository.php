@@ -18,4 +18,15 @@ class QuestionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Question::class);
     }
+
+    public function findQuestionsByQuestionnaireWithAnswers($questionnaireId)
+    {
+        return $this->createQueryBuilder('q')
+            ->innerJoin('q.answers', 'c')
+            ->addSelect('c')
+            ->andWhere('q.questionnaireId = :questionnaireId')
+            ->setParameter('questionnaireId', $questionnaireId)
+            ->getQuery()
+            ->getResult();
+    }
 }

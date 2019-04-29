@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,6 +29,22 @@ class Question
      */
     private $questionText;
 
+    /**
+     * @ORM\Column(type="uuid")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire")
+     */
+    private $questionnaireId;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\QuestionAnswers", mappedBy="question", fetch="EXTRA_LAZY")
+     */
+    private $answers;
+
+    public function __construct()
+    {
+        $this->answers = new ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
@@ -42,5 +60,22 @@ class Question
         $this->questionText = $questionText;
 
         return $this;
+    }
+
+    public function getQuestionnaireId()
+    {
+        return $this->questionnaireId;
+    }
+
+    public function setQuestionnaireId($questionnaireId): self
+    {
+        $this->questionnaireId = $questionnaireId;
+
+        return $this;
+    }
+
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
     }
 }

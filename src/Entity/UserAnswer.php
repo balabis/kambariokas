@@ -44,24 +44,24 @@ class UserAnswer
         return $this->id;
     }
 
-    public function getQuestionId(): ?int
+    public function getQuestionId()
     {
         return $this->questionId;
     }
 
-    public function setQuestionId(int $questionId): self
+    public function setQuestionId($questionId): self
     {
         $this->questionId = $questionId;
 
         return $this;
     }
 
-    public function getQuestionAnswerId(): ?int
+    public function getQuestionAnswerId()
     {
         return $this->questionAnswerId;
     }
 
-    public function setQuestionAnswerId(int $questionAnswerId): self
+    public function setQuestionAnswerId($questionAnswerId): self
     {
         $this->questionAnswerId = $questionAnswerId;
 
