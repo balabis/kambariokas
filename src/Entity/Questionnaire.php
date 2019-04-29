@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Questionnaire
 {
     /**
-     * @var \Ramsey\Uuid\UuidInterface
-     *
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")

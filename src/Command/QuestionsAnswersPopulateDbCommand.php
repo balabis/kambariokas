@@ -114,7 +114,6 @@ class QuestionsAnswersPopulateDbCommand extends Command
                 'Intravertas',
                 'Ekstravertas',
                 'Neapsisprendęs',
-                'Svarbu normalus',
             ]
         );
         $this->loadQuestion(
