@@ -18,13 +18,16 @@ class MatchService
         $users = $entityManager
             ->getRepository(User::class)
             ->findBy(['cityCode' => $user->getCityCode()]);
+
         $usersEmail = array();
         $i = 0;
+
         foreach ($users as $oneUser) {
             if ($oneUser->getEmail() !== $user->getEmail()) {
                 $usersEmail[$i++] = $oneUser->getEmail();
             }
         }
+
         return $usersEmail;
     }
 }
