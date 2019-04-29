@@ -26,8 +26,7 @@ class CitySelectionFormType extends AbstractType
                     'Utena' => 'Utena',
                     'Kėdainiai' => 'Kėdainiai',
                     'Tauragė' => 'Tauragė',
-                    'Telšiai' => 'Telšiai',
-
+                    'Telšiai' => 'Telšiai'
                 ],
             ])
             ->add('Save', SubmitType::class);
