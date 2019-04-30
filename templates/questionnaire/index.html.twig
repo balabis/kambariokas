@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Rumis.io{% endblock %}
+{% block title %}{{ questionnaireTitle|trans }}{% endblock %}
 
 {% block body %}
+
     <!-- Sidenav -->
     <nav
             class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"
@@ -39,8 +40,8 @@
                         <div class="media align-items-center">
                             <span class="avatar avatar-sm rounded-circle">
                                 <img
-                                        alt="Profilio nuotrauka"
-                                        src="{{ asset('build/images/team-4-800x800.jpg') }}"
+                                    alt="Profilio nuotrauka"
+                                    src="{{ asset('build/images/team-4-800x800.jpg') }}"
                                 />
                             </span>
                         </div>
@@ -115,7 +116,12 @@
                 id="navbar-main"
         >
             <div class="container-fluid">
-                <h1>Geriausi kambariokai Jums:</h1>
+                <a
+                        class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
+                        href="{{ path('questionnaire_get', {'slug': questionnaireTitle}) }}"
+                >{{ questionnaireTitle|trans }}</a
+                >
+
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex">
                     <li class="nav-item dropdown">
@@ -176,6 +182,55 @@
         <!-- Page content -->
 
         <div class="container-fluid mt--7">
+            <form action="{{ path('questionnaire_post', {'slug': questionnaireTitle}) }}" method="POST">
+                {% for question in questions %}
+                <div class="row mb-4">
+                    <div class="col-xl-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-transparent">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="text-uppercase text-muted ls-1 mb-1">
+                                            {{ questionnaireTitle|trans }} #{{ loop.index }}
+                                        </h6>
+                                        <h2 class="mb-0">{{ question.questionText }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {% for answer in question.getAnswers %}
+                                <div class="custom-control custom-radio mb-3">
+                                    <input
+                                            name="{{ answer.questionId }}"
+                                            class="custom-control-input"
+                                            id="{{ answer.id }}"
+                                            value="{{ answer.id }}"
+                                            type="radio"
+                                            required
+                                    />
+                                    <label class="custom-control-label" for="{{ answer.id }}"
+                                    >{{ answer.answerText }}</label
+                                    >
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <button class="btn btn-icon btn-3 btn-primary btn-block" type="submit">
+                    <span class="btn-inner--icon"><i class="fas fa-arrow-right"></i></span>
+                    <span class="btn-inner--text">
+                        {% if questionnaireTitle != 'personal' %}
+                            {{ 'Next questionnaire'|trans }}
+                        {% else %}
+                            {{ 'End questionnaire'|trans }}
+                        {% endif %}
+
+                    </span>
+
+                </button>
+            </form>
 
             <!-- Footer -->
             <footer class="footer">
@@ -195,4 +250,5 @@
             </footer>
         </div>
     </div>
+
 {% endblock %}

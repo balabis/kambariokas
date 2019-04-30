@@ -9,13 +9,13 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+require('../images');
 
 'use strict';
 
 var $ = require('jquery');
 require('bootstrap');
-require('../css/app.min.css');
+require('../css/app.css');
 require('@fortawesome/fontawesome-free/scss/fontawesome.scss');
 require('@fortawesome/fontawesome-free/js/all.js');
 

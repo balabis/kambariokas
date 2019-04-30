@@ -6,9 +6,9 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserAnswerRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\QuestionAnswerRepository")
  */
-class UserAnswer
+class QuestionAnswers
 {
     use TimestampableEntity;
     /**
@@ -28,16 +28,15 @@ class UserAnswer
     private $questionId;
 
     /**
-     * @ORM\Column(type="uuid")
-     * @ORM\ManyToOne(targetEntity="QuestionAnswers.php")
+     * @ORM\Column(type="string", length=255)
      */
-    private $questionAnswerId;
+    private $answerText;
 
     /**
-     * @ORM\Column(type="uuid")
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Question", inversedBy="answers")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $userId;
+    private $question;
 
     public function getId()
     {
@@ -56,26 +55,26 @@ class UserAnswer
         return $this;
     }
 
-    public function getQuestionAnswerId()
+    public function getAnswerText(): ?string
     {
-        return $this->questionAnswerId;
+        return $this->answerText;
     }
 
-    public function setQuestionAnswerId($questionAnswerId): self
+    public function setAnswerText(string $answerText): self
     {
-        $this->questionAnswerId = $questionAnswerId;
+        $this->answerText = $answerText;
 
         return $this;
     }
 
-    public function getUserId()
+    public function getQuestion(): ?Question
     {
-        return $this->userId;
+        return $this->question;
     }
 
-    public function setUserId($userId): self
+    public function setQuestion(?Question $question): self
     {
-        $this->userId = $userId;
+        $this->question = $question;
 
         return $this;
     }

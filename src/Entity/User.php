@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
+    use TimestampableEntity;
     /**
      * @var \Ramsey\Uuid\UuidInterface
      *
@@ -45,7 +47,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $cityCode;
+    private $city;
 
     /**
      * @ORM\Column(type="json")
@@ -58,17 +60,6 @@ class User implements UserInterface
      */
     private $password;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updatedAt;
 
     public function getId()
     {
@@ -178,38 +169,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCityCode(): ?string
+    public function getCity(): ?string
     {
-        return $this->cityCode;
+        return $this->city;
     }
 
-    public function setCityCode(string $cityCode): self
+    public function setCity(?string $city): self
     {
-        $this->cityCode = $cityCode;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+        $this->city = $city;
 
         return $this;
     }

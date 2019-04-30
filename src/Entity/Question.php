@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Question
 {
+    use TimestampableEntity;
+
     /**
      * @var \Ramsey\Uuid\UuidInterface
      *
@@ -21,42 +25,29 @@ class Question
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $questionId;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $questionText;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="uuid")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire")
      */
-    private $createdAt;
+    private $questionnaireId;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
+     * @ORM\OneToMany(targetEntity="App\Entity\QuestionAnswers", mappedBy="question", fetch="EXTRA_LAZY")
      */
-    private $updatedAt;
+    private $answers;
+
+    public function __construct()
+    {
+        $this->answers = new ArrayCollection();
+    }
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getQuestionId(): ?int
-    {
-        return $this->questionId;
-    }
-
-    public function setQuestionId(int $questionId): self
-    {
-        $this->questionId = $questionId;
-
-        return $this;
     }
 
     public function getQuestionText(): ?string
@@ -71,27 +62,20 @@ class Question
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getQuestionnaireId()
     {
-        return $this->createdAt;
+        return $this->questionnaireId;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setQuestionnaireId($questionnaireId): self
     {
-        $this->createdAt = $createdAt;
+        $this->questionnaireId = $questionnaireId;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getAnswers(): Collection
     {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        return $this->answers;
     }
 }
