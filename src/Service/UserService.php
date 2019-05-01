@@ -4,25 +4,21 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Service\UuidEncoderService;
 use App\Repository\UserRepository;
 
 class UserService
 {
 
-    private $encoder;
     private $userRepository;
 
-    public function __construct(UuidEncoderService $encoder, UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
-            $this->encoder = $encoder;
             $this->userRepository = $userRepository;
     }
 
-    public function getUserByUUID($id): User
+    public function getUserByUUID($uuid): User
     {
-        $userUUID = $this->encoder->decode($id);
-        $user = $this->userRepository->findOneBy(['id' => $userUUID]);
+        $user = $this->userRepository->findOneBy(['id' => $uuid]);
 
         return $user instanceof User ? $user : null;
     }
