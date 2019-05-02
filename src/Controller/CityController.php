@@ -20,7 +20,7 @@ class CityController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($service->getCityCodeByUserEmail($this->getUser(), $em) == null) {
+        if ($service->getCityByUserEmail($this->getUser(), $em) == null) {
             $form = $this->createForm(CitySelectionFormType::class);
             $form->handleRequest($request);
 

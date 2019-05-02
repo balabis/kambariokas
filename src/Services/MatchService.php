@@ -17,7 +17,7 @@ class MatchService
     {
         $users = $entityManager
             ->getRepository(User::class)
-            ->findBy(['cityCode' => $user->getCityCode()]);
+            ->findBy(['city' => $user->getCity()]);
 
         $usersEmail = array();
         $i = 0;

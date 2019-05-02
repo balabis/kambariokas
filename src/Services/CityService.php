@@ -13,17 +13,17 @@ class CityService
     {
     }
 
-    public function getCityCodeByUserEmail(User $user, EntityManagerInterface $entityManager) : ?string
+    public function getCityByUserEmail(User $user, EntityManagerInterface $entityManager) : ?string
     {
         return $entityManager
             ->getRepository(User::class)
             ->findBy(['email' => $user->getEmail()])[0]
-            ->getCityCode();
+            ->getCity();
     }
 
     public function setUserCity(User $user, string $city, EntityManagerInterface $em)
     {
-        $user->setCityCode($city);
+        $user->setCity($city);
         $em->flush();
     }
 }

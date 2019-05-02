@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\City;
 use App\Services\MatchService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +18,7 @@ class MatchingController extends AbstractController
         $getMatchEmails = $service->getPossibleMatch($this->getUser(), $entityManager);
 
         return $this->render('matching/match.html.twig', [
-            'cityName' => $this->getUser()->getCityCode(),
+            'cityName' => $this->getUser()->getCity(),
             'emails' => $getMatchEmails
         ]);
     }
