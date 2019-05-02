@@ -31,5 +31,4 @@ class CitySelectionFormType extends AbstractType
             ])
             ->add('Save', SubmitType::class);
     }
-
 }

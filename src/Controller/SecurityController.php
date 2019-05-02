@@ -16,13 +16,12 @@ class SecurityController extends AbstractController
     {
         if ($this->isGranted('ROLE_USER')) {
               return $this->redirectToRoute('home');
-
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();
-
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 }
+

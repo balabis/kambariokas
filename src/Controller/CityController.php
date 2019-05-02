@@ -38,8 +38,5 @@ class CityController extends AbstractController
             return $this->redirectToRoute('match');
         }
     }
-
-
-
-
 }
+
