@@ -60,6 +60,27 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $profilePicturePath;
+
+    /**
+     * @return mixed
+     */
+    public function getProfilePicturePath()
+    {
+        return $this->profilePicturePath;
+    }
+
+    /**
+     * @param mixed $profilePicturePath
+     */
+    public function setProfilePicturePath($profilePicturePath): void
+    {
+        $this->profilePicturePath = $profilePicturePath;
+    }
+
 
     public function getId()
     {
