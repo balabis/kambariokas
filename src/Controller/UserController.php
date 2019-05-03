@@ -12,20 +12,24 @@ class UserController extends AbstractController
 {
 
     /**
-     * @Route("/flatmates/{uuid}", name="profile.view", methods={"GET"})
+     * @Route("/flatmate/{uuid}", name="profile.view", methods={"GET"})
      * @param UserService $userService
-     * @param $id
+     * @param $uuid
+     * @return Response
      */
     public function showUserProfile(UserService $userService, $uuid): Response
     {
         $user = $userService->getUserByUUID($uuid);
 
-        return $this->render('profile/profileView.html.twig');
+        return isset($user)
+            ? $this->render('profile/profileView.html.twig')
+            : $this->render('profile/profileNotFound.html.twig');
     }
 
     /**
      * @Route("/dashboard/profile", name="profile.edit",)
      * @param UserService $userService
+     * @return Response
      */
     public function editUserProfile(UserService $userService): Response
     {
@@ -35,7 +39,7 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
 
-        return $this->reder('profile/profileEdit.html.twig');
+        return $this->render('profile/profileEdit.html.twig');
 
     }
 
