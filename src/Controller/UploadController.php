@@ -29,7 +29,7 @@ class UploadController extends AbstractController
         }
 
         $filename = $file->getClientOriginalName();
-        $uploader->upload($uploadDir, $file, $filename);
+        $uploader->upload($uploadDir.'profile_pictures', $file, $filename);
 
         return new Response("File uploaded", Response::HTTP_OK, ['content-type' => 'text/plain']);
     }
