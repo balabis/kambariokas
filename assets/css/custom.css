@@ -1,0 +1,21 @@
+.questionnaire-form {
+     max-width: 800px;
+ }
+
+.answers-container {
+    max-width: 500px;
+}
+
+.answer {
+    cursor: pointer;
+}
+
+.controls {
+    font-size: 25px;
+}
+
+.prev, .next {
+    cursor: pointer;
+}
+
+
