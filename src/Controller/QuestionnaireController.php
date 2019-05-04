@@ -33,6 +33,7 @@ class QuestionnaireController extends AbstractController
         return $this->render('questionnaire/index.html.twig', [
             'questions' => $questions,
             'questionnaireTitle' => $questionnaire->getTitle(),
+            'contentName' => $questionnaire->getTitle()
         ]);
     }
 
@@ -59,6 +60,6 @@ class QuestionnaireController extends AbstractController
             return $this->redirectToRoute('questionnaire_get', ['slug'=>'personal']);
         }
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('matched');
     }
 }

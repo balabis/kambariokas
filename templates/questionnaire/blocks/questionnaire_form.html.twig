@@ -1,0 +1,51 @@
+<form class="questionnaire-form mx-auto" action="{{ path('questionnaire_post', {'slug': questionnaireTitle})
+}}" method="POST">
+    <div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel"
+         data-interval="false">
+        <div class="carousel-inner d-flex align-items-center">
+            {% for question in questions %}
+                <div class="carousel-item {{ (loop.index == 1) ? 'active' : '' }}">
+                    <div class="row mb-4">
+                        <div class="col-xl-12">
+                            <div class="card shadow">
+                                <div class="card-header bg-transparent">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h6 class="text-uppercase text-muted ls-1 mb-1">
+                                                {{ questionnaireTitle|trans }} #{{ loop.index }}
+                                            </h6>
+                                            <h2 class="mb-0">{{ question.questionText }}</h2>
+                                            <div class="controls">
+                                                <a class="prev float-left d-none" role="button">
+                                                    <i class="fas fa-angle-left"></i>
+                                                    <span class="sr-only">Buvęs</span>
+                                                </a>
+                                                <a class="next float-right d-none" role="button">
+                                                    <i class="fas fa-angle-right"></i>
+                                                    <span class="sr-only">Kitas</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group text-center">
+                                        {% for answer in question.getAnswers %}
+                                            <label for="{{ answer.id }}" class="list-group-item
+                                                list-group-item-action answer btn">
+                                                {{ answer.answerText }}
+                                            </label>
+                                            <input
+                                                    type="radio" class="d-none" id="{{ answer.id }}"
+                                                    name="{{ answer.questionId }}" value="{{ answer.id }}" >
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</form>

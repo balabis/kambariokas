@@ -1,0 +1,41 @@
+{% extends 'main_layout.html.twig' %}
+
+{% block title %}{{ contentName|trans }}{% endblock %}
+
+{% block mainContent %}
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0">{{ 'Matching users'|trans }}</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+
+                        {% include 'match/blocks/table_head.html.twig' %}
+
+                        <tbody>
+
+                        {% embed 'match/blocks/table_row.html.twig' %}
+                            {% block profilePictureSrc %}{{ asset('build/images/dummy.png') }}{% endblock %}
+                            {% block user %}Vardenis Pavardenis{% endblock %}
+                            {% block budget %}100-150eur/mėn{% endblock %}
+                            {% block region %}Žaliakalnis{% endblock %}
+                            {% block matchNumber %}70{% endblock %}
+                        {% endembed %}
+
+                        {% embed 'match/blocks/table_row.html.twig' %}
+                            {% block profilePictureSrc %}{{ asset('build/images/dummy.png') }}{% endblock %}
+                            {% block user %}Petras Petraitis{% endblock %}
+                            {% block budget %}200-250eur/mėn{% endblock %}
+                            {% block region %}Centras{% endblock %}
+                            {% block matchNumber %}40{% endblock %}
+                        {% endembed %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
