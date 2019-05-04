@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'lt'
-    upload_dir: '../uploads/'
+    image_upload_path: '../public/uploads/'
 
 services:
     # default configuration for services in *this* file
@@ -30,4 +30,4 @@ services:
 
     App\Service\FileUploader:
         arguments:
-            $targetDirectory: '%upload_dir%'
+            $targetDirectory: '%image_upload_path%'

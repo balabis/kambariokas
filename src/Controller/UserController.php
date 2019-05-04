@@ -45,7 +45,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $file = $request->files->get('profile_picture');
             $userId = $user->getId()->toString();
             $fileName = $fileUploader->uploadProfilePicture($file, $userId);
@@ -61,7 +60,6 @@ class UserController extends AbstractController
         return $this->render('profile/profileEdit.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
 
 }
