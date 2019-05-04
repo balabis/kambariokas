@@ -66,6 +66,27 @@ class User implements UserInterface
     private $profilePicture;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $aboutme;
+
+    /**
+     * @return mixed
+     */
+    public function getAboutme()
+    {
+        return $this->aboutme;
+    }
+
+    /**
+     * @param mixed $aboutme
+     */
+    public function setAboutme($aboutme): void
+    {
+        $this->aboutme = $aboutme;
+    }
+
+    /**
      * @return mixed
      */
     public function getProfilePicture()
