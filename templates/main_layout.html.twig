@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include 'main_layout_blocks/side_nav.html.twig' %}
+
+    <div class="main-content">
+
+        {% include 'main_layout_blocks/top_nav.html.twig' %}
+
+        {% include 'main_layout_blocks/header.html.twig' %}
+
+        <div class="container-fluid mt--7 page-content">
+
+            {% block mainContent %}{% endblock %}
+
+        </div>
+
+        {% include 'main_layout_blocks/footer.html.twig' %}
+
+    </div>
+{% endblock %}
