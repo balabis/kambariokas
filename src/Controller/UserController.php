@@ -3,7 +3,10 @@
 
 namespace App\Controller;
 
+use App\Form\UserType;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\UserService;
@@ -31,15 +34,33 @@ class UserController extends AbstractController
      * @param UserService $userService
      * @return Response
      */
-    public function editUserProfile(UserService $userService): Response
+    public function editUserProfile(Request $request, UserService $userService, FileUploader $fileUploader): Response
     {
-        // if user is authenticated navigate to this url
-        // if user is not authenticated (not logged in), redirect to login
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $user = $this->getUser();
+        $user = $userService->getUserByUUID($this->getUser()->getId());
 
-        return $this->render('profile/profileEdit.html.twig');
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $request->files->get('profile_picture');
+            $userId = $user->getId()->toString();
+            $fileName = $fileUploader->uploadProfilePicture($file, $userId);
+
+            $user->setProfilePicture($fileName);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+        }
+
+        return $this->render('profile/profileEdit.html.twig', [
+            'form' => $form->createView(),
+        ]);
 
     }
 
