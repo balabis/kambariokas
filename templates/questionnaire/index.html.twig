@@ -1,8 +1,6 @@
-{% extends 'mainLayout.html.twig' %}
+{% extends 'main_layout.html.twig' %}
 
-{% block title %}{% endblock %}
-
-{% block contentName %}{{ questionnaireTitle|trans }}{% endblock %}
+{% block title %}{{ contentName|trans }}{% endblock %}
 {% block mainContent %}
 
     <div class="loading-alert alert alert-secondary d-none">Loading...</div>

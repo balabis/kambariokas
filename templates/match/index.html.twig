@@ -1,0 +1,10 @@
+{% extends 'main_layout.html.twig' %}
+
+{% block title %}{{ contentName|trans }}{% endblock %}
+
+{% block mainContent %}
+    {% embed 'match/blocks/matched_table.html.twig' %}
+
+    {% endembed %}
+
+{% endblock %}

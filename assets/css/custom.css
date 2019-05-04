@@ -18,4 +18,15 @@
     cursor: pointer;
 }
 
+.page-content {
+    min-height: calc(100vh - 200px);
+}
 
+footer .row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.table-responsive {
+    z-index: 10;
+}

@@ -33,6 +33,7 @@ class QuestionnaireController extends AbstractController
         return $this->render('questionnaire/index.html.twig', [
             'questions' => $questions,
             'questionnaireTitle' => $questionnaire->getTitle(),
+            'contentName' => $questionnaire->getTitle()
         ]);
     }
 
