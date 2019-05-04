@@ -87,9 +87,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ path('match') }}">
                         <i class="far fa-handshake"></i>&nbsp;
                         <span>{{ 'Match'|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('questionnaire_get') }}">
+                        <i class="fas fa-question"></i>&nbsp;
+                        <span>{{ 'Questionnaire'|trans }}</span>
                     </a>
                 </li>
             </ul>
