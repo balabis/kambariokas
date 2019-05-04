@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MatchController extends AbstractController
 {
     /**
-     * @Route("/match", name="match")
+     * @Route("/matched", name="matched")
      */
     public function index()
     {

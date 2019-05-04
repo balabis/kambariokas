@@ -60,6 +60,6 @@ class QuestionnaireController extends AbstractController
             return $this->redirectToRoute('questionnaire_get', ['slug'=>'personal']);
         }
 
-        return $this->redirectToRoute('match');
+        return $this->redirectToRoute('matched');
     }
 }
