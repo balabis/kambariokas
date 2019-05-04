@@ -1,4 +1,53 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
-    <h1>profileEdit</h1>
+
+    <form role="form" method="POST" enctype="multipart/form-data">
+        <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                {{ form_row(form.fullName) }}
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                {{ form_row(form.gender) }}
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                {{ form_row(form.dateOfBirth) }}
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                {{ form_row(form.city) }}
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <input type="file" name="profile_picture">
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary my-4">
+                {{ 'Login'|trans }}
+            </button>
+        </div>
+        {{ form_row(form._token) }}
+    </form>
 {% endblock %}

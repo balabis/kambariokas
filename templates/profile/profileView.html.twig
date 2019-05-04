@@ -1,20 +1,5 @@
-{% extends 'base.html.twig' %}
+{% extends 'profile/profileBase.html.twig' %}
 
 {% block title %}Home page{% endblock %}
 
-{% block body %}
 
-    <form action="doUpload" method="post" enctype="multipart/form-data">
-
-        <input type="hidden" name="token" value="{{ csrf_token('upload') }}" />
-
-        <div>
-            <label>File to upload:</label>
-            <input type="file" name="myfile">
-        </div>
-
-        <button type="submit">Send</button>
-
-    </form>
-
-{% endblock %}

@@ -63,22 +63,22 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string")
      */
-    private $profilePicturePath;
+    private $profilePicture;
 
     /**
      * @return mixed
      */
-    public function getProfilePicturePath()
+    public function getProfilePicture()
     {
-        return $this->profilePicturePath;
+        return $this->profilePicture;
     }
 
     /**
-     * @param mixed $profilePicturePath
+     * @param mixed $profilePicture
      */
-    public function setProfilePicturePath($profilePicturePath): void
+    public function setProfilePicture($profilePicture): void
     {
-        $this->profilePicturePath = $profilePicturePath;
+        $this->profilePicture = $profilePicture;
     }
 
 
