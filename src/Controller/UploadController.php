@@ -34,6 +34,6 @@ class UploadController extends AbstractController
         $filename = $file->getClientOriginalName();
         $uploader->upload($uploadDir.'profile_pictures/'.$userId, $file, $filename);
 
-        return $this->render('profile/profileView.html.twig');
+        return $this->redirect('/flatmate/'.$userId);
     }
 }
