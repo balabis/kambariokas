@@ -58,6 +58,8 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $user->setProfilePicture(null);
+
+            return $this->redirect($request->getUri());
         }
 
         return $this->render('profile/profileEdit.html.twig', [

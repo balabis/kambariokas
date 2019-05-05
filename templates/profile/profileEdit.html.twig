@@ -10,9 +10,7 @@
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image">
                                 <a href="#">
-    {#                                <img src="{{ asset('build/uploads/profile_pictures/' ~ app.user.id ~ '/' ~ app.user.profilePicture) }}" class="rounded-circle">#}
-                                    <img src="{{ asset('build/images/team-4-800x800.23007132.jpg') }}" class="rounded-circle">
-
+                                    <img src="{{ asset('uploads/profile_pictures/' ~ app.user.id ~ '/' ~ app.user.profilePicture) }}" class="rounded-circle">
                                 </a>
                             </div>
                         </div>
@@ -116,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-center">
+    <div class="text-center">
             <button type="submit" class="btn btn-primary my-4">
                 {{ 'Save'|trans }}
             </button>
