@@ -26,4 +26,9 @@ class CityService
         $user->setCity($city);
         $em->flush();
     }
+
+    public function filterByCity($users, User $user) :array
+    {
+        return array();
+    }
 }

@@ -8,9 +8,24 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
 {
-
     public function __construct()
     {
+    }
+
+    public function filter(EntityManagerInterface $entityManager, User $user) : void
+    {
+        $city = new CityService();
+        $flat = new FlatService();
+
+        $users = $entityManager->getRepository(User::class)->findAll();
+        $users = $this->removeUserFromHisPossibleMatchArray($users, $user);
+        $users = $city->filterByCity($users, $user);
+        $users = $flat->filterByFlat($users, $user);
+    }
+
+    private function removeUserFromHisPossibleMatchArray($users, User $user) : array
+    {
+        return \array_diff($users, [$user]);
     }
 
     public function getPossibleMatch(User $user, EntityManagerInterface $entityManager) : array
