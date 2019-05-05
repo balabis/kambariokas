@@ -34,14 +34,14 @@ class UserType extends AbstractType
             ])
             ->add('city', TextType::class)
             ->add('aboutme', TextareaType::class, [
+                'label' => 'About me',
                 'required' => false
             ])
             ->add('profilePicture', FileType::class, [
                 'label' => 'Profile picture',
                 'data_class' => null,
                 'required' => false
-            ])
-            ->add('Save', SubmitType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
