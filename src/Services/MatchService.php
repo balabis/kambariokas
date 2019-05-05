@@ -12,7 +12,7 @@ class MatchService
     {
     }
 
-    public function filter(EntityManagerInterface $entityManager, User $user) : void
+    public function filter(EntityManagerInterface $entityManager, User $user) : array
     {
         $city = new CityService();
         $flat = new FlatService();
@@ -21,6 +21,7 @@ class MatchService
         $users = $this->removeUserFromHisPossibleMatchArray($users, $user);
         $users = $city->filterByCity($users, $user);
         $users = $flat->filterByFlat($users, $user);
+        return $users;
     }
 
     private function removeUserFromHisPossibleMatchArray($users, User $user) : array

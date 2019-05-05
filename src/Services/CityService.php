@@ -27,8 +27,14 @@ class CityService
         $em->flush();
     }
 
-    public function filterByCity($users, User $user) :array
+    public function filterByCity($users, User $user) : array
     {
-        return array();
+        $newUsersArray = [];
+        foreach ($users as $oneUser) {
+            if ($user->getCity() === $oneUser->getCity()) {
+                $newUsersArray[] = $oneUser;
+            }
+        }
+        return $newUsersArray;
     }
 }

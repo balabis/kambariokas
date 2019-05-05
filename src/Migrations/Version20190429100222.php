@@ -33,6 +33,7 @@ final class Version20190429100222 extends AbstractMigration
         $this->addSql('ALTER TABLE question_answers ADD CONSTRAINT FK_5E0C131B1E27F6BF 
         FOREIGN KEY (question_id) REFERENCES question (id)');
         $this->addSql('CREATE INDEX IDX_5E0C131B1E27F6BF ON question_answers (question_id)');
+        //$this->addSql('CREATE TABLE match (id CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\'');
     }
 
     public function down(Schema $schema) : void
@@ -49,5 +50,6 @@ final class Version20190429100222 extends AbstractMigration
         utf8mb4_unicode_ci, CHANGE gender gender VARCHAR(255) DEFAULT \'NULL\' COLLATE utf8mb4_unicode_ci,
          CHANGE date_of_birth date_of_birth DATETIME DEFAULT \'NULL\', CHANGE city city VARCHAR(255) DEFAULT 
          \'NULL\' COLLATE utf8mb4_unicode_ci, CHANGE roles roles LONGTEXT NOT NULL COLLATE utf8mb4_bin');
+        //$this->addSql('DROP TABLE match');
     }
 }
