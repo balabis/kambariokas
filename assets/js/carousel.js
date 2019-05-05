@@ -12,7 +12,7 @@ var $ = require('jquery');
 
         if ($('.carousel-inner > .active').index('.carousel-item') === $('.carousel-item').length - 1) {
             $('.questionnaire-form').submit().addClass('d-none');
-            $('.loading-alert').removeClass('d-none');
+
         } else {
             $('.carousel').carousel('next');
         }

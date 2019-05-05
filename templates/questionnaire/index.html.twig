@@ -1,9 +1,10 @@
 {% extends 'main_layout.html.twig' %}
 
 {% block title %}{{ contentName|trans }}{% endblock %}
+
+{% block pageHeading %}{{ 'Questionnaire'|trans }}{% endblock %}
 {% block mainContent %}
 
-    <div class="loading-alert alert alert-secondary d-none">Loading...</div>
     {% include '/questionnaire/blocks/questionnaire_form.html.twig' %}
 
 {% endblock %}
