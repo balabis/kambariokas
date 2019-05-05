@@ -61,7 +61,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $profilePicture;
 

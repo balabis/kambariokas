@@ -46,10 +46,12 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $request->files->get('profile_picture');
-            $userId = $user->getId()->toString();
-            $fileName = $fileUploader->uploadProfilePicture($file, $userId);
 
-            $user->setProfilePicture($fileName);
+            if (isset($file)) {
+                $userId = $user->getId()->toString();
+                $fileName = $fileUploader->uploadProfilePicture($file, $userId);
+                $user->setProfilePicture($fileName);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
