@@ -45,7 +45,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $request->files->get('profile_picture');
+            $file = $user->getProfilePicture();
 
             if (isset($file)) {
                 $userId = $user->getId()->toString();
@@ -57,6 +57,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $user->setProfilePicture(null);
         }
 
         return $this->render('profile/profileEdit.html.twig', [
