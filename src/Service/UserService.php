@@ -25,8 +25,12 @@ class UserService
 
     public function getUserAge(User $user)
     {
-        $dateOfBirth = $user->getDateOfBirth()->format('Y-m-d');
+        $dateOfBirth = $user->getDateOfBirth();
         $today = date('Y-m-d');
+
+        if (isset($dateOfBirth)) {
+            $dateOfBirth = $dateOfBirth->format('Y-m-d');
+        }
 
         if (isset($dateOfBirth)) {
             $diff = date_diff(date_create($dateOfBirth), date_create($today));
