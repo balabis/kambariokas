@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Questionnaire
 {
     /**
+     * @var \Ramsey\Uuid\UuidInterface
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -21,6 +22,18 @@ class Questionnaire
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $orderNumber;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire")
+     */
+    private $question;
+
 
     public function getId()
     {
@@ -35,6 +48,18 @@ class Questionnaire
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getOrderNumber(): ?int
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(int $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }

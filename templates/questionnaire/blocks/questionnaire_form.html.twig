@@ -12,7 +12,7 @@
                                     <div class="row align-items-center">
                                         <div class="col">
                                             <h6 class="text-uppercase text-muted ls-1 mb-1">
-                                                {{ questionnaireTitle|trans }} #{{ loop.index }}
+                                                {{ question.getQuestionnaire.title|trans }} #{{ loop.index }}
                                             </h6>
                                             <h2 class="mb-0">{{ question.questionText }}</h2>
                                             <div class="controls">
@@ -30,14 +30,20 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="list-group text-center">
-                                        {% for answer in question.getAnswers %}
-                                            <label for="{{ answer.id }}" class="list-group-item
+                                        {% for value, answer in answers %}
+                                            <label for="{{ question.id }}-{{
+                                            value }}" class="list-group-item
                                                 list-group-item-action answer btn">
-                                                {{ answer.answerText }}
+                                                {{ answer.answerText }} <span class="answer-emoji">{{ answer
+                                                    .answerEmoji|raw }}</span>
                                             </label>
                                             <input
-                                                    type="radio" class="d-none" id="{{ answer.id }}"
-                                                    name="{{ answer.questionId }}" value="{{ answer.id }}" >
+                                                    type="radio" class="d-none" id="{{ question.id }}-{{
+                                            value }}"
+                                                    name="{{ question.getQuestionnaire.title }}[{{ question.id }}]"
+                                                    value="{{
+                                            value
+                                            }}" required >
                                         {% endfor %}
                                     </div>
                                 </div>

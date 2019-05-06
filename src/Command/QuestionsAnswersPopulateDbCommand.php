@@ -33,124 +33,106 @@ class QuestionsAnswersPopulateDbCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->loadQuestionnaire($this->em, 'flat');
-        $this->loadQuestionnaire($this->em, 'personal');
+        $this->loadQuestionnaire($this->em, 'flat', 0);
+        $this->loadQuestionnaire($this->em, 'personal', 1);
 
         $this->loadQuestion(
             $this->em,
             'Kelių kambarių buto pageidaujate?',
             'flat',
-            ['Vieno', 'Dviejų', 'Trijų', 'Keturių', 'Nesvarbu']
+            0
         );
         $this->loadQuestion(
             $this->em,
             'Kokia pageidaujama buto nuomos kaina asmeniui per mėnesį?',
             'flat',
-            ['<50€', '50€-100€', '100€-150€', '>150€']
+            1
         );
         $this->loadQuestion(
             $this->em,
             'Su keliais namiokais norėtumėte gyvent?',
             'flat',
-            ['Vienu', 'Dviem', 'Trim', 'Daugiau nei trim', 'Nesvarbu']
+            2
         );
         $this->loadQuestion(
             $this->em,
             'Ar reikalinga parkavimo vieta?',
             'flat',
-            ['Taip', 'Ne']
+            3
         );
         $this->loadQuestion(
             $this->em,
             'Ar reikalingas kiemas?',
             'flat',
-            ['Taip', 'Ne']
+            4
         );
         $this->loadQuestion(
             $this->em,
             'Kokiam laikotarpiui ruošiesi nuomotis butą?',
             'flat',
-            [
-                'Mažiau nei trim mėnesiam',
-                '3-6mėn',
-                '6-12mėn',
-                'Daugiau nei metus',
-            ]
+            5
         );
 
         $this->loadQuestion(
             $this->em,
             'Ar sutinkate kad bute būtų augintiniai?',
             'personal',
-            ['Taip', 'Ne']
+            0
         );
         $this->loadQuestion(
             $this->em,
             'Vakarėlis namuose gali būti organizuojamas?',
             'personal',
-            [
-                'Vieną kartą per savaitę',
-                'Tris kartus per savaitę',
-                'Priklausomai nuo mokymosi/darbo grafiko',
-                'Niekada',
-            ]
+            1
         );
         $this->loadQuestion(
             $this->em,
             'Namuose yra tvarkomasi?',
             'personal',
-            [
-                'Vieną kartą per savaitę',
-                'Kas dvi savaites',
-                'Dažniau',
-                'Kam tas tvarkymasis?',
-            ]
+            2
         );
         $this->loadQuestion(
             $this->em,
             'Ieškai namioko, kuris būtų?',
             'personal',
-            [
-                'Intravertas',
-                'Ekstravertas',
-                'Neapsisprendęs',
-            ]
+            3
         );
         $this->loadQuestion(
             $this->em,
             'Gyvenčiau tik su?',
             'personal',
-            ['Merginomis', 'Vaikinais', 'Nesvarbu']
+            4
         );
         $this->loadQuestion(
             $this->em,
             'Ieškai namioko?',
             'personal',
-            ['18-25metų', '25-35metų', '35-50metų', 'Nesvarbu']
+            5
         );
         $this->loadQuestion(
             $this->em,
             'Ar neprieštarauji namuose garsiai leidžiamai muzikai?',
             'personal',
-            ['Ne', 'Taip', 'Pats/pati leisiu', 'Su protu']
+            6
         );
         $this->loadQuestion(
             $this->em,
             'Koks jūsų požiūris į dažną kambariokų partnerio buvimą bute?',
             'personal',
-            ['Neigiamas', 'Toleruoju', 'Toleruoju jei dalinamės išlaidas']
+            7
         );
     }
 
-    public function loadQuestionnaire($em, $title)
+    public function loadQuestionnaire($em, $title, $orderNumber)
     {
         $questionnaire = new Questionnaire();
         $questionnaire->setTitle($title);
+        $questionnaire->setOrderNumber($orderNumber);
         $em->persist($questionnaire);
         $em->flush();
     }
 
-    public function loadQuestion($em, $text, $questionnaireTitle, $answersArray)
+    public function loadQuestion($em, $text, $questionnaireTitle, $orderNumber)
     {
         $repo = $em->getRepository(Questionnaire::class);
 
@@ -165,16 +147,8 @@ class QuestionsAnswersPopulateDbCommand extends Command
         $question = new Question();
         $question->setQuestionText($text);
         $question->setQuestionnaireId($questionnaireId);
+        $question->setOrderNumber($orderNumber);
         $em->persist($question);
         $em->flush();
-
-        foreach ($answersArray as $answerText) {
-            $answer = new QuestionAnswers();
-            $answer->setAnswerText($answerText);
-            $answer->setQuestionId($question->getId());
-            $answer->setQuestion($question);
-            $em->persist($answer);
-            $em->flush();
-        }
     }
 }

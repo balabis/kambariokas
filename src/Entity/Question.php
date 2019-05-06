@@ -31,19 +31,28 @@ class Question
 
     /**
      * @ORM\Column(type="uuid")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire")
      */
     private $questionnaireId;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\QuestionAnswers", mappedBy="question", fetch="EXTRA_LAZY")
+     * @ORM\Column(type="integer")
      */
-    private $answers;
+    private $orderNumber;
 
-    public function __construct()
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire", inversedBy="question")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $questionnaire;
+
+    /**
+     * @return mixed
+     */
+    public function getQuestionnaire()
     {
-        $this->answers = new ArrayCollection();
+        return $this->questionnaire;
     }
+
 
     public function getId()
     {
@@ -74,8 +83,15 @@ class Question
         return $this;
     }
 
-    public function getAnswers(): Collection
+    public function getOrderNumber(): ?int
     {
-        return $this->answers;
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(int $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
+
+        return $this;
     }
 }
