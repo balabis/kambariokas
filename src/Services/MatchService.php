@@ -17,11 +17,9 @@ class MatchService
     public function filter(EntityManagerInterface $entityManager, User $user, UserMatchRepository $repository) : void
     {
         $city = new CityService();
-        $flat = new FlatService();
-        $this->deleteUserInfoAboutMatches($user, $repository);
+        $this->deleteUserInfoAboutMatches($user, $entityManager);
         $users = $entityManager->getRepository(User::class)->findAll();
         $users = $city->filterByCity($users, $user);
-        $users = $flat->filterByFlat($users, $user);
         $this->addNewMatchesToDatabase($users, $user, $entityManager);
     }
 
@@ -48,8 +46,12 @@ class MatchService
         $entityManager->flush();
     }
 
-    private function deleteUserInfoAboutMatches(User $user, UserMatchRepository $repository) : void
+    private function deleteUserInfoAboutMatches(User $user, EntityManagerInterface $entityManager) : void
     {
-        $repository->deleteUsersMatch($user);
+        $removableObjects = $this->getPossibleMatch($user, $entityManager);
+
+        foreach ($removableObjects as $removableObject) {
+            $entityManager->remove($removableObject);
+        }
     }
 }
