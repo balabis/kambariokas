@@ -11,11 +11,19 @@ class UserService
 
     private $userRepository;
 
+    /**
+     * UserService constructor.
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
             $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param $uuid
+     * @return User
+     */
     public function getUserByUUID($uuid): User
     {
         $user = $this->userRepository->findOneBy(['id' => $uuid]);
@@ -23,6 +31,10 @@ class UserService
         return $user instanceof User ? $user : null;
     }
 
+    /**
+     * @param User $user
+     * @return string|null
+     */
     public function getUserAge(User $user)
     {
         $dateOfBirth = $user->getDateOfBirth();

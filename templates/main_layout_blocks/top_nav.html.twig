@@ -79,7 +79,7 @@
                                 <span class="avatar avatar-sm rounded-circle">
                                     <img
                                             alt="Profilio nuotrauka"
-                                            src="{{ asset('uploads/profile_pictures/' ~ app.user.id ~ '/' ~ app.user.profilePicture) }}"
+                                            src="{{ asset(app.user.profilePicture) }}"
                                     />
                                 </span>
                                 <div class="media-body ml-2 d-none d-lg-block">

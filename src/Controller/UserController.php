@@ -36,11 +36,16 @@ class UserController extends AbstractController
 
     /**
      * @Route("/dashboard/profile", name="profile.edit",)
+     * @param Request $request
      * @param UserService $userService
+     * @param FileUploader $fileUploader
      * @return Response
      */
-    public function editUserProfile(Request $request, UserService $userService, FileUploader $fileUploader): Response
-    {
+    public function editUserProfile(
+        Request $request,
+        UserService $userService,
+        FileUploader $fileUploader
+    ): Response {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -56,6 +61,16 @@ class UserController extends AbstractController
                 $userId = $user->getId()->toString();
                 $fileName = $fileUploader->uploadProfilePicture($file, $userId);
                 $user->setProfilePicture($fileName);
+            } else {
+                $gender = $form->getData()->getGender();
+
+                if ($gender == 'Male') {
+                    $user->setProfilePicture('uploads/profile_pictures/default/male.png');
+                } elseif ($gender == 'Female') {
+                    $user->setProfilePicture('uploads/profile_pictures/default/female.png');
+                } else {
+                    $user->setProfilePicture('uploads/profile_pictures/default/default.png');
+                }
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -71,5 +86,4 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }

@@ -7,9 +7,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,7 +30,25 @@ class UserType extends AbstractType
             ->add('dateOfBirth', BirthdayType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('city', TextType::class)
+            ->add('city', ChoiceType::class, [
+                'choices' => array('Vilnius','Kaunas','Klaipėda','Šiauliai','Panevėžys','Alytus','Marijampolė',
+                    'Mažeikiai','Jonava',
+                    'Utena','Kėdainiai','Telšiai','Visaginas','Tauragė','Ukmergė','Plungė','Šilutė','Kretinga',
+                    'Radviliškis','Druskininkai','Palanga','Rokiškis','Biržai','Gargždai','Kuršėnai','Elektrėnai',
+                    'Jurbarkas','Garliava','Vilkaviškis','Raseiniai','Naujoji Akmenė','Anykščiai','Lentvaris',
+                    'Grigiškės','Prienai','Joniškis','Kelmė','Varėna','Kaišiadorys','Pasvalys','Kupiškis','Zarasai',
+                    'Skuodas','Kazlų Rūda','Širvintos','Molėtai','Švenčionėliai','Šakiai','Šalčininkai','Ignalina',
+                    'Kybartai','Pabradė','Šilalė','Pakruojis','Nemenčinė','Trakai','Švenčionys','Vievis','Lazdijai',
+                    'Kalvarija','Rietavas','Žiežmariai','Eišiškės','Ariogala','Venta','Šeduva','Birštonas','Akmenė',
+                    'Tytuvėnai','Rūdiškės','Pagėgiai','Neringa','Vilkija','Žagarė','Viekšniai','Skaudvilė','Ežerėlis',
+                    'Gelgaudiškis','Kudirkos Naumiestis','Simnas','Salantai','Linkuva','Veisiejai','Ramygala',
+                    'Priekulė','Joniškėlis','Jieznas','Daugai','Obeliai','Varniai','Virbalis','Vabalninkas','Seda',
+                    'Subačius','Baltoji Vokė','Dūkštas','Pandėlys','Dusetos','Užventis','Kavarskas','Smalininkai',
+                    'Troškūnai','Panemunė'),
+                'choice_label' => function ($choice, $key, $value) {
+                    return $value;
+                },
+            ])
             ->add('aboutme', TextareaType::class, [
                 'label' => 'About me',
                 'required' => false
@@ -40,7 +56,7 @@ class UserType extends AbstractType
             ->add('profilePicture', FileType::class, [
                 'label' => 'Profile picture',
                 'data_class' => null,
-                'required' => false
+                'required' => false,
             ]);
     }
 
@@ -50,4 +66,6 @@ class UserType extends AbstractType
             'data_class' => User::class,
         ]);
     }
+
+
 }
