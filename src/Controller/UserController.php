@@ -23,9 +23,12 @@ class UserController extends AbstractController
     public function showUserProfile(UserService $userService, $uuid): Response
     {
         $user = $userService->getUserByUUID($uuid);
+        $userAge = $userService->getUserAge($user);
 
         return isset($user)
-            ? $this->render('profile/profileView.html.twig')
+            ? $this->render('profile/profileView.html.twig', [
+                'userAge' => $userAge,
+            ])
             : $this->render('profile/profileNotFound.html.twig');
     }
 
