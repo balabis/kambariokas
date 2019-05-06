@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entity\User;
 use App\Entity\UserMatch;
+use App\Repository\UserMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
@@ -13,11 +14,11 @@ class MatchService
     {
     }
 
-    public function filter(EntityManagerInterface $entityManager, User $user) : void
+    public function filter(EntityManagerInterface $entityManager, User $user, UserMatchRepository $repository) : void
     {
         $city = new CityService();
         $flat = new FlatService();
-
+        $this->deleteUserInfoAboutMatches($user, $repository);
         $users = $entityManager->getRepository(User::class)->findAll();
         $users = $city->filterByCity($users, $user);
         $users = $flat->filterByFlat($users, $user);
@@ -41,10 +42,14 @@ class MatchService
                 $match->setFirstUser($user->getId());
                 $match->setSecondUser($oneUser->getId());
                 $match->setCoefficient(0.01);
-                var_dump($match);
                 $entityManager->persist($match);
             }
         }
         $entityManager->flush();
+    }
+
+    private function deleteUserInfoAboutMatches(User $user, UserMatchRepository $repository) : void
+    {
+        $repository->deleteUsersMatch($user);
     }
 }
