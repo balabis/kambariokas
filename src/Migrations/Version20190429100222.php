@@ -23,12 +23,7 @@ final class Version20190429100222 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName()
             !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE `match` (
-        `id` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:uuid)\',
-        `firstUser` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:uuid)\',
-        `secondUser` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:uuid)\',
-        `coefficient` double NOT NULL, PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
         $this->addSql('CREATE TABLE questionnaire (id CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
          title VARCHAR(255) NOT NULL, PRIMARY KEY(id)) 
          DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
@@ -55,6 +50,5 @@ final class Version20190429100222 extends AbstractMigration
         utf8mb4_unicode_ci, CHANGE gender gender VARCHAR(255) DEFAULT \'NULL\' COLLATE utf8mb4_unicode_ci,
          CHANGE date_of_birth date_of_birth DATETIME DEFAULT \'NULL\', CHANGE city city VARCHAR(255) DEFAULT 
          \'NULL\' COLLATE utf8mb4_unicode_ci, CHANGE roles roles LONGTEXT NOT NULL COLLATE utf8mb4_bin');
-        $this->addSql('DROP TABLE match');
     }
 }

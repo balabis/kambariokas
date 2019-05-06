@@ -15,6 +15,7 @@ class MatchingController extends AbstractController
     public function index(EntityManagerInterface $entityManager, MatchService $service)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $service->filter($entityManager, $this->getUser());
         $getMatchEmails = $service->getPossibleMatch($this->getUser(), $entityManager);
 
         return $this->render('matching/match.html.twig', [

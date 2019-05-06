@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Entity\User;
+use App\Entity\UserMatch;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
@@ -12,38 +13,38 @@ class MatchService
     {
     }
 
-    public function filter(EntityManagerInterface $entityManager, User $user) : array
+    public function filter(EntityManagerInterface $entityManager, User $user) : void
     {
         $city = new CityService();
         $flat = new FlatService();
 
         $users = $entityManager->getRepository(User::class)->findAll();
-        $users = $this->removeUserFromHisPossibleMatchArray($users, $user);
         $users = $city->filterByCity($users, $user);
         $users = $flat->filterByFlat($users, $user);
-        return $users;
-    }
-
-    private function removeUserFromHisPossibleMatchArray($users, User $user) : array
-    {
-        return \array_diff($users, [$user]);
+        $this->addNewMatchesToDatabase($users, $user, $entityManager);
     }
 
     public function getPossibleMatch(User $user, EntityManagerInterface $entityManager) : array
     {
         $users = $entityManager
-            ->getRepository(User::class)
-            ->findBy(['city' => $user->getCity()]);
+            ->getRepository(UserMatch::class)
+            ->findBy(['firstUser' => $user->getId()]);
 
-        $usersEmail = array();
-        $i = 0;
+        return $users;
+    }
 
+    private function addNewMatchesToDatabase($users, User $user, EntityManagerInterface $entityManager) : void
+    {
         foreach ($users as $oneUser) {
-            if ($oneUser->getEmail() !== $user->getEmail()) {
-                $usersEmail[$i++] = $oneUser->getEmail();
+            if ($user->getId() !== $oneUser->getId()) {
+                $match = new UserMatch();
+                $match->setFirstUser($user->getId());
+                $match->setSecondUser($oneUser->getId());
+                $match->setCoefficient(0.01);
+                var_dump($match);
+                $entityManager->persist($match);
             }
         }
-
-        return $usersEmail;
+        $entityManager->flush();
     }
 }
