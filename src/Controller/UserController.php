@@ -69,7 +69,7 @@ class UserController extends AbstractController
                 } elseif ($gender == 'Female') {
                     $user->setProfilePicture('uploads/profile_pictures/default/female.png');
                 } else {
-                    $user->setProfilePicture('uploads/profile_pictures/default/default.png');
+                    $user->setProfilePicture('uploads/profile_pictures/default/default.jpg');
                 }
             }
 
