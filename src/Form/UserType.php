@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class UserType extends AbstractType
 {
@@ -51,7 +52,13 @@ class UserType extends AbstractType
             ])
             ->add('aboutme', TextareaType::class, [
                 'label' => 'About me',
-                'required' => false
+                'required' => false,
+                'constraints' => [
+                    new Length([
+                        'maxMessage' => 'This section has to be shorter',
+                        'max' => 255,
+                    ]),
+                ]
             ])
             ->add('profilePicture', FileType::class, [
                 'label' => 'Profile picture',

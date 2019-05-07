@@ -50,6 +50,7 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $userService->getUserByUUID($this->getUser()->getId());
+        $userAge = $userService->getUserAge($user);
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -84,6 +85,7 @@ class UserController extends AbstractController
 
         return $this->render('profile/profileEdit.html.twig', [
             'form' => $form->createView(),
+            'userAge' => $userAge,
         ]);
     }
 }

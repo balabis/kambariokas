@@ -25,22 +25,19 @@
                             <div class="col">
                                 <div class=" d-flex justify-content-center mt-md-5">
                                         <h2>
-                                            {{ app.user.fullname }}
+                                            {{ app.user.fullname }} <span>&bull;</span> {{ userAge }}
                                         </h2>
                                 </div>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="h5 font-weight-300">
-                                <i class="ni location_pin mr-2"></i>{{ app.user.city }}
-                            </div>
-                            <div class="h5 mt-4">
-                                <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                            </div>
-                            <div>
-                                <i class="ni education_hat mr-2"></i>University of Computer Science
+                                {{ app.user.city }}
                             </div>
                             <hr class="my-4" />
+                            <div>
+                                {{ app.user.aboutme }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,14 +107,15 @@
                                 }) }}
                             </div>
                         </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary my-4">
+                                {{ 'Save'|trans }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    <div class="text-center">
-            <button type="submit" class="btn btn-primary my-4">
-                {{ 'Save'|trans }}
-            </button>
-        </div>
+
     {{ form_end(form) }}
 {% endblock %}
