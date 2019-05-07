@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,8 +13,6 @@ class Question
     use TimestampableEntity;
 
     /**
-     * @var \Ramsey\Uuid\UuidInterface
-     *
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -31,18 +27,22 @@ class Question
 
     /**
      * @ORM\Column(type="uuid")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire")
      */
     private $questionnaireId;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\QuestionAnswers", mappedBy="question", fetch="EXTRA_LAZY")
+     * @ORM\Column(type="integer")
      */
-    private $answers;
+    private $orderNumber;
 
-    public function __construct()
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire", inversedBy="question")
+     */
+    private $questionnaire;
+
+    public function getQuestionnaire()
     {
-        $this->answers = new ArrayCollection();
+        return $this->questionnaire;
     }
 
     public function getId()
@@ -74,8 +74,22 @@ class Question
         return $this;
     }
 
-    public function getAnswers(): Collection
+    public function getOrderNumber(): ?int
     {
-        return $this->answers;
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(int $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
+
+        return $this;
+    }
+
+    public function setQuestionnaire($questionnaire): self
+    {
+        $this->questionnaire = $questionnaire;
+
+        return $this;
     }
 }

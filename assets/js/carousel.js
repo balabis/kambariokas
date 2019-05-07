@@ -11,8 +11,10 @@ var $ = require('jquery');
             $('.carousel-inner > .active').index('.carousel-item'): maxAnsweredQuestion;
 
         if ($('.carousel-inner > .active').index('.carousel-item') === $('.carousel-item').length - 1) {
-            $('.questionnaire-form').submit().addClass('d-none');
-
+            $(this).siblings('[type=radio]').on('change',function(){
+                $('.questionnaire-form').submit();
+                $('.questionnaire-form').addClass('d-none');
+            });
         } else {
             $('.carousel').carousel('next');
         }
