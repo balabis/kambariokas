@@ -62,10 +62,11 @@ class UserController extends AbstractController
                 $gender = $form->getData()->getGender();
                 $updateUserRequest->setProfilePicture('uploads/profile_pictures/default/' . $gender . '.png');
             }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->merge($updateUserRequest);
             $entityManager->flush();
-//            $user->setProfilePicture(null);
+
             return $this->redirect($request->getUri());
         }
         return $this->render('profile/profileEdit.html.twig', [
