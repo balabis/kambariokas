@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -91,6 +89,13 @@ class Question
     public function setOrderNumber(int $orderNumber): self
     {
         $this->orderNumber = $orderNumber;
+
+        return $this;
+    }
+
+    public function setQuestionnaire($questionnaire): self
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }

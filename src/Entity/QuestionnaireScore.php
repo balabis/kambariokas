@@ -21,29 +21,29 @@ class QuestionnaireScore
 
     /**
      * @ORM\Column(type="uuid")
-     * @ORM\OneToOne(targetEntity="User")
      */
     private $userId;
 
     /**
      * @ORM\Column(type="decimal", precision=3, scale=2, nullable=true)
      */
-    private $sociabilityQuestionnaire;
+    private $sociability;
 
     /**
      * @ORM\Column(type="decimal", precision=3, scale=2, nullable=true)
      */
-    private $socialOpennessQuestionnaire;
+    private $socialOpenness;
 
     /**
      * @ORM\Column(type="decimal", precision=3, scale=2, nullable=true)
      */
-    private $socialFlexibilityQuestionnaire;
+    private $socialFlexibility;
 
     /**
      * @ORM\Column(type="decimal", precision=3, scale=2, nullable=true)
      */
-    private $cleanlinessQuestionnaire;
+    private $cleanliness;
+
 
     public function getId()
     {
@@ -62,50 +62,50 @@ class QuestionnaireScore
         return $this;
     }
 
-    public function getSociabilityQuestionnaire()
+    public function getSociability()
     {
-        return $this->sociabilityQuestionnaire;
+        return $this->sociability;
     }
 
-    public function setSociabilityQuestionnaire($sociabilityQuestionnaire): self
+    public function setSociability($sociability): self
     {
-        $this->sociabilityQuestionnaire = $sociabilityQuestionnaire;
+        $this->sociability = $sociability;
 
         return $this;
     }
 
-    public function getSocialOpennessQuestionnaire()
+    public function getSocialOpenness()
     {
-        return $this->socialOpennessQuestionnaire;
+        return $this->socialOpenness;
     }
 
-    public function setSocialOpennessQuestionnaire($socialOpennessQuestionnaire): self
+    public function setSocialOpenness($socialOpenness): self
     {
-        $this->socialOpennessQuestionnaire = $socialOpennessQuestionnaire;
+        $this->socialOpenness = $socialOpenness;
 
         return $this;
     }
 
-    public function getSocialFlexibilityQuestionnaire()
+    public function getSocialFlexibility()
     {
-        return $this->socialFlexibilityQuestionnaire;
+        return $this->socialFlexibility;
     }
 
-    public function setSocialFlexibilityQuestionnaire($socialFlexibilityQuestionnaire): self
+    public function setSocialFlexibility($socialFlexibility): self
     {
-        $this->socialFlexibilityQuestionnaire = $socialFlexibilityQuestionnaire;
+        $this->socialFlexibility = $socialFlexibility;
 
         return $this;
     }
 
-    public function getCleanlinessQuestionnaire()
+    public function getCleanliness()
     {
-        return $this->cleanlinessQuestionnaire;
+        return $this->cleanliness;
     }
 
-    public function setCleanlinessQuestionnaire($cleanlinessQuestionnaire): self
+    public function setCleanliness($cleanliness): self
     {
-        $this->cleanlinessQuestionnaire = $cleanlinessQuestionnaire;
+        $this->cleanliness = $cleanliness;
 
         return $this;
     }

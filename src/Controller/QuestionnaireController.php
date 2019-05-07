@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Question;
-use App\Entity\Questionnaire;
-use App\Entity\UserAnswer;
+use App\Entity\QuestionnaireScore;
 use App\Services\AnswerService;
 use App\Services\QuestionnaireScoreService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,62 +15,66 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class QuestionnaireController extends AbstractController
 {
     /**
-     * @Route("/questionnaire/{slug}", name="questionnaire_get",
-     *     defaults={"slug"="flat"}, methods={"GET"})
+     * @Route("/questionnaire", name="questionnaire_get", methods={"GET"})
      */
     public function show(
-        $slug,
         EntityManagerInterface $em,
         AnswerService $answerService
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $questionnaireRepository = $em->getRepository(Questionnaire::class);
-        $questionnaire =
-            $questionnaireRepository->findOneBy(['title' => $slug]);
-
-        if (!$questionnaire) {
-            throw $this->createNotFoundException('No ' . $slug . ' questionnaire found!');
-        }
-
         $questionRepository = $em->getRepository(Question::class);
-//        $questions = $questionRepository->findBy(
-//            [],
-//            [
-//                'orderNumber' => 'ASC',
-//            ]);
-
         $questions = $questionRepository->findAllJoinedWithQuestionnaire();
-//                dd($questions);
 
         return $this->render('questionnaire/index.html.twig', [
             'questions' => $questions,
             'answers' => $answerService->generateAnswers(),
-            'questionnaireTitle' => $questionnaire->getTitle(),
-            'contentName' => $questionnaire->getTitle(),
         ]);
     }
 
     /**
-     * @Route("/questionnaire/{slug}", name="questionnaire_post",
+     * @Route("/questionnaire", name="questionnaire_post",
      *     methods={"POST"})
      */
     public function formSubmission(
         Request $request,
         EntityManagerInterface $em,
         UserInterface $user,
-        QuestionnaireScoreService $questionnaireScore
+        QuestionnaireScoreService $questionnaireScoreService
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->attributes->get('_route') === 'questionnaire_post' && $request->isMethod('POST')) {
+            $sociabilityScore =
+                $questionnaireScoreService->calculateQuestionnaireScore(
+                    $request,
+                    'sociability'
+                );
+            $cleanlinessScore =
+                $questionnaireScoreService->calculateQuestionnaireScore(
+                    $request,
+                    'cleanliness'
+                );
+            $socialOpennessScore =
+                $questionnaireScoreService->calculateQuestionnaireScore(
+                    $request,
+                    'socialOpenness'
+                );
+            $socialFlexibilityScore =
+                $questionnaireScoreService->calculateQuestionnaireScore(
+                    $request,
+                    'socialFlexibility'
+                );
 
-            $questionnaireScore = $questionnaireScore->calculateQuestionnaireScore($request);
-            dd($request);
-            //
-            //
-            //        if ($request->attributes->get('slug') === 'flat') {
-            //            return $this->redirectToRoute('questionnaire_get', ['slug'=>'personal']);
+            $questionnaireScore = new QuestionnaireScore();
+            $questionnaireScore->setUserId($user->getId());
+            $questionnaireScore->setSociability($sociabilityScore);
+            $questionnaireScore->setCleanliness($cleanlinessScore);
+            $questionnaireScore->setSocialOpenness($socialOpennessScore);
+            $questionnaireScore->setSocialFlexibility($socialFlexibilityScore);
+
+            $em->persist($questionnaireScore);
+            $em->flush();
         }
 
         return $this->redirectToRoute('matched');

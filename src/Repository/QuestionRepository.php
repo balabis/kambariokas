@@ -27,7 +27,5 @@ class QuestionRepository extends ServiceEntityRepository
             ->orderBy('q.orderNumber', 'ASC')
             ->getQuery()
             ->getResult();
-
     }
-
 }

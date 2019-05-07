@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-
 class AnswerService
 {
     private $maxAnswerValue;
