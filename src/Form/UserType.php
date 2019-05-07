@@ -66,6 +66,4 @@ class UserType extends AbstractType
             'data_class' => UpdateUserRequest::class,
         ]);
     }
-
-
 }
