@@ -1,5 +1,16 @@
 {% extends 'main_layout.html.twig' %}
 
+{% form_theme form _self %}
+    {%- block form_errors -%}
+        {%- if errors|length > 0 -%}
+
+            {%- for error in errors -%}
+                <div class="alert alert-warning">{{ error.message|trans }}</div>
+            {%- endfor -%}
+
+        {%- endif -%}
+    {%- endblock form_errors -%}
+
 {% block mainContent %}
     {{ form_start(form) }}
         <br>
@@ -9,7 +20,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image">
-                                <a href="#">
+                                <a href="{{ path('profile.view', {uuid: app.user.id}) }}">
                                     <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
                                 </a>
                             </div>
@@ -24,9 +35,9 @@
                         <div class="row">
                             <div class="col">
                                 <div class=" d-flex justify-content-center mt-md-5">
-                                        <h2>
-                                            {{ app.user.fullname }} <span>&bull;</span> {{ userAge }}
-                                        </h2>
+                                    <h2>
+                                        {{ app.user.fullname }} <span>&bull;</span> {{ userAge }}
+                                    </h2>
                                 </div>
                             </div>
                         </div>

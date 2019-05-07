@@ -3,21 +3,20 @@
 
 namespace App\Controller;
 
+use App\Entity\UpdateUserRequest;
 use App\Form\UserType;
-use App\Service\FileUploader;
+use App\Services\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\UserService;
+use App\Services\UserService;
 
 class UserController extends AbstractController
 {
 
     /**
      * @Route("/flatmate/{uuid}", name="profile.view", methods={"GET"})
-     * @param UserService $userService
-     * @param $uuid
      * @return Response
      */
     public function showUserProfile(UserService $userService, $uuid): Response
@@ -36,53 +35,39 @@ class UserController extends AbstractController
 
     /**
      * @Route("/dashboard/profile", name="profile.edit",)
-     * @param Request $request
-     * @param UserService $userService
-     * @param FileUploader $fileUploader
-     * @return Response
      */
     public function editUserProfile(
         Request $request,
         UserService $userService,
         FileUploader $fileUploader
-    ): Response {
+    ) {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $userService->getUserByUUID($this->getUser()->getId());
+        $updateUserRequest = UpdateUserRequest::fromUser($user);
         $userAge = $userService->getUserAge($user);
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $updateUserRequest);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $user->getProfilePicture();
+            $file = $form->getData()->getProfilePicture();
 
             if (isset($file)) {
                 $userId = $user->getId()->toString();
                 $fileName = $fileUploader->uploadProfilePicture($file, $userId);
-                $user->setProfilePicture($fileName);
+                $updateUserRequest->setProfilePicture($fileName);
             } else {
                 $gender = $form->getData()->getGender();
-
-                if ($gender == 'Male') {
-                    $user->setProfilePicture('uploads/profile_pictures/default/male.png');
-                } elseif ($gender == 'Female') {
-                    $user->setProfilePicture('uploads/profile_pictures/default/female.png');
-                } else {
-                    $user->setProfilePicture('uploads/profile_pictures/default/default.jpg');
-                }
+                $updateUserRequest->setProfilePicture('uploads/profile_pictures/default/' . $gender . '.png');
             }
-
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
+            $entityManager->merge($updateUserRequest);
             $entityManager->flush();
-
-            $user->setProfilePicture(null);
-
+//            $user->setProfilePicture(null);
             return $this->redirect($request->getUri());
         }
-
         return $this->render('profile/profileEdit.html.twig', [
             'form' => $form->createView(),
             'userAge' => $userAge,

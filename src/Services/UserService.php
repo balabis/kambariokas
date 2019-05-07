@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Services;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -13,7 +13,6 @@ class UserService
 
     /**
      * UserService constructor.
-     * @param UserRepository $userRepository
      */
     public function __construct(UserRepository $userRepository)
     {
@@ -21,7 +20,6 @@ class UserService
     }
 
     /**
-     * @param $uuid
      * @return User
      */
     public function getUserByUUID($uuid): User
@@ -32,7 +30,6 @@ class UserService
     }
 
     /**
-     * @param User $user
      * @return string|null
      */
     public function getUserAge(User $user)

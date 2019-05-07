@@ -8,7 +8,7 @@
                 <div class="col-lg-3 order-lg-2">
                     <div class="card-profile-image">
                         <a href="#">
-                            <img src="{{ asset('uploads/profile_pictures/' ~ app.user.id ~ '/' ~ app.user.profilePicture) }}" class="rounded-circle">
+                            <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
                         </a>
                     </div>
                 </div>
@@ -34,9 +34,6 @@
                 <div class="text-center">
                     <div class="h5 font-weight-300">
                         <i class="ni location_pin mr-2"></i>{{ app.user.city }}
-                    </div>
-                    <div class="h5 mt-4">
-                        <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
                     </div>
                     <div>
                         <i class="ni education_hat mr-2"></i>{{ app.user.aboutme }}

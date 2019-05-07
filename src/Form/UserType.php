@@ -3,7 +3,7 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\UpdateUserRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 
 class UserType extends AbstractType
 {
@@ -23,9 +22,9 @@ class UserType extends AbstractType
             ->add('fullName', TextType::class)
             ->add('gender', ChoiceType::class, [
                 'choices' => [
-                    'Male' => 'Male',
-                    'Female' => 'Female',
-                    'Prefer not to say' => 'Prefer not to say',
+                    'Male' => 'male',
+                    'Female' => 'female',
+                    'Prefer not to say' => 'default',
                 ],
             ])
             ->add('dateOfBirth', BirthdayType::class, [
@@ -53,12 +52,6 @@ class UserType extends AbstractType
             ->add('aboutme', TextareaType::class, [
                 'label' => 'About me',
                 'required' => false,
-                'constraints' => [
-                    new Length([
-                        'maxMessage' => 'This section has to be shorter',
-                        'max' => 255,
-                    ]),
-                ]
             ])
             ->add('profilePicture', FileType::class, [
                 'label' => 'Profile picture',
@@ -70,7 +63,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => UpdateUserRequest::class,
         ]);
     }
 
