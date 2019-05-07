@@ -13,6 +13,7 @@ var $ = require('jquery');
         if ($('.carousel-inner > .active').index('.carousel-item') === $('.carousel-item').length - 1) {
             $(this).siblings('[type=radio]').on('change',function(){
                 $('.questionnaire-form').submit();
+                $('.questionnaire-form').addClass('d-none');
             });
         } else {
             $('.carousel').carousel('next');

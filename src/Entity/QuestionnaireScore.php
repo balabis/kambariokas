@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class QuestionnaireScore
 {
     /**
-     * @var \Ramsey\Uuid\UuidInterface
-     *
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -43,7 +41,6 @@ class QuestionnaireScore
      * @ORM\Column(type="decimal", precision=3, scale=2, nullable=true)
      */
     private $cleanliness;
-
 
     public function getId()
     {

@@ -13,8 +13,6 @@ class Question
     use TimestampableEntity;
 
     /**
-     * @var \Ramsey\Uuid\UuidInterface
-     *
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -39,18 +37,13 @@ class Question
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Questionnaire", inversedBy="question")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $questionnaire;
 
-    /**
-     * @return mixed
-     */
     public function getQuestionnaire()
     {
         return $this->questionnaire;
     }
-
 
     public function getId()
     {

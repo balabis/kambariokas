@@ -169,9 +169,7 @@ class QuestionsAnswersPopulateDbCommand extends Command
     public function loadQuestion($em, $text, $questionnaireTitle, $orderNumber)
     {
         $repo = $em->getRepository(Questionnaire::class);
-
         $questionnaire = $repo->findOneBy(['title'=>$questionnaireTitle]);
-//        var_dump($questionnaire);
         $question = new Question();
         $question->setQuestionText($text);
         $question->setQuestionnaireId($questionnaire->getId());
