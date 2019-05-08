@@ -12,6 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Services\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+ * @Security("is_granted('ROLE_USER')")
+ */
 class UserController extends AbstractController
 {
 
@@ -32,7 +35,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("/dashboard/profile", name="profile.edit",)
-     * @Security("is_granted('ROLE_USER')")
      */
     public function editUserProfile(
         Request $request,
