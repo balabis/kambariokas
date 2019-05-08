@@ -6,6 +6,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -59,6 +60,49 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $profilePicture;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="255")
+     */
+    private $aboutme;
+
+    /**
+     * @return mixed
+     */
+    public function getAboutme()
+    {
+        return $this->aboutme;
+    }
+
+    /**
+     * @param mixed $aboutme
+     */
+    public function setAboutme($aboutme): void
+    {
+        $this->aboutme = $aboutme;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfilePicture()
+    {
+        return $this->profilePicture;
+    }
+
+    /**
+     * @param mixed $profilePicture
+     */
+    public function setProfilePicture($profilePicture): void
+    {
+        $this->profilePicture = $profilePicture;
+    }
 
 
     public function getId()

@@ -1,0 +1,56 @@
+{% extends 'main_layout.html.twig' %}
+
+{% block mainContent %}
+<div class="row">
+    <div class="col-xl-6 center order-xl-2 mb-5 mb-xl-0">
+        <div class="card card-profile shadow">
+            <div class="row justify-content-center">
+                <div class="col-lg-3 order-lg-2">
+                    <div class="card-profile-image">
+                        <a href="#">
+                            <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                <div class="d-flex justify-content-between">
+                    <br>
+                </div>
+            </div>
+            <div class="card-body pt-0 pt-md-4">
+                <div class="row">
+                    <div class="col">
+                        <div class=" d-flex justify-content-center mt-md-5">
+                            <h2>
+                                {{ app.user.fullname }}
+                                {% if userAge %}
+                                    <span>&bull;</span> {{ userAge }}
+                                {% endif %}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="h5 font-weight-300">
+                        <i class="ni location_pin mr-2"></i>{{ app.user.city }}
+                    </div>
+                    <div>
+                        <i class="ni education_hat mr-2"></i>{{ app.user.aboutme }}
+                    </div>
+                    <hr class="my-4" />
+                </div>
+                {% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
+                    <button class="btn btn-icon btn-3 btn-primary float-right" type="button">
+                        <span class="btn-inner--icon"><i class="far fa-comments"></i></span>
+
+                        <span class="btn-inner--text">{{ 'Message'|trans }}</span>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
