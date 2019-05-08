@@ -3,7 +3,6 @@
 
 namespace App\Controller;
 
-use App\Entity\UpdateUserRequest;
 use App\Form\UserType;
 use App\Services\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\UserService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class UserController extends AbstractController
 {
@@ -32,6 +32,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/dashboard/profile", name="profile.edit",)
+     * @Security("is_granted('ROLE_USER')")
      */
     public function editUserProfile(
         Request $request,
