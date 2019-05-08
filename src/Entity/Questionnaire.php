@@ -22,6 +22,17 @@ class Questionnaire
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $orderNumber;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire")
+     */
+    private $question;
+
+
     public function getId()
     {
         return $this->id;
@@ -35,6 +46,18 @@ class Questionnaire
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getOrderNumber(): ?int
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(int $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }
