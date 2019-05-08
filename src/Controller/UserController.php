@@ -17,18 +17,15 @@ class UserController extends AbstractController
 
     /**
      * @Route("/flatmate/{uuid}", name="profile.view", methods={"GET"})
-     * @return Response
      */
     public function showUserProfile(UserService $userService, $uuid): Response
     {
         $user = $userService->getUserByUUID($uuid);
         $userAge = $userService->getUserAge($user);
-        $profileOfCurrentlyLoggedUser =  $this->getUser()->getId() === $user->getId();
 
         return isset($user)
             ? $this->render('profile/profileView.html.twig', [
                 'userAge' => $userAge,
-                'profileAuthor' => $profileOfCurrentlyLoggedUser,
             ])
             : $this->render('profile/profileNotFound.html.twig');
     }
@@ -44,11 +41,10 @@ class UserController extends AbstractController
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $user = $userService->getUserByUUID($this->getUser()->getId());
-        $updateUserRequest = UpdateUserRequest::fromUser($user);
+        $user = $this->getUser();
         $userAge = $userService->getUserAge($user);
 
-        $form = $this->createForm(UserType::class, $updateUserRequest);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,18 +53,22 @@ class UserController extends AbstractController
             if (isset($file)) {
                 $userId = $user->getId()->toString();
                 $fileName = $fileUploader->uploadProfilePicture($file, $userId);
-                $updateUserRequest->setProfilePicture($fileName);
+                $user->setProfilePicture($fileName);
             } else {
                 $gender = $form->getData()->getGender();
-                $updateUserRequest->setProfilePicture('uploads/profile_pictures/default/' . $gender . '.png');
+                $user->setProfilePicture('uploads/profile_pictures/default/' . $gender . '.png');
             }
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->merge($updateUserRequest);
+            $entityManager->merge($user);
             $entityManager->flush();
 
             return $this->redirect($request->getUri());
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->refresh($user);
         }
+
         return $this->render('profile/profileEdit.html.twig', [
             'form' => $form->createView(),
             'userAge' => $userAge,
