@@ -28,6 +28,7 @@ class UserController extends AbstractController
 
         return isset($user)
             ? $this->render('profile/profileView.html.twig', [
+                'user' => $user,
                 'userAge' => $userAge,
             ])
             : $this->render('profile/profileNotFound.html.twig');

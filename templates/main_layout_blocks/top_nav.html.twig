@@ -77,10 +77,11 @@
                         >
                             <div class="media align-items-center">
                                 <span class="avatar avatar-sm rounded-circle">
-                                    <img
-                                            alt="Profilio nuotrauka"
-                                            src="{{ asset(app.user.profilePicture) }}"
-                                    />
+                                    {% if not app.user.profilepicture %}
+                                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                                    {% else %}
+                                        <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
+                                    {% endif %}
                                 </span>
                                 <div class="media-body ml-2 d-none d-lg-block">
                                     <span class="mb-0 text-sm  font-weight-bold">{{ app.user.email }}</span>
