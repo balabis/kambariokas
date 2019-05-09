@@ -14,8 +14,7 @@ class MatchController extends AbstractController
     /**
      * @Route("/matched", name="matched")
      */
-    public function index
-    (
+    public function index(
         EntityManagerInterface $entityManager,
         MatchService $service,
         UserMatchRepository $repository,
