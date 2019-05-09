@@ -23,7 +23,7 @@
                             {% block user %}Vardenis Pavardenis{% endblock %}
                             {% block budget %}100-150eur/mėn{% endblock %}
                             {% block region %}Žaliakalnis{% endblock %}
-                            {% block matchNumber %}70{% endblock %}
+                            {% block matchNumber %}{{ matchCoefficient }}{% endblock %}
                         {% endembed %}
 
                         {% embed 'match/blocks/table_row.html.twig' %}
@@ -31,7 +31,7 @@
                             {% block user %}Petras Petraitis{% endblock %}
                             {% block budget %}200-250eur/mėn{% endblock %}
                             {% block region %}Centras{% endblock %}
-                            {% block matchNumber %}40{% endblock %}
+                            {% block matchNumber %}{{ matchCoefficient }}{% endblock %}
                         {% endembed %}
 
                         </tbody>

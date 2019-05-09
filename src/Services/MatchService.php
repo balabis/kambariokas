@@ -49,9 +49,9 @@ class MatchService
                 $match->setFirstUser($user->getId());
                 $match->setSecondUser($oneUser->getId());
                 $match
-                    ->setCoefficient($this->coincidenceCoefficient($compare
+                    ->setCoefficient(round($this->coincidenceCoefficient($compare
                         ->getUserCoefficientAverage($entityManager, $user), $compare
-                        ->getUserCoefficientAverage($entityManager, $oneUser)));
+                        ->getUserCoefficientAverage($entityManager, $oneUser))));
                 $entityManager->persist($match);
             }
         }

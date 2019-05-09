@@ -19,10 +19,12 @@ class MatchController extends AbstractController
 
         $service->filter($entityManager, $this->getUser(), $repository);
         $matches = $service->getPossibleMatch($this->getUser(), $entityManager);
+        var_dump($matches);
 
         return $this->render('match/index.html.twig', [
             'controller_name' => 'MatchController',
-            'contentName' => 'Match'
+            'contentName' => 'Match',
+            'matchCoefficient' => $matches[0]->getCoefficient()
         ]);
     }
 }
