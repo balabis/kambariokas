@@ -46,7 +46,7 @@
                 <!-- Navbar items -->
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ path('profile.edit') }}">
                             <i class="far fa-id-card"></i>&nbsp;
                             <span>{{ 'My profile'|trans }}</span>
                         </a>
@@ -77,10 +77,11 @@
                         >
                             <div class="media align-items-center">
                                 <span class="avatar avatar-sm rounded-circle">
-                                    <img
-                                            alt="Profilio nuotrauka"
-                                            src="{{ asset('build/images/team-4-800x800.jpg') }}"
-                                    />
+                                    {% if not app.user.profilepicture %}
+                                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                                    {% else %}
+                                        <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
+                                    {% endif %}
                                 </span>
                                 <div class="media-body ml-2 d-none d-lg-block">
                                     <span class="mb-0 text-sm  font-weight-bold">{{ app.user.email }}</span>
@@ -91,7 +92,7 @@
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">{{ 'Welcome'|trans }}!</h6>
                             </div>
-                            <a href="#" class="dropdown-item">
+                            <a href="{{ path('profile.edit') }}" class="dropdown-item">
                                 <i class="far fa-id-card"></i>
                                 <span>{{ 'My profile'|trans }}</span>
                             </a>
