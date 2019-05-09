@@ -72,6 +72,4 @@ class MatchService
             $entityManager->remove($removableObject);
         }
     }
-
-
 }
