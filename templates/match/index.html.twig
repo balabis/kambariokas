@@ -17,23 +17,15 @@
                         {% include 'match/blocks/table_head.html.twig' %}
 
                         <tbody>
-
-                        {% embed 'match/blocks/table_row.html.twig' %}
-                            {% block profilePictureSrc %}{{ asset('build/images/dummy.png') }}{% endblock %}
-                            {% block user %}Vardenis Pavardenis{% endblock %}
-                            {% block budget %}100-150eur/mėn{% endblock %}
-                            {% block region %}Žaliakalnis{% endblock %}
-                            {% block matchNumber %}{{ matchCoefficient }}{% endblock %}
-                        {% endembed %}
-
-                        {% embed 'match/blocks/table_row.html.twig' %}
-                            {% block profilePictureSrc %}{{ asset('build/images/dummy.png') }}{% endblock %}
-                            {% block user %}Petras Petraitis{% endblock %}
-                            {% block budget %}200-250eur/mėn{% endblock %}
-                            {% block region %}Centras{% endblock %}
-                            {% block matchNumber %}{{ matchCoefficient }}{% endblock %}
-                        {% endembed %}
-
+                        {% for matchInfo in matchesInfo %}
+                            {% embed 'match/blocks/table_row.html.twig' %}
+                                {% block profilePictureSrc %}{{ asset('build/images/dummy.png') }}{% endblock %}
+                                {% block user %}{{ matchInfo.getSecondUser() }}{% endblock %}
+                                {% block budget %}100-150eur/mėn{% endblock %}
+                                {% block region %}Žaliakalnis{% endblock %}
+                                {% block matchNumber %}{{ matchInfo.getCoefficient() }}{% endblock %}
+                            {% endembed %}
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
