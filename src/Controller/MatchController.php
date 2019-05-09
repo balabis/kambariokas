@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\UserMatchRepository;
 use App\Services\MatchService;
+use App\Services\UserCompareService;
 use App\Services\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,17 +19,17 @@ class MatchController extends AbstractController
         EntityManagerInterface $entityManager,
         MatchService $service,
         UserMatchRepository $repository,
-        UserService $userService
+        UserService $userService,
+        UserCompareService $compareService
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $service->filter($entityManager, $this->getUser(), $repository);
-        $matches = $service->getPossibleMatch($this->getUser(), $entityManager);
+        $service->filter($entityManager, $this->getUser(), $repository, $compareService);
 
+        $matches = $service->getPossibleMatch($this->getUser(), $entityManager);
         $usersName = $userService->getAllUsersNamesByUUID($matches);
 
         return $this->render('match/index.html.twig', [
-            'controller_name' => 'MatchController',
             'contentName' => 'Match',
             'matchesInfo' => $matches,
             'usersName' => $usersName,

@@ -14,8 +14,12 @@ class MatchService
     {
     }
 
-    public function filter(EntityManagerInterface $entityManager, User $user, UserMatchRepository $repository) : void
-    {
+    public function filter(
+        EntityManagerInterface $entityManager,
+        User $user,
+        UserMatchRepository $repository,
+        UserCompareService $compareService
+    ) : void {
         $city = new CityService();
         $compare = new UserCompareService();
 
@@ -23,9 +27,9 @@ class MatchService
 
         $users = $entityManager->getRepository(User::class)->findAll();
         $users = $city->filterByCity($users, $user);
-
         $users = $compare->filterByAnswers($users, $user, $entityManager);
-        $this->addNewMatchesToDatabase($users, $user, $entityManager, $compare);
+
+        $this->addNewMatchesToDatabase($users, $user, $entityManager, $compare, $compareService);
     }
 
     public function getPossibleMatch(User $user, EntityManagerInterface $entityManager) : array
@@ -41,7 +45,8 @@ class MatchService
         $users,
         User $user,
         EntityManagerInterface $entityManager,
-        UserCompareService $compare
+        UserCompareService $compare,
+        UserCompareService $compareService
     ) : void {
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {
@@ -49,7 +54,7 @@ class MatchService
                 $match->setFirstUser($user->getId());
                 $match->setSecondUser($oneUser->getId());
                 $match
-                    ->setCoefficient(round($this->coincidenceCoefficient($compare
+                    ->setCoefficient(round($compareService->coincidenceCoefficient($compare
                         ->getUserCoefficientAverage($entityManager, $user), $compare
                         ->getUserCoefficientAverage($entityManager, $oneUser))));
                 $entityManager->persist($match);
@@ -67,13 +72,5 @@ class MatchService
         }
     }
 
-    private function coincidenceCoefficient(float $userScore, float $otherUserScore) : float
-    {
-        $score = $userScore - $otherUserScore;
-        if ($score < 0) {
-            $score *= -1;
-        }
-        $scoreUsingPersent = $score * 100 / $userScore;
-        return 100 - $scoreUsingPersent;
-    }
+
 }
