@@ -1,43 +1,72 @@
 {% extends 'main_layout.html.twig' %}
 
-{% block title %}{{ contentName|trans }}{% endblock %}
+{% block title %}{{ 'Match'|trans }}{% endblock %}
 
 {% block pageHeading %}{{ 'Match'|trans }}{% endblock %}
 
 {% block mainContent %}
-    <div class="row">
-        <div class="col">
-            <div class="card shadow">
-                <div class="card-header border-0">
-                    <h3 class="mb-0">{{ 'Matching users'|trans }}</h3>
+
+
+    <div class="d-flex mb-5 flex-wrap justify-content-center">
+        {% for user in users %}
+        <div class="card card-profile shadow user-match-card mx-md-3 mb-6">
+            <div class="row justify-content-center">
+                <div class="col-lg-3 order-lg-2">
+                    <div class="card-profile-image">
+                        <a href="{{ path('profile.view', { 'uuid': user.id }) }}">
+                            {% if not user.profilePicture %}
+                                <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                            {% else %}
+                                <img src="{{ asset(user.profilePicture) }}" class="rounded-circle">
+                            {% endif %}
+                        </a>
+                    </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table align-items-center table-flush">
+            </div>
+            <div
+                    class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
+            >
+                <div class="d-flex justify-content-between">
+                    <a href="#" class="btn btn-sm btn-info">Siūlyti tapti kambariokais</a>
+                    <a href="#" class="btn btn-sm btn-default"
+                    >Profilis</a
+                    >
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div class="row">
+                    <div class="col">
+                        <div
+                                class="card-profile-stats d-flex justify-content-center"
+                        >
+                            <div>
+                                <span class="heading">100%</span>
+                                <span class="description">{{ 'Match percent'|trans }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h3>
+                        {% if not user.fullName %}
+                            {{ user.email }}
+                        {% else %}
+                            {{ user.fullName }}
+                        {% endif %}
 
-                        {% include 'match/blocks/table_head.html.twig' %}
+                        {% if user.userAge %}
+                            <span>&bull;</span> {{ user.userAge }}
+                        {% endif %}
 
-                        <tbody>
-
-                        {% embed 'match/blocks/table_row.html.twig' %}
-                            {% block profilePictureSrc %}{{ asset('build/images/dummy.png') }}{% endblock %}
-                            {% block user %}Vardenis Pavardenis{% endblock %}
-                            {% block budget %}100-150eur/mėn{% endblock %}
-                            {% block region %}Žaliakalnis{% endblock %}
-                            {% block matchNumber %}70{% endblock %}
-                        {% endembed %}
-
-                        {% embed 'match/blocks/table_row.html.twig' %}
-                            {% block profilePictureSrc %}{{ asset('build/images/dummy.png') }}{% endblock %}
-                            {% block user %}Petras Petraitis{% endblock %}
-                            {% block budget %}200-250eur/mėn{% endblock %}
-                            {% block region %}Centras{% endblock %}
-                            {% block matchNumber %}40{% endblock %}
-                        {% endembed %}
-
-                        </tbody>
-                    </table>
+                    </h3>
+                    <div class="h5 font-weight-300">
+                        <i class="ni location_pin mr-2"></i>{{ user.city }}
+                    </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
+
+
 {% endblock %}

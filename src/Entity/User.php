@@ -224,4 +224,17 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getUserAge()
+    {
+
+        if (isset($this->dateOfBirth)) {
+            $today = date('Y-m-d');
+            $dateOfBirth = $this->dateOfBirth->format('Y-m-d');
+            $diff = date_diff(date_create($dateOfBirth), date_create($today));
+            return $diff->format('%y');
+        } else {
+            return null;
+        }
+    }
 }
