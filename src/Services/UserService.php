@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Entity\User;
+use App\Entity\UserMatch;
 use App\Repository\UserRepository;
 
 class UserService
@@ -38,5 +39,14 @@ class UserService
         } else {
             return null;
         }
+    }
+
+    public function getAllUsersNamesByUUID($userMatch) : array
+    {
+        $userNames = [];
+        foreach ($userMatch as $user) {
+            $userNames[] = $this->getUserByUUID($user->getSecondUser());
+        }
+        return $userNames;
     }
 }

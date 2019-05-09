@@ -6,7 +6,6 @@ namespace App\Services;
 use App\Entity\QuestionnaireScore;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 
 class UserCompareService
 {
