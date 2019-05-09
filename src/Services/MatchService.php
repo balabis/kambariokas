@@ -48,6 +48,7 @@ class MatchService
         UserCompareService $compare,
         UserCompareService $compareService
     ) : void {
+
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {
                 $match = new UserMatch();
