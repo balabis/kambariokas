@@ -23,6 +23,7 @@ final class Version20190429100222 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName()
             !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+
         $this->addSql('CREATE TABLE questionnaire (id CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
          title VARCHAR(255) NOT NULL, PRIMARY KEY(id)) 
          DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');

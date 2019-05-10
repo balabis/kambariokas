@@ -4,30 +4,67 @@
 namespace App\Services;
 
 use App\Entity\User;
+use App\Entity\UserMatch;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
 {
+    public function filter(
+        EntityManagerInterface $entityManager,
+        User $user,
+        UserCompareService $compareService
+    ) : void {
+        $city = new CityService();
+        $compare = new UserCompareService();
 
-    public function __construct()
-    {
+        $this->deleteUserInfoAboutMatches($user, $entityManager);
+
+        $users = $entityManager->getRepository(User::class)->findAll();
+        $users = $city->filterByCity($users, $user);
+        $users = $compare->filterByAnswers($users, $user, $entityManager);
+
+        $this->addNewMatchesToDatabase($users, $user, $entityManager, $compare, $compareService);
     }
 
     public function getPossibleMatch(User $user, EntityManagerInterface $entityManager) : array
     {
         $users = $entityManager
-            ->getRepository(User::class)
-            ->findBy(['city' => $user->getCity()]);
+            ->getRepository(UserMatch::class)
+            ->findBy(['firstUser' => $user->getId()]);
 
-        $usersEmail = array();
-        $i = 0;
+        return $users;
+    }
+
+    private function addNewMatchesToDatabase(
+        $users,
+        User $user,
+        EntityManagerInterface $entityManager,
+        UserCompareService $compare,
+        UserCompareService $compareService
+    ) : void {
 
         foreach ($users as $oneUser) {
-            if ($oneUser->getEmail() !== $user->getEmail()) {
-                $usersEmail[$i++] = $oneUser->getEmail();
+            if ($user->getId() !== $oneUser->getId()) {
+                $match = new UserMatch();
+                $match->setFirstUser($user->getId());
+                $match->setSecondUser($oneUser->getId());
+                $match
+                    ->setCoefficient(round($compareService->coincidenceCoefficient($compare
+                        ->getUserCoefficientAverage($entityManager, $user), $compare
+                        ->getUserCoefficientAverage($entityManager, $oneUser))));
+                $entityManager->persist($match);
             }
         }
 
-        return $usersEmail;
+        $entityManager->flush();
+    }
+
+    private function deleteUserInfoAboutMatches(User $user, EntityManagerInterface $entityManager) : void
+    {
+        $removableObjects = $this->getPossibleMatch($user, $entityManager);
+
+        foreach ($removableObjects as $removableObject) {
+            $entityManager->remove($removableObject);
+        }
     }
 }

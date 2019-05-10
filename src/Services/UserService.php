@@ -39,4 +39,15 @@ class UserService
             return null;
         }
     }
+
+    public function getAllUsersNamesByUUID($userMatch) : array
+    {
+        $userNames = [];
+
+        foreach ($userMatch as $user) {
+            $userNames[] = $this->getUserByUUID($user->getSecondUser());
+        }
+
+        return $userNames;
+    }
 }
