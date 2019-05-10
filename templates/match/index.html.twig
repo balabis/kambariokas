@@ -8,7 +8,8 @@
 
 
     <div class="d-flex mb-5 flex-wrap justify-content-center">
-        {% for user in users %}
+{#        {{ dump(my_pager.currentPageResults) }}#}
+        {% for user in pagerfanta.currentPageResults %}
         <div class="card card-profile shadow user-match-card mx-md-3 mb-6">
             <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
@@ -67,6 +68,12 @@
         </div>
         {% endfor %}
     </div>
+
+    <div class="pagerfanta">
+        {{ pagerfanta(pagerfanta, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
+            'css_container_class': 'pagination justify-content-center'}) }}
+    </div>
+
 
 
 {% endblock %}
