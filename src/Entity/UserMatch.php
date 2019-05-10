@@ -29,7 +29,7 @@ class UserMatch
     /**
      * @ORM\Column(type="float")
      */
-    private $coefficient;
+    private $coeficient;
 
     public function getId(): ?int
     {
@@ -58,11 +58,11 @@ class UserMatch
 
     public function getCoefficient(): ?float
     {
-        return $this->coefficient;
+        return $this->coeficient;
     }
 
     public function setCoefficient(float $coefficient): void
     {
-        $this->$coefficient = $coefficient;
+        $this->coeficient = $coefficient;
     }
 }

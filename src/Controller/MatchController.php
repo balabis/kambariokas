@@ -18,13 +18,12 @@ class MatchController extends AbstractController
     public function index(
         EntityManagerInterface $entityManager,
         MatchService $service,
-        UserMatchRepository $repository,
         UserService $userService,
         UserCompareService $compareService
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $service->filter($entityManager, $this->getUser(), $repository, $compareService);
+        $service->filter($entityManager, $this->getUser(), $compareService);
 
         $matches = $service->getPossibleMatch($this->getUser(), $entityManager);
         $usersName = $userService->getAllUsersNamesByUUID($matches);

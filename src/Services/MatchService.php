@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Entity\User;
 use App\Entity\UserMatch;
-use App\Repository\UserMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
