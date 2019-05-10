@@ -30,11 +30,13 @@ class CityService
     public function filterByCity($users, User $user) : array
     {
         $newUsersArray = [];
+        
         foreach ($users as $oneUser) {
             if ($user->getCity() === $oneUser->getCity()) {
                 $newUsersArray[] = $oneUser;
             }
         }
+
         return $newUsersArray;
     }
 }

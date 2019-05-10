@@ -17,7 +17,6 @@ class MatchService
     public function filter(
         EntityManagerInterface $entityManager,
         User $user,
-        UserMatchRepository $repository,
         UserCompareService $compareService
     ) : void {
         $city = new CityService();
@@ -61,6 +60,7 @@ class MatchService
                 $entityManager->persist($match);
             }
         }
+
         $entityManager->flush();
     }
 

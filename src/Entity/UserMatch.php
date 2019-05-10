@@ -29,7 +29,7 @@ class UserMatch
     /**
      * @ORM\Column(type="float")
      */
-    private $coeficient;
+    private $coefficient;
 
     public function getId(): ?int
     {
@@ -41,11 +41,9 @@ class UserMatch
         return $this->firstUser;
     }
 
-    public function setFirstUser(string $firstUser): self
+    public function setFirstUser(string $firstUser): void
     {
         $this->firstUser = $firstUser;
-
-        return $this;
     }
 
     public function getSecondUser(): ?string
@@ -53,22 +51,18 @@ class UserMatch
         return $this->secondUser;
     }
 
-    public function setSecondUser(string $secondUser): self
+    public function setSecondUser(string $secondUser): void
     {
         $this->secondUser = $secondUser;
-
-        return $this;
     }
 
     public function getCoefficient(): ?float
     {
-        return $this->coeficient;
+        return $this->coefficient;
     }
 
-    public function setCoefficient(float $coeficient): self
+    public function setCoefficient(float $coefficient): void
     {
-        $this->coeficient = $coeficient;
-
-        return $this;
+        $this->$coefficient = $coefficient;
     }
 }
