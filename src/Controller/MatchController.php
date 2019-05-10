@@ -22,7 +22,7 @@ class MatchController extends AbstractController
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $service->filter($this->getUser(), $compareService);
+        $service->filter($this->getUser());
 
         $matches = $service->getPossibleMatch($this->getUser());
         $usersName = $userService->getAllUsersNamesByUUID($matches);

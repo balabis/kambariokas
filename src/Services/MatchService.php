@@ -26,20 +26,18 @@ class MatchService
         $this->compare = $compareService;
     }
 
-    public function filter(User $user, UserCompareService $compareService) : void
+    public function filter(User $user) : void
     {
         $this->deleteUserInfoAboutMatches($user);
 
-        $users = $this->entityManager->getRepository(User::class)->findAll(); //need fix
-        $users = $this->city->filterByCity($users, $user);
+        $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
         $users = $this->compare->filterByAnswers($users, $user);
 
-        $this->addNewMatchesToDatabase($users, $user, $this->compare, $compareService);
+        $this->addNewMatchesToDatabase($users, $user, $this->compare);
     }
 
     public function getPossibleMatch(User $user) : array
     {
-
         $users = $this->entityManager
             ->getRepository(UserMatch::class)
             ->findBy(['firstUser' => $user->getId()]);
@@ -50,8 +48,7 @@ class MatchService
     private function addNewMatchesToDatabase(
         $users,
         User $user,
-        UserCompareService $compare,
-        UserCompareService $compareService
+        UserCompareService $compare
     ) : void {
 
         foreach ($users as $oneUser) {
@@ -60,7 +57,7 @@ class MatchService
                 $match->setFirstUser($user->getId());
                 $match->setSecondUser($oneUser->getId());
                 $match
-                    ->setCoefficient(round($compareService->coincidenceCoefficient($compare
+                    ->setCoefficient(round($compare->coincidenceCoefficient($compare
                         ->getUserCoefficientAverage($user), $compare
                         ->getUserCoefficientAverage($oneUser))));
                 $this->entityManager->persist($match);
