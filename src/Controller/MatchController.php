@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\UserMatchRepository;
 use App\Services\MatchService;
 use App\Services\UserCompareService;
 use App\Services\UserService;

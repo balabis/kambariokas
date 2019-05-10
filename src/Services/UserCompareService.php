@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserCompareService
 {
-
     public function filterByAnswers($users, User $user, EntityManagerInterface $entityManager) : array
     {
         $selectedUsers = array();

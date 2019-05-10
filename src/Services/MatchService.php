@@ -9,10 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
 {
-    public function __construct()
-    {
-    }
-
     public function filter(
         EntityManagerInterface $entityManager,
         User $user,
