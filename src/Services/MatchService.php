@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\User;
 use App\Entity\UserMatch;
+use App\Generator\UsersGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
@@ -14,24 +15,44 @@ class MatchService
 
     private $compare;
 
+    private $generator;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         CityService $cityService,
-        UserCompareService $compareService
+        UserCompareService $compareService,
+        UsersGenerator $usersGenerator
     ) {
         $this->entityManager = $entityManager;
         $this->city = $cityService;
         $this->compare = $compareService;
+        $this->generator = $usersGenerator;
     }
 
     public function filter(User $user) : void
     {
-        $this->deleteUserInfoAboutMatches($user);
+        $time_start = microtime(true);
 
+        $this->deleteUserInfoAboutMatches($user);
+        $time_end = microtime(true);
+        var_dump(($time_end - $time_start));
+        //Test
+      //  $this->generator->generateAnswsers();
+        $time_start = microtime(true);
         $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
+       // $users = $this->entityManager->getRepository(User::class)->findAll();
+        //$users = $this->city->filterByCity($users, $user);
         $users = $this->compare->filterByAnswers($users, $user);
 
+        $time_end = microtime(true);
+        var_dump(($time_end - $time_start));
+
+        $time_start = microtime(true);
         $this->addNewMatchesToDatabase($users, $user);
+        $time_end = microtime(true);
+
+        var_dump(($time_end - $time_start));
+        var_dump(count($users));
     }
 
     public function getPossibleMatch(User $user) : array
@@ -45,7 +66,7 @@ class MatchService
 
     private function addNewMatchesToDatabase($users, User $user) : void
     {
-        $batchSize = 20;
+        $batchSize = 250;
         $i = 0;
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {

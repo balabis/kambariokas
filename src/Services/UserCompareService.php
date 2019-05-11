@@ -8,12 +8,14 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserCompareService
 {
-
     private $entityManager;
+
+    private $minCoefficient;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+        $this->minCoefficient = 50;
     }
 
     public function filterByAnswers($users, User $user) : array
@@ -24,7 +26,7 @@ class UserCompareService
         foreach ($users as $oneUser) {
             $oneUserCoefficient = $this->getUserCoefficientAverage($oneUser);
 
-            if ($this->coincidenceCoefficient($userCoefficientAverage, $oneUserCoefficient) > 50) {
+            if ($this->coincidenceCoefficient($userCoefficientAverage, $oneUserCoefficient) > $this->minCoefficient) {
                 $selectedUsers[] = $oneUser;
             }
         }
