@@ -45,6 +45,8 @@ class MatchService
 
     private function addNewMatchesToDatabase($users, User $user) : void
     {
+        $batchSize = 20;
+        $i = 0;
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {
                 $match = new UserMatch();
@@ -55,10 +57,18 @@ class MatchService
                         ->getUserCoefficientAverage($user), $this->compare
                         ->getUserCoefficientAverage($oneUser))));
                 $this->entityManager->persist($match);
+
+                if ($i / $batchSize === 1) {
+                    $this->entityManager->flush();
+                    $this->entityManager->clear();
+                    $i = 0;
+                }
+                $i+=1;
             }
         }
 
         $this->entityManager->flush();
+        $this->entityManager->clear();
     }
 
     private function deleteUserInfoAboutMatches(User $user) : void
