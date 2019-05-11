@@ -8,35 +8,25 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CityService
 {
+    private $entityManager;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
     }
 
-    public function getCityByUserEmail(User $user, EntityManagerInterface $entityManager) : ?string
+    public function getCityByUserEmail(User $user) : ?string
     {
-        return $entityManager
+        return $this
+            ->entityManager
             ->getRepository(User::class)
             ->findBy(['email' => $user->getEmail()])[0]
             ->getCity();
     }
 
-    public function setUserCity(User $user, string $city, EntityManagerInterface $em)
+    public function setUserCity(User $user, string $city)
     {
         $user->setCity($city);
-        $em->flush();
-    }
-
-    public function filterByCity($users, User $user) : array
-    {
-        $newUsersArray = [];
-        
-        foreach ($users as $oneUser) {
-            if ($user->getCity() === $oneUser->getCity()) {
-                $newUsersArray[] = $oneUser;
-            }
-        }
-
-        return $newUsersArray;
+        $this->entityManager->flush();
     }
 }
