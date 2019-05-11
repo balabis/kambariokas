@@ -44,7 +44,6 @@
 
     {{ form_errors(registrationForm.email) }}
     {{ form_errors(registrationForm.plainPassword) }}
-
     <div class="form-group">
         <div class="input-group input-group-alternative mb-3">
             <div class="input-group-prepend">
@@ -52,6 +51,16 @@
             </div>
             {{ form_row(registrationForm.email, {
                 attr: { placeholder: 'Email', class: 'form-control' }
+            }) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group input-group-alternative mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            {{ form_row(registrationForm.username, {
+                attr: { placeholder: 'Username', class: 'form-control' }
             }) }}
         </div>
     </div>
