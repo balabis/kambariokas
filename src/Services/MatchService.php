@@ -1,9 +1,7 @@
 <?php
 
-
 namespace App\Services;
 
-use App\Entity\City;
 use App\Entity\User;
 use App\Entity\UserMatch;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,7 +31,7 @@ class MatchService
         $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
         $users = $this->compare->filterByAnswers($users, $user);
 
-        $this->addNewMatchesToDatabase($users, $user, $this->compare);
+        $this->addNewMatchesToDatabase($users, $user);
     }
 
     public function getPossibleMatch(User $user) : array
@@ -45,20 +43,16 @@ class MatchService
         return $users;
     }
 
-    private function addNewMatchesToDatabase(
-        $users,
-        User $user,
-        UserCompareService $compare
-    ) : void {
-
+    private function addNewMatchesToDatabase($users, User $user) : void
+    {
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {
                 $match = new UserMatch();
                 $match->setFirstUser($user->getId());
                 $match->setSecondUser($oneUser->getId());
                 $match
-                    ->setCoefficient(round($compare->coincidenceCoefficient($compare
-                        ->getUserCoefficientAverage($user), $compare
+                    ->setCoefficient(round($this->compare->coincidenceCoefficient($this->compare
+                        ->getUserCoefficientAverage($user), $this->compare
                         ->getUserCoefficientAverage($oneUser))));
                 $this->entityManager->persist($match);
             }
