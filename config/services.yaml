@@ -34,3 +34,8 @@ services:
     fos_user.user_to_username_transformer:
         alias: app.user_to_username_transformer
 
+    app.form.username:
+        class: App\Form\UsernameFormType
+        arguments: ['@app.user_to_username_transformer']
+        tags:
+            - { name: form.type }

@@ -17,7 +17,6 @@ class User implements UserInterface, ParticipantInterface
 {
     use TimestampableEntity;
     /**
-     * @var \Ramsey\Uuid\UuidInterface
      *
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
