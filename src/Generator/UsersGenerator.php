@@ -32,7 +32,7 @@ class UsersGenerator
         $this->generateAnswsers();
     }
 
-    private function generateAnswsers() : void
+    public function generateAnswsers() : void
     {
         $usersId = $this->entityManager->getRepository(User::class)->findAll();
         foreach ($usersId as $user) {

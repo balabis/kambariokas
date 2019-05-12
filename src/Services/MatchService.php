@@ -37,12 +37,8 @@ class MatchService
         $time_end = microtime(true);
         var_dump(($time_end - $time_start));
 
-        //Test
-       // $this->generator->generateUsers(10);
-
         $time_start = microtime(true);
         $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
-
         $users = $this->compare->filterByAnswers($users, $user);
         $time_end = microtime(true);
         var_dump(($time_end - $time_start));
@@ -63,51 +59,29 @@ class MatchService
         return $users;
     }
 
-//    private function addNewMatchesToDatabase($users, User $user) : void
-//    {
-//        $batchSize = 250;
-//        $i = 0;
-//        foreach ($users as $oneUser) {
-//            if ($user->getId() !== $oneUser->getId()) {
-//                $match = new UserMatch();
-//                $match->setFirstUser($user->getId());
-//                $match->setSecondUser($oneUser->getId());
-//                $match
-//                    ->setCoefficient(round($this->compare->coincidenceCoefficient($this->compare
-//                        ->getUserCoefficientAverage($user), $this->compare
-//                        ->getUserCoefficientAverage($oneUser))));
-//                $this->entityManager->persist($match);
-//
-//                if ($i / $batchSize === 1) {
-//                    $this->entityManager->flush();
-//                    $this->entityManager->clear();
-//                    $i = 0;
-//                }
-//                $i+=1;
-//            }
-//        }
-//
-//        $this->entityManager->flush();
-//        $this->entityManager->clear();
-//    }
-
     private function addNewMatchesToDatabase($users, User $user) :void
     {
         $query = "INSERT INTO symfony.user_match (first_user, second_user, coeficient) VALUES ";
         $i = 1;
-        var_dump(count($users));
         foreach ($users as $oneUser) {
-                $query.="('";
-                $query.=$user->getId()."','".$oneUser->getId()."',"
-                .round($this->compare->coincidenceCoefficient($this->compare
+            if ($user->getId() !== $oneUser->getId()) {
+                if ($i === 1) {
+                    $query .= "('";
+                } else {
+                    $query .= ",('";
+                }
+
+                $query .= $user->getId() . "','" . $oneUser->getId() . "',"
+                    . round($this->compare->coincidenceCoefficient($this->compare
                         ->getUserCoefficientAverage($user), $this->compare
                         ->getUserCoefficientAverage($oneUser)));
-            if ($i === count($users)) {
-                $query .= ");";
-            } else {
-                $query .= "),";
+                $query .=")";
+                $i++;
             }
-            $i++;
+
+            if ($i === count($users)-1) {
+                $query .= ";";
+            }
         }
         $this->insertNewDate($query);
     }
@@ -120,10 +94,11 @@ class MatchService
 
     private function deleteUserInfoAboutMatches(User $user) : void
     {
-        $removableObjects = $this->getPossibleMatch($user);
+        $query = "DELETE FROM symfony.user_match WHERE first_user = ";
+        $query .="'";
+        $query .=$user->getId();
+        $query .= "'";
+        $this->insertNewDate($query);
 
-        foreach ($removableObjects as $removableObject) {
-            $this->entityManager->remove($removableObject);
-        }
     }
 }
