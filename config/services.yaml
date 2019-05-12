@@ -39,3 +39,6 @@ services:
         arguments: ['@app.user_to_username_transformer']
         tags:
             - { name: form.type }
+
+    App\Controller\DecoratingMessageController:
+        decorates: FOS\MessageBundle\Controller\MessageController

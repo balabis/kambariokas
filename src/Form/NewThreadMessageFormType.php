@@ -27,7 +27,6 @@ class NewThreadMessageFormType extends AbstractType
                 'translation_domain' => 'FOSMessageBundle',
             ))
             ->add('body', TextareaType::class, array(
-                'label' => 'body',
                 'translation_domain' => 'FOSMessageBundle',
             ));
     }

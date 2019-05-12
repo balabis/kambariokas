@@ -1,26 +1,43 @@
-{% extends 'bundles/FOSMessageBundle/layout.html.twig' %}
+{% extends 'bundles/FOSMessageBundle/Message/inbox.html.twig' %}
 
-{% block fos_message_content %}
+{% block thread %}
+    <div class="message-chat">
+        <div class="chat-body">
+            {% for message in thread.messages %}
+                {% if (message.sender.id == app.user.id) %}
+                    <div class="message my-message">
+                {% else %}
+                    <div class="message info">
+                {% endif %}
+                    <img alt="" class="img-circle medium-image" src="{{ asset(message.sender.profilepicture) }}">
 
-<h2>{{ thread.subject }}</h2>
-
-{% for message in thread.messages %}
-    <div class="messenger_thread_message">
-        <div class="messenger_thread_message_info">
-            {% trans with {'%sender%': message.sender.username|e, '%date%': message.createdAt|date} from 'FOSMessageBundle' %}message_info{% endtrans %}
+                        <div class="message-body">
+                            <div class="message-body-inner">
+                                <div class="message-info">
+                                    <h4> {{ message.sender.username }} </h4>
+                                    <h5> <i class="fa fa-clock-o"></i> 2:28 PM </h5>
+                                </div>
+                                <hr>
+                                <div class="message-text">
+                                    {{ message.body }}
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+            {% endfor %}
         </div>
-        <div class="messenger_thread_message_body" id="message_{{ message.id }}">
-            {{ message.body }}
+        <div class="chat-footer">
+            <form action="{{ url('fos_message_thread_view', {'threadId': thread.id}) }}" method="post">
+                {{ form_row(form.body, {
+                    'label': false,
+                    'attr': { 'class': 'send-message-text' }
+                }) }}
+                <button type="submit" class="btn send-message-button btn-info">
+                    <i class="far fa-paper-plane"></i>
+                </button>
+                {{ form_rest(form) }}
+            </form>
         </div>
     </div>
-{% endfor %}
-
-<h3>{% trans from 'FOSMessageBundle' %}reply{% endtrans %}</h3>
-
-<form action="{{ url('fos_message_thread_view', {'threadId': thread.id}) }}" method="post">
-    {{ form_widget(form) }}
-
-    <input type="submit" />
-</form>
-
 {% endblock %}
