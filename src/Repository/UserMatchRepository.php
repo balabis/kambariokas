@@ -4,9 +4,7 @@ namespace App\Repository;
 
 use App\Entity\UserMatch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -25,6 +23,9 @@ class UserMatchRepository extends ServiceEntityRepository
         $this->entityManager = $entityManager;
     }
 
-
-
+    public function query(string $query) : void
+    {
+        $statement = $this->entityManager->getConnection()->prepare($query);
+        $statement->execute();
+    }
 }

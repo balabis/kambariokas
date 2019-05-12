@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Form\CitySelectionFormType;
@@ -12,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CityController extends AbstractController
 {
-
     /**
      * @Route("/city", name="city")
      */

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\User;
 use App\Entity\UserMatch;
 use App\Generator\UsersGenerator;
+use App\Repository\UserMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
@@ -17,37 +18,30 @@ class MatchService
 
     private $generator;
 
+    private $userMatchRepository;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         CityService $cityService,
         UserCompareService $compareService,
-        UsersGenerator $usersGenerator
+        UsersGenerator $usersGenerator,
+        UserMatchRepository $userMatchRepository
     ) {
         $this->entityManager = $entityManager;
         $this->city = $cityService;
         $this->compare = $compareService;
         $this->generator = $usersGenerator;
+        $this->userMatchRepository = $userMatchRepository;
     }
 
     public function filter(User $user) : void
     {
-        $time_start = microtime(true);
-
         $this->deleteUserInfoAboutMatches($user);
-        $time_end = microtime(true);
-        var_dump(($time_end - $time_start));
 
-        $time_start = microtime(true);
         $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
         $users = $this->compare->filterByAnswers($users, $user);
-        $time_end = microtime(true);
-        var_dump(($time_end - $time_start));
 
-        $time_start = microtime(true);
         $this->addNewMatchesToDatabase($users, $user);
-        $time_end = microtime(true);
-
-        var_dump(($time_end - $time_start));
     }
 
     public function getPossibleMatch(User $user) : array
@@ -63,6 +57,7 @@ class MatchService
     {
         $query = "INSERT INTO symfony.user_match (first_user, second_user, coeficient) VALUES ";
         $i = 1;
+
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {
                 if ($i === 1) {
@@ -83,22 +78,16 @@ class MatchService
                 $query .= ";";
             }
         }
-        $this->insertNewDate($query);
+
+        $this->userMatchRepository->query($query);
     }
 
-    private function insertNewDate(string $query) : void
-    {
-        $statement = $this->entityManager->getConnection()->prepare($query);
-        $statement->execute();
-    }
-
-    private function deleteUserInfoAboutMatches(User $user) : void
+    public function deleteUserInfoAboutMatches(User $user) : void
     {
         $query = "DELETE FROM symfony.user_match WHERE first_user = ";
         $query .="'";
         $query .=$user->getId();
         $query .= "'";
-        $this->insertNewDate($query);
-
+        $this->userMatchRepository->query($query);
     }
 }

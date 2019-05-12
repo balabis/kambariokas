@@ -46,5 +46,4 @@ class UsersGenerator
         }
         $this->entityManager->flush();
     }
-
 }
