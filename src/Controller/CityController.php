@@ -28,7 +28,7 @@ class CityController extends AbstractController
                 $city = $form->getData()["ChoseYourCity"];
                 $service->setUserCity($this->getUser(), $city);
 
-                return $this->redirectToRoute('match');
+                return $this->redirectToRoute('matched');
             }
 
             return $this->render('matching/city.html.twig', [

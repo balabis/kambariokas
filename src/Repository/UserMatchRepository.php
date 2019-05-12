@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\UserMatch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,8 +17,14 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserMatchRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $entityManager;
+
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, UserMatch::class);
+        $this->entityManager = $entityManager;
     }
+
+
+
 }

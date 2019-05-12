@@ -4,7 +4,6 @@ namespace App\Generator;
 
 use App\Entity\QuestionnaireScore;
 use App\Entity\User;
-use App\Entity\UserMatch;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UsersGenerator
@@ -29,9 +28,11 @@ class UsersGenerator
             $this->entityManager->persist($user);
         }
         $this->entityManager->flush();
+
+        $this->generateAnswsers();
     }
 
-    public function generateAnswsers() : void
+    private function generateAnswsers() : void
     {
         $usersId = $this->entityManager->getRepository(User::class)->findAll();
         foreach ($usersId as $user) {

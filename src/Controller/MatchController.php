@@ -31,7 +31,7 @@ class MatchController extends AbstractController
             'contentName' => 'Match',
             'matchesInfo' => $matches,
             'usersName' => $usersName,
-            'userCount'=> round((count($matches) - 1)/200)
+            'userCount'=> (count($matches) - 1)
         ]);
     }
 }

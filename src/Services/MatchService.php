@@ -36,14 +36,14 @@ class MatchService
         $this->deleteUserInfoAboutMatches($user);
         $time_end = microtime(true);
         var_dump(($time_end - $time_start));
+
         //Test
-      //  $this->generator->generateAnswsers();
+       // $this->generator->generateUsers(10);
+
         $time_start = microtime(true);
         $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
-       // $users = $this->entityManager->getRepository(User::class)->findAll();
-        //$users = $this->city->filterByCity($users, $user);
-        $users = $this->compare->filterByAnswers($users, $user);
 
+        $users = $this->compare->filterByAnswers($users, $user);
         $time_end = microtime(true);
         var_dump(($time_end - $time_start));
 
@@ -52,7 +52,6 @@ class MatchService
         $time_end = microtime(true);
 
         var_dump(($time_end - $time_start));
-        var_dump(count($users));
     }
 
     public function getPossibleMatch(User $user) : array
@@ -64,32 +63,59 @@ class MatchService
         return $users;
     }
 
-    private function addNewMatchesToDatabase($users, User $user) : void
+//    private function addNewMatchesToDatabase($users, User $user) : void
+//    {
+//        $batchSize = 250;
+//        $i = 0;
+//        foreach ($users as $oneUser) {
+//            if ($user->getId() !== $oneUser->getId()) {
+//                $match = new UserMatch();
+//                $match->setFirstUser($user->getId());
+//                $match->setSecondUser($oneUser->getId());
+//                $match
+//                    ->setCoefficient(round($this->compare->coincidenceCoefficient($this->compare
+//                        ->getUserCoefficientAverage($user), $this->compare
+//                        ->getUserCoefficientAverage($oneUser))));
+//                $this->entityManager->persist($match);
+//
+//                if ($i / $batchSize === 1) {
+//                    $this->entityManager->flush();
+//                    $this->entityManager->clear();
+//                    $i = 0;
+//                }
+//                $i+=1;
+//            }
+//        }
+//
+//        $this->entityManager->flush();
+//        $this->entityManager->clear();
+//    }
+
+    private function addNewMatchesToDatabase($users, User $user) :void
     {
-        $batchSize = 250;
-        $i = 0;
+        $query = "INSERT INTO symfony.user_match (first_user, second_user, coeficient) VALUES ";
+        $i = 1;
+        var_dump(count($users));
         foreach ($users as $oneUser) {
-            if ($user->getId() !== $oneUser->getId()) {
-                $match = new UserMatch();
-                $match->setFirstUser($user->getId());
-                $match->setSecondUser($oneUser->getId());
-                $match
-                    ->setCoefficient(round($this->compare->coincidenceCoefficient($this->compare
+                $query.="('";
+                $query.=$user->getId()."','".$oneUser->getId()."',"
+                .round($this->compare->coincidenceCoefficient($this->compare
                         ->getUserCoefficientAverage($user), $this->compare
-                        ->getUserCoefficientAverage($oneUser))));
-                $this->entityManager->persist($match);
-
-                if ($i / $batchSize === 1) {
-                    $this->entityManager->flush();
-                    $this->entityManager->clear();
-                    $i = 0;
-                }
-                $i+=1;
+                        ->getUserCoefficientAverage($oneUser)));
+            if ($i === count($users)) {
+                $query .= ");";
+            } else {
+                $query .= "),";
             }
+            $i++;
         }
+        $this->insertNewDate($query);
+    }
 
-        $this->entityManager->flush();
-        $this->entityManager->clear();
+    private function insertNewDate(string $query) : void
+    {
+        $statement = $this->entityManager->getConnection()->prepare($query);
+        $statement->execute();
     }
 
     private function deleteUserInfoAboutMatches(User $user) : void
