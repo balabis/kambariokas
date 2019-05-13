@@ -43,38 +43,53 @@ class MatchService
     {
         $users = $this->entityManager
             ->getRepository(UserMatch::class)
-            ->findBy(['firstUser' => $user->getId()]);
+            ->findBy(['firstUser' => $user->getId()], ['coeficient'=>'DESC']);
 
         return $users;
     }
 
     private function addNewMatchesToDatabase($users, User $user) :void
     {
-        $query = "INSERT INTO symfony.user_match (first_user, second_user, coeficient) VALUES ";
-        $i = 1;
-
-        foreach ($users as $oneUser) {
-            if ($user->getId() !== $oneUser->getId()) {
-                if ($i === 1) {
-                    $query .= "('";
-                } else {
-                    $query .= ",('";
-                }
-
-                $query .= $user->getId() . "','" . $oneUser->getId() . "',"
-                    . round($this->compare->coincidenceCoefficient($this->compare
-                        ->getUserCoefficientAverage($user), $this->compare
-                        ->getUserCoefficientAverage($oneUser)));
-                $query .=")";
-                $i++;
-            }
-
-            if ($i === count($users)-1) {
-                $query .= ";";
+        foreach($users as $oneUser) {
+            if($user->getId() !== $oneUser->getId()) {
+                $userMatch = new UserMatch();
+                $userMatch->setFirstUser($user->getId());
+                $userMatch->setSecondUser($oneUser->getId());
+                $coefficient = round($this->compare->coincidenceCoefficient(
+                    $this->compare->getUserCoefficientAverage($user),
+                    $this->compare->getUserCoefficientAverage($oneUser)));
+                $userMatch->setCoefficient($coefficient);
+                $userMatch->setUser($oneUser);
+                $this->entityManager->persist($userMatch);
             }
         }
+        $this->entityManager->flush();
 
-        $this->userMatchRepository->query($query);
+        //$query = "INSERT INTO symfony.user_match (first_user, second_user, coeficient) VALUES ";
+//        $i = 1;
+////        dd($users);
+//        foreach ($users as $oneUser) {
+//            if ($user->getId() !== $oneUser->getId()) {
+//                if ($i === 1) {
+//                    $query .= "('";
+//                } else {
+//                    $query .= ",('";
+//                }
+//
+//                $query .= $user->getId() . "','" . $oneUser->getId() . "',"
+//                    . round($this->compare->coincidenceCoefficient($this->compare
+//                        ->getUserCoefficientAverage($user), $this->compare
+//                        ->getUserCoefficientAverage($oneUser)));
+//                $query .=")";
+//                $i++;
+//            }
+//
+//            if ($i === count($users)-1) {
+//                $query .= ";";
+//            }
+//        }
+//
+//        $this->userMatchRepository->query($query);
     }
 
     private function deleteUserInfoAboutMatches(User $user) : void
@@ -85,4 +100,6 @@ class MatchService
         $query .= "'";
         $this->userMatchRepository->query($query);
     }
+
+
 }
