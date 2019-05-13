@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Entity\User;
 use App\Entity\UserMatch;
-use App\Generator\UsersGenerator;
 use App\Repository\UserMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -16,21 +15,17 @@ class MatchService
 
     private $compare;
 
-    private $generator;
-
     private $userMatchRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         CityService $cityService,
         UserCompareService $compareService,
-        UsersGenerator $usersGenerator,
         UserMatchRepository $userMatchRepository
     ) {
         $this->entityManager = $entityManager;
         $this->city = $cityService;
         $this->compare = $compareService;
-        $this->generator = $usersGenerator;
         $this->userMatchRepository = $userMatchRepository;
     }
 
