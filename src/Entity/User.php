@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -71,6 +73,16 @@ class User implements UserInterface
      * @Assert\Length(max="255")
      */
     private $aboutme;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMatch", mappedBy="user")
+     */
+    private $matchCoefficient;
+
+    public function __construct()
+    {
+        $this->matchCoefficient = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -236,5 +248,36 @@ class User implements UserInterface
         } else {
             return null;
         }
+    }
+
+    /**
+     * @return Collection|UserMatch[]
+     */
+    public function getMatchCoefficient(): Collection
+    {
+        return $this->matchCoefficient;
+    }
+
+    public function addMatchCoefficient(UserMatch $matchCoefficient): self
+    {
+        if (!$this->matchCoefficient->contains($matchCoefficient)) {
+            $this->matchCoefficient[] = $matchCoefficient;
+            $matchCoefficient->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatchCoefficient(UserMatch $matchCoefficient): self
+    {
+        if ($this->matchCoefficient->contains($matchCoefficient)) {
+            $this->matchCoefficient->removeElement($matchCoefficient);
+            // set the owning side to null (unless already changed)
+            if ($matchCoefficient->getUser() === $this) {
+                $matchCoefficient->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
