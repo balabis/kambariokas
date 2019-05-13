@@ -22,7 +22,7 @@ class QuestionnaireController extends AbstractController
         AnswerService $answerService
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+//        dd($this->getUser()->getQuestionnaireScore()->getCleanliness());
         $questionRepository = $em->getRepository(Question::class);
         $questions = $questionRepository->findAllJoinedWithQuestionnaire();
 
@@ -67,16 +67,17 @@ class QuestionnaireController extends AbstractController
                 );
 
             $questionnaireScore = new QuestionnaireScore();
-            $questionnaireScore->setUserId($user->getId());
             $questionnaireScore->setSociability($sociabilityScore);
             $questionnaireScore->setCleanliness($cleanlinessScore);
             $questionnaireScore->setSocialOpenness($socialOpennessScore);
             $questionnaireScore->setSocialFlexibility($socialFlexibilityScore);
+            $questionnaireScore->setUserId($user->getId());
+            $questionnaireScore->setUser($user);
 
             $em->persist($questionnaireScore);
             $em->flush();
         }
 
-        return $this->redirectToRoute('matched');
+        return $this->redirectToRoute('profile.edit');
     }
 }
