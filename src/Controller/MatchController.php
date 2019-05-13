@@ -20,18 +20,27 @@ class MatchController extends AbstractController
         UserService $userService,
         UserCompareService $compareService
     ) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if ($this->getUser()->getQuestionnaireScore()) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $service->filter($entityManager, $this->getUser(), $compareService);
+            $service->filter($entityManager, $this->getUser(), $compareService);
 
-        $matches = $service->getPossibleMatch($this->getUser(), $entityManager);
-        $usersName = $userService->getAllUsersNamesByUUID($matches);
+            $matches = $service->getPossibleMatch($this->getUser(), $entityManager);
+            $usersName = $userService->getAllUsersNamesByUUID($matches);
 
-        return $this->render('match/index.html.twig', [
-            'contentName' => 'Match',
-            'matchesInfo' => $matches,
-            'usersName' => $usersName,
-            'userCount'=> count($matches) - 1
+            return $this->render('match/index.html.twig', [
+                'contentName' => 'Match',
+                'matchesInfo' => $matches,
+                'usersName' => $usersName,
+                'userCount'=> count($matches) - 1
+            ]);
+        }
+
+        return $this->render('match/noMatch.html.twig', [
+            'contentName' => 'Match'
         ]);
+
+
+
     }
 }
