@@ -1,0 +1,21 @@
+{% extends 'main_layout.html.twig' %}
+
+{% block title %}{{ contentName|trans }}{% endblock %}
+
+{% block pageHeading %}{{ 'Match'|trans }}{% endblock %}
+
+{% block mainContent %}
+
+    <div class="header py-lg-7">
+            <div class="header-body text-center mb-7">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5 col-md-6">
+                        <h1 class="text-white">Kol neužpildysite klausimyno, tol negalėsime jums atrinkti
+                            kambariokų!!</h1>
+                        <a href="{{ path('questionnaire_get') }}" class="btn btn-primary">Pildyti klausimyną</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+{% endblock %}
