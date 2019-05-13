@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Generator;
+namespace App\Command;
 
 use App\Entity\QuestionnaireScore;
 use App\Entity\User;
@@ -29,10 +29,10 @@ class UsersGenerator
         }
         $this->entityManager->flush();
 
-        $this->generateAnswsers();
+        $this->generateAnswers();
     }
 
-    public function generateAnswsers() : void
+    public function generateAnswers() : void
     {
         $usersId = $this->entityManager->getRepository(User::class)->findAll();
         foreach ($usersId as $user) {

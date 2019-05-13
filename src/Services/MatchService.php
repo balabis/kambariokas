@@ -82,7 +82,7 @@ class MatchService
         $this->userMatchRepository->query($query);
     }
 
-    public function deleteUserInfoAboutMatches(User $user) : void
+    private function deleteUserInfoAboutMatches(User $user) : void
     {
         $query = "DELETE FROM symfony.user_match WHERE first_user = ";
         $query .="'";
