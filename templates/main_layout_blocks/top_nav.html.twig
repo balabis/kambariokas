@@ -63,6 +63,12 @@
                             <span>{{ 'Questionnaire'|trans }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link" href="{{ path('fos_message_inbox') }}" class="dropdown-item">
+                            <i class="far fa-envelope"></i>
+                            <span>{{ 'Inbox'|trans }}</span>
+                        </a>
+                    </li>
                 </ul>
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex ml-lg-auto">
@@ -85,6 +91,11 @@
                                 </span>
                                 <div class="media-body ml-2 d-none d-lg-block">
                                     <span class="mb-0 text-sm  font-weight-bold">{{ app.user.email }}</span>
+                                    <span>
+                                    {% if fos_message_nb_unread() > 0 %}
+                                        <img src="{{ asset('newmessage.png') }}" >
+                                    {% endif %}
+                                </span>
                                 </div>
                             </div>
                         </a>
@@ -92,6 +103,10 @@
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">{{ 'Welcome'|trans }}!</h6>
                             </div>
+                            <a href="{{ path('fos_message_inbox') }}" class="dropdown-item">
+                                <i class="far fa-envelope"></i>
+                                <span>{{ 'Inbox'|trans }}</span>
+                            </a>
                             <a href="{{ path('profile.edit') }}" class="dropdown-item">
                                 <i class="far fa-id-card"></i>
                                 <span>{{ 'My profile'|trans }}</span>
