@@ -1,4 +1,3 @@
-
 .contacts li > .info-combo > h3.name{
     font-size:12px;
 }
@@ -194,6 +193,19 @@
     direction: rtl;
     overflow-y: scroll;
     padding-left: 20px;
+}
+
+@media screen and (min-color-index:0) and(-webkit-min-device-pixel-ratio:0) {
+    @media {
+        .contacts-outter-wrapper {
+            direction: ltr;
+        }
+
+        .contacts-outter{
+            direction: ltr;
+            padding-left: 0;
+        }
+    }
 }
 
 .contacts {
@@ -443,6 +455,7 @@
     min-height: 290px;
     height: calc(100vh - 320px);
     background-color: #fbfcff;
+    margin-bottom: 30px;
     padding: 30px 5px 5px 5px;
     overflow-y: scroll;
 }
@@ -716,6 +729,66 @@
     opacity: 1;
 }
 
+@media screen and (max-width: 767px) {
+    .messages-panel {
+        min-width: 0;
+        display: inline-block;
+    }
+
+    .contacts-list, .contacts-list .inbox-categories > div:nth-child(4) {
+        border-top-right-radius: 5px;
+        border-right: none;
+    }
+
+    .contacts-list, .contacts-outter-wrapper, .contacts-outter, .contacts {
+        width: 100%;
+        direction: ltr;
+        padding-left: 0;
+    }
+
+    .contacts-list .inbox-categories > div {
+        width: 25%;
+    }
+
+    .message-body {
+        width: 100%;
+        margin: 20px 0;
+        border: 1px solid #dce2e9;
+        background-color: #fff;
+    }
+
+    .message .message-body {
+        max-width: calc(100% - 85px);
+    }
+
+    .message-body .chat-body {
+        background-color: #fff;
+        width: 100%;
+    }
+
+    .chat-footer {
+        margin-bottom: 20px;
+        padding: 0 20px;
+    }
+
+    .chat-footer .send-message-button {
+        right: 40px;
+    }
+
+    .chat-footer .upload-file {
+        right: 90px;
+    }
+
+    .message-body .message-top > .btn {
+        border-radius: 0;
+        width: 100%;
+    }
+
+    .contacts-add {
+        display: none;
+    }
+}
+
 /* Profile page */
 
 .profile-main {
@@ -780,6 +853,14 @@
     position: absolute;
     left: 25px;
     bottom: 14px;
+}
+
+@media screen and (max-width: 767px) {
+    .profile-main .profile-info .profile-status,
+    .profile-main .profile-info .profile-posts,
+    .profile-main .profile-info .profile-date {
+        display: none;
+    }
 }
 
 .contacts li > .info-combo {
