@@ -21,7 +21,7 @@ class DecoratingMessageController extends MessageController
     {
         $threads = $this->getProvider()->getInboxThreads();
         $thread = $this->getProvider()->getThread($threadId);
-
+        
         $form = $this->container->get('fos_message.reply_form.factory')->create($thread);
         $formHandler = $this->container->get('fos_message.reply_form.handler');
         if ($message = $formHandler->process($form)) {
