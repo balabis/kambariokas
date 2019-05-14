@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Entity\User;
-use App\Entity\UserMatch;
 use App\Repository\UserMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -41,35 +40,39 @@ class MatchService
 
     public function getPossibleMatch(User $user) : array
     {
-        $users = $this->entityManager
-            ->getRepository(UserMatch::class)
-            ->findBy(['firstUser' => $user->getId()], ['coeficient'=>'DESC']);
+        $users = $this->userMatchRepository->findMatches($user->getId());
 
         return $users;
     }
 
     private function addNewMatchesToDatabase($users, User $user) :void
     {
+        $query = "INSERT INTO user_match (first_user, second_user, coeficient) VALUES ";
+        $i = 1;
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {
-                $userMatch = new UserMatch();
-                $userMatch->setFirstUser($user->getId());
-                $userMatch->setSecondUser($oneUser->getId());
-                $coefficient = round($this->compare->coincidenceCoefficient(
-                    $this->compare->getUserCoefficientAverage($user),
-                    $this->compare->getUserCoefficientAverage($oneUser)
-                ));
-                $userMatch->setCoefficient($coefficient);
-                $userMatch->setMatchedUser($oneUser);
-                $this->entityManager->persist($userMatch);
+                if ($i === 1) {
+                    $query .= "('";
+                } else {
+                    $query .= ",('";
+                }
+                $query .= $user->getId() . "','" . $oneUser->getId() . "',"
+                    . round($this->compare->coincidenceCoefficient($this->compare
+                        ->getUserCoefficientAverage($user), $this->compare
+                        ->getUserCoefficientAverage($oneUser)));
+                $query .=")";
+                $i++;
+            }
+            if ($i === count($users)-1) {
+                $query .= ";";
             }
         }
-        $this->entityManager->flush();
+        $this->userMatchRepository->query($query);
     }
 
     private function deleteUserInfoAboutMatches(User $user) : void
     {
-        $query = "DELETE FROM symfony.user_match WHERE first_user = ";
+        $query = "DELETE FROM user_match WHERE first_user = ";
         $query .="'";
         $query .=$user->getId();
         $query .= "'";

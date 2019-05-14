@@ -19,14 +19,14 @@ class MatchController extends AbstractController
         Request $request
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $service->filter($this->getUser());
-        $matches = $ps->getPagerfanta($this->getUser()->getId());
-        $matches->setMaxPerPage(10);
-        $matches->setCurrentPage($request->query->get('page', 1));
+        $matches = $service->getPossibleMatch($this->getUser());
+        $matchesPagination = $ps->getPagerfanta($matches);
+        $matchesPagination->setMaxPerPage(10);
+        $matchesPagination->setCurrentPage($request->query->get('page', 1));
 
         return $this->render('match/index.html.twig', [
-            'matches' => $matches,
+            'matches' => $matchesPagination,
             'contentName' => 'Match',
         ]);
     }
