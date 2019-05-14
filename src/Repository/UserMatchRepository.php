@@ -28,4 +28,24 @@ class UserMatchRepository extends ServiceEntityRepository
         $statement = $this->entityManager->getConnection()->prepare($query);
         $statement->execute();
     }
+
+    public function findMatches($userId): array
+    {
+        $conn = $this->entityManager->getConnection();
+        $date = new \DateTime();
+        $currentDateFormatted = $date->format('Y-m-d');
+
+        $sql = '
+        SELECT um.*, user.*, FLOOR(DATEDIFF(:currentDate, user.date_of_birth)/365.25) as age
+        FROM user_match um
+        LEFT JOIN user ON um.second_user = user.id
+        WHERE um.first_user = :id
+        ORDER BY um.coeficient DESC
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['currentDate' => $currentDateFormatted, 'id'=>$userId]);
+
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
 }
