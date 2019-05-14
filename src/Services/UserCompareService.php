@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Entity\QuestionnaireScore;
@@ -9,15 +8,25 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserCompareService
 {
-    public function filterByAnswers($users, User $user, EntityManagerInterface $entityManager) : array
+    private $entityManager;
+
+    private $minCoefficient;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+        $this->minCoefficient = 50;
+    }
+
+    public function filterByAnswers($users, User $user) : array
     {
         $selectedUsers = array();
-        $userCoefficientAverage = $this->getUserCoefficientAverage($entityManager, $user);
+        $userCoefficientAverage = $this->getUserCoefficientAverage($user);
 
         foreach ($users as $oneUser) {
-            $oneUserCoefficient = $this->getUserCoefficientAverage($entityManager, $oneUser);
+            $oneUserCoefficient = $this->getUserCoefficientAverage($oneUser);
 
-            if ($this->coincidenceCoefficient($userCoefficientAverage, $oneUserCoefficient) > 50) {
+            if ($this->coincidenceCoefficient($userCoefficientAverage, $oneUserCoefficient) > $this->minCoefficient) {
                 $selectedUsers[] = $oneUser;
             }
         }
@@ -25,9 +34,9 @@ class UserCompareService
         return $selectedUsers;
     }
 
-    public function getUserCoefficientAverage(EntityManagerInterface $entityManager, User $user) : float
+    public function getUserCoefficientAverage(User $user) : float
     {
-        $questionScores = $entityManager
+        $questionScores = $this->entityManager
             ->getRepository(QuestionnaireScore::class)
             ->findBy(['userId' => $user->getId()]);
 

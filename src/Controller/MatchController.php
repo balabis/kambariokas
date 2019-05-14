@@ -22,16 +22,16 @@ class MatchController extends AbstractController
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $service->filter($entityManager, $this->getUser(), $compareService);
+        $service->filter($this->getUser());
 
-        $matches = $service->getPossibleMatch($this->getUser(), $entityManager);
+        $matches = $service->getPossibleMatch($this->getUser());
         $usersName = $userService->getAllUsersNamesByUUID($matches);
 
         return $this->render('match/index.html.twig', [
             'contentName' => 'Match',
             'matchesInfo' => $matches,
             'usersName' => $usersName,
-            'userCount'=> count($matches) - 1
+            'userCount'=> (count($matches) - 1)
         ]);
     }
 }

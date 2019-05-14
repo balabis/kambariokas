@@ -1,70 +1,88 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Entity\User;
 use App\Entity\UserMatch;
+use App\Repository\UserMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MatchService
 {
-    public function filter(
+    private $entityManager;
+
+    private $city;
+
+    private $compare;
+
+    private $userMatchRepository;
+
+    public function __construct(
         EntityManagerInterface $entityManager,
-        User $user,
-        UserCompareService $compareService
-    ) : void {
-        $city = new CityService();
-        $compare = new UserCompareService();
-
-        $this->deleteUserInfoAboutMatches($user, $entityManager);
-
-        $users = $entityManager->getRepository(User::class)->findAll();
-        $users = $city->filterByCity($users, $user);
-        $users = $compare->filterByAnswers($users, $user, $entityManager);
-
-        $this->addNewMatchesToDatabase($users, $user, $entityManager, $compare, $compareService);
+        CityService $cityService,
+        UserCompareService $compareService,
+        UserMatchRepository $userMatchRepository
+    ) {
+        $this->entityManager = $entityManager;
+        $this->city = $cityService;
+        $this->compare = $compareService;
+        $this->userMatchRepository = $userMatchRepository;
     }
 
-    public function getPossibleMatch(User $user, EntityManagerInterface $entityManager) : array
+    public function filter(User $user) : void
     {
-        $users = $entityManager
+        $this->deleteUserInfoAboutMatches($user);
+
+        $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
+        $users = $this->compare->filterByAnswers($users, $user);
+
+        $this->addNewMatchesToDatabase($users, $user);
+    }
+
+    public function getPossibleMatch(User $user) : array
+    {
+        $users = $this->entityManager
             ->getRepository(UserMatch::class)
             ->findBy(['firstUser' => $user->getId()]);
 
         return $users;
     }
 
-    private function addNewMatchesToDatabase(
-        $users,
-        User $user,
-        EntityManagerInterface $entityManager,
-        UserCompareService $compare,
-        UserCompareService $compareService
-    ) : void {
+    private function addNewMatchesToDatabase($users, User $user) :void
+    {
+        $query = "INSERT INTO symfony.user_match (first_user, second_user, coeficient) VALUES ";
+        $i = 1;
 
         foreach ($users as $oneUser) {
             if ($user->getId() !== $oneUser->getId()) {
-                $match = new UserMatch();
-                $match->setFirstUser($user->getId());
-                $match->setSecondUser($oneUser->getId());
-                $match
-                    ->setCoefficient(round($compareService->coincidenceCoefficient($compare
-                        ->getUserCoefficientAverage($entityManager, $user), $compare
-                        ->getUserCoefficientAverage($entityManager, $oneUser))));
-                $entityManager->persist($match);
+                if ($i === 1) {
+                    $query .= "('";
+                } else {
+                    $query .= ",('";
+                }
+
+                $query .= $user->getId() . "','" . $oneUser->getId() . "',"
+                    . round($this->compare->coincidenceCoefficient($this->compare
+                        ->getUserCoefficientAverage($user), $this->compare
+                        ->getUserCoefficientAverage($oneUser)));
+                $query .=")";
+                $i++;
+            }
+
+            if ($i === count($users)-1) {
+                $query .= ";";
             }
         }
 
-        $entityManager->flush();
+        $this->userMatchRepository->query($query);
     }
 
-    private function deleteUserInfoAboutMatches(User $user, EntityManagerInterface $entityManager) : void
+    private function deleteUserInfoAboutMatches(User $user) : void
     {
-        $removableObjects = $this->getPossibleMatch($user, $entityManager);
-
-        foreach ($removableObjects as $removableObject) {
-            $entityManager->remove($removableObject);
-        }
+        $query = "DELETE FROM symfony.user_match WHERE first_user = ";
+        $query .="'";
+        $query .=$user->getId();
+        $query .= "'";
+        $this->userMatchRepository->query($query);
     }
 }

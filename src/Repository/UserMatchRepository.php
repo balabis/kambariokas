@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\UserMatch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,8 +15,17 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserMatchRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $entityManager;
+
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, UserMatch::class);
+        $this->entityManager = $entityManager;
+    }
+
+    public function query(string $query) : void
+    {
+        $statement = $this->entityManager->getConnection()->prepare($query);
+        $statement->execute();
     }
 }
