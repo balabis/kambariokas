@@ -6,22 +6,26 @@
                     {% set basePath = '/dashboard/messages/' %}
                     {% for thread in threads %}
                         <li class="vcentered info-combo {{ app.request.pathInfo == basePath ~ thread.id ? 'active'}}">
-
-                            <div class="message-count">1</div>
+                            {% if not fos_message_is_read(thread) and fos_message_nb_unread() > 0 %}
+                                <div class="message-count">{{ fos_message_nb_unread() }}</div>
+                            {% endif %}
                             <img alt="" class="img-circle medium-image" src="https://bootdey.com/img/Content/avatar/avatar1.png">
                             <div class="vcentered info-combo">
                                 <a href="{{ url('fos_message_thread_view', {'threadId': thread.id}) }}" >
                                 <span>
                                     {% set participant1 = thread.participants[0].username %}
                                     {% set participant2 = thread.participants[1].username %}
-                                    <h3 class="no-margin-bottom name">
+                                    <h4 class="no-margin-bottom name">
                                         {{ app.user.username == participant1 ? participant2 : participant1 }}
-                                    </h3>
-                                    <h5>
+                                    </h4>
+                                    <h6>
                                         {{ thread.lastMessage.body }}
-                                    </h5>
+                                    </h6>
                                 </span>
                                 </a>
+                            </div>
+                            <div class="contacts-add">
+                                <span class="message-time"> {{ thread.lastMessage.createdAt|date('H:i') }}</span>
                             </div>
 
                         </li>
