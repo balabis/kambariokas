@@ -8,8 +8,7 @@
 
 
     <div class="d-flex mb-5 flex-wrap justify-content-center">
-{#        {{ dump(my_pager.currentPageResults) }}#}
-        {% for match in pagerfanta.currentPageResults %}
+        {% for match in matches.currentPageResults %}
         <div class="card card-profile shadow user-match-card mx-md-3 mb-6">
             <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
@@ -29,7 +28,7 @@
             >
                 <div class="d-flex justify-content-between">
                     <a href="#" class="btn btn-sm btn-info">Tapti kambariokais</a>
-                    <a href="#" class="btn btn-sm btn-default"
+                    <a href="{{ path('profile.view', { 'uuid': match.user.id }) }}" class="btn btn-sm btn-default"
                     >Profilis</a
                     >
                 </div>
@@ -50,11 +49,7 @@
                 <div class="text-center">
                     <h3>
                             {{ match.user.fullName }}
-
-
                             <span>&bull;</span> {{ match.user.userAge }}
-
-
                     </h3>
                     <div class="h5 font-weight-300">
                         <i class="ni location_pin mr-2"></i>{{ match.user.city }}
@@ -64,9 +59,8 @@
         </div>
         {% endfor %}
     </div>
-
     <div class="pagerfanta">
-        {{ pagerfanta(pagerfanta, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
+        {{ pagerfanta(matches, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
             'css_container_class': 'pagination justify-content-center'}) }}
     </div>
 
