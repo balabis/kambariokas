@@ -75,16 +75,6 @@ class User implements UserInterface
     private $aboutme;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMatch", mappedBy="matchedUser")
-     */
-    private $matchCoefficient;
-
-    public function __construct()
-    {
-        $this->matchCoefficient = new ArrayCollection();
-    }
-
-    /**
      * @return mixed
      */
     public function getAboutme()
@@ -248,36 +238,5 @@ class User implements UserInterface
         } else {
             return null;
         }
-    }
-
-    /**
-     * @return Collection|UserMatch[]
-     */
-    public function getMatchCoefficient(): Collection
-    {
-        return $this->matchCoefficient;
-    }
-
-    public function addMatchCoefficient(UserMatch $matchCoefficient): self
-    {
-        if (!$this->matchCoefficient->contains($matchCoefficient)) {
-            $this->matchCoefficient[] = $matchCoefficient;
-            $matchCoefficient->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMatchCoefficient(UserMatch $matchCoefficient): self
-    {
-        if ($this->matchCoefficient->contains($matchCoefficient)) {
-            $this->matchCoefficient->removeElement($matchCoefficient);
-            // set the owning side to null (unless already changed)
-            if ($matchCoefficient->getUser() === $this) {
-                $matchCoefficient->setUser(null);
-            }
-        }
-
-        return $this;
     }
 }
