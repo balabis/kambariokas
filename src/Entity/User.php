@@ -227,7 +227,6 @@ class User implements UserInterface
 
     public function getUserAge()
     {
-
         if (isset($this->dateOfBirth)) {
             $today = date('Y-m-d');
             $dateOfBirth = $this->dateOfBirth->format('Y-m-d');
