@@ -63,9 +63,6 @@ class MatchService
                 $query .=")";
                 $i++;
             }
-            if ($i === count($users)-1) {
-                $query .= ";";
-            }
         }
         $this->userMatchRepository->query($query);
     }
