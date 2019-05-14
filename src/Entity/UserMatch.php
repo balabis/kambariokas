@@ -35,7 +35,7 @@ class UserMatch
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="matchCoefficient")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $matchedUser;
 
     public function getId(): ?int
     {
@@ -72,14 +72,14 @@ class UserMatch
         $this->coeficient = $coefficient;
     }
 
-    public function getUser(): ?User
+    public function getMatchedUser(): ?User
     {
-        return $this->user;
+        return $this->matchedUser;
     }
 
-    public function setUser(?User $user): self
+    public function setMatchedUser(?User $user): self
     {
-        $this->user = $user;
+        $this->matchedUser = $user;
 
         return $this;
     }

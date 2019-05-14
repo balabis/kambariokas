@@ -6,18 +6,17 @@
 
 {% block mainContent %}
 
-
     <div class="d-flex mb-5 flex-wrap justify-content-center">
         {% for match in matches.currentPageResults %}
         <div class="card card-profile shadow user-match-card mx-md-3 mb-6">
             <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
                     <div class="card-profile-image">
-                        <a href="{{ path('profile.view', { 'uuid': match.user.id }) }}">
-                            {% if not match.user.profilePicture %}
+                        <a href="{{ path('profile.view', { 'uuid': match.matchedUser.id }) }}">
+                            {% if not match.matchedUser.profilePicture %}
                                 <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
                             {% else %}
-                                <img src="{{ asset(match.user.profilePicture) }}" class="rounded-circle">
+                                <img src="{{ asset(match.matchedUser.profilePicture) }}" class="rounded-circle">
                             {% endif %}
                         </a>
                     </div>
@@ -28,7 +27,8 @@
             >
                 <div class="d-flex justify-content-between">
                     <a href="#" class="btn btn-sm btn-info">Tapti kambariokais</a>
-                    <a href="{{ path('profile.view', { 'uuid': match.user.id }) }}" class="btn btn-sm btn-default"
+                    <a href="{{ path('profile.view', { 'uuid': match.matchedUser.id }) }}" class="btn btn-sm
+                    btn-default"
                     >Profilis</a
                     >
                 </div>
@@ -48,11 +48,11 @@
                 </div>
                 <div class="text-center">
                     <h3>
-                            {{ match.user.fullName }}
-                            <span>&bull;</span> {{ match.user.userAge }}
+                            {{ match.matchedUser.fullName }}
+                            <span>&bull;</span> {{ match.matchedUser.userAge }}
                     </h3>
                     <div class="h5 font-weight-300">
-                        <i class="ni location_pin mr-2"></i>{{ match.user.city }}
+                        <i class="ni location_pin mr-2"></i>{{ match.matchedUser.city }}
                     </div>
                 </div>
             </div>
@@ -63,7 +63,5 @@
         {{ pagerfanta(matches, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
             'css_container_class': 'pagination justify-content-center'}) }}
     </div>
-
-
 
 {% endblock %}

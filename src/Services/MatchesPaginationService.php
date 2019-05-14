@@ -3,10 +3,10 @@
 
 namespace App\Services;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use \Ramsey\Uuid\Uuid as Uuid;
 
 class MatchesPaginationService
 {
@@ -17,7 +17,7 @@ class MatchesPaginationService
         $this->em = $em;
     }
 
-    private function createQueryBuilderToGetMatchUsers($userId)
+    private function createQueryBuilderToGetMatchUsers(Uuid $userId)
     {
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('um')
@@ -29,18 +29,19 @@ class MatchesPaginationService
         return $queryBuilder;
     }
 
-    private function getAdapter($userId)
+    private function getAdapter(Uuid $userId): DoctrineORMAdapter
     {
         $queryBuilder = $this->createQueryBuilderToGetMatchUsers($userId);
         $adapter = new DoctrineORMAdapter($queryBuilder);
+
         return $adapter;
     }
 
-    public function getPagerfanta($userId)
+    public function getPagerfanta(Uuid $userId): Pagerfanta
     {
         $adapter = $this->getAdapter($userId);
         $pagerfanta = new Pagerfanta($adapter);
+
         return $pagerfanta;
     }
-
 }

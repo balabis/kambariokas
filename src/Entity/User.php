@@ -75,7 +75,7 @@ class User implements UserInterface
     private $aboutme;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMatch", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMatch", mappedBy="matchedUser")
      */
     private $matchCoefficient;
 
