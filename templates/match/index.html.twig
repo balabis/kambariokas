@@ -59,9 +59,11 @@
         </div>
         {% endfor %}
     </div>
-    <div class="pagerfanta">
-        {{ pagerfanta(matches, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
-            'css_container_class': 'pagination justify-content-center'}) }}
-    </div>
+    {% if matches.haveToPaginate %}
+        <div class="pagerfanta">
+            {{ pagerfanta(matches, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
+                'css_container_class': 'pagination justify-content-center','omitFirstPage': true}) }}
+        </div>
+    {% endif %}
 
 {% endblock %}
