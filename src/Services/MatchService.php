@@ -32,10 +32,15 @@ class MatchService
     {
         $this->deleteUserInfoAboutMatches($user);
 
-        $users = $this->entityManager->getRepository(User::class)->findBy(['city'=>$user->getCity()]);
-        $users = $this->compare->filterByAnswers($users, $user);
+        $users = $this->entityManager->getRepository(User::class)->findMatchesByCity($user->getCity(), $user->getId());
+        if (!empty($users))
+        {
+            $filteredUsers = $this->compare->filterByAnswers($users, $user);
+        }
 
-        $this->addNewMatchesToDatabase($users, $user);
+        if (!empty($filteredUsers)) {
+            $this->addNewMatchesToDatabase($filteredUsers, $user);
+        }
     }
 
     public function getPossibleMatch(User $user) : array
@@ -50,19 +55,17 @@ class MatchService
         $query = "INSERT INTO user_match (first_user, second_user, coeficient) VALUES ";
         $i = 1;
         foreach ($users as $oneUser) {
-            if ($user->getId() !== $oneUser->getId()) {
-                if ($i === 1) {
-                    $query .= "('";
-                } else {
-                    $query .= ",('";
-                }
-                $query .= $user->getId() . "','" . $oneUser->getId() . "',"
-                    . round($this->compare->coincidenceCoefficient($this->compare
-                        ->getUserCoefficientAverage($user), $this->compare
-                        ->getUserCoefficientAverage($oneUser)));
-                $query .=")";
-                $i++;
+            if ($i === 1) {
+                $query .= "('";
+            } else {
+                $query .= ",('";
             }
+            $query .= $user->getId() . "','" . $oneUser->getId() . "',"
+                . round($this->compare->coincidenceCoefficient($this->compare
+                    ->getUserCoefficientAverage($user), $this->compare
+                    ->getUserCoefficientAverage($oneUser)));
+            $query .=")";
+            $i++;
         }
         $this->userMatchRepository->query($query);
     }

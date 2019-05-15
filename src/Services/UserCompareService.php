@@ -18,34 +18,41 @@ class UserCompareService
         $this->minCoefficient = 50;
     }
 
-    public function filterByAnswers($users, User $user) : array
+    public function filterByAnswers($users, User $user): array
     {
-        $selectedUsers = array();
+        $selectedUsers = [];
         $userCoefficientAverage = $this->getUserCoefficientAverage($user);
 
         foreach ($users as $oneUser) {
-            $oneUserCoefficient = $this->getUserCoefficientAverage($oneUser);
 
-            if ($this->coincidenceCoefficient($userCoefficientAverage, $oneUserCoefficient) > $this->minCoefficient) {
-                $selectedUsers[] = $oneUser;
+            $oneUserCoefficient = $this->getUserCoefficientAverage($oneUser);
+            if (!empty($oneUserCoefficient)) {
+                if ($this->coincidenceCoefficient($userCoefficientAverage,
+                        $oneUserCoefficient) > $this->minCoefficient) {
+                    $selectedUsers[] = $oneUser;
+                }
             }
         }
 
         return $selectedUsers;
     }
 
-    public function getUserCoefficientAverage(User $user) : float
+    public function getUserCoefficientAverage(User $user): ?float
     {
         $questionScores = $this->entityManager
             ->getRepository(QuestionnaireScore::class)
-            ->findBy(['userId' => $user->getId()]);
-
-        return ($questionScores[0]->getCleanliness() + $questionScores[0]->getSociability()
-            + $questionScores[0]->getSocialOpenness() + $questionScores[0]->getSocialFlexibility())/4;
+            ->findOneBy(['userId' => $user->getId()]);
+        if (!empty($questionScores)) {
+            return ($questionScores->getCleanliness() + $questionScores->getSociability()
+                    + $questionScores->getSocialOpenness() + $questionScores->getSocialFlexibility()) / 4;
+        }
+        return null;
     }
 
-    public function coincidenceCoefficient(float $userScore, float $otherUserScore) : float
-    {
+    public function coincidenceCoefficient(
+        float $userScore,
+        float $otherUserScore
+    ): float {
         $score = $userScore - $otherUserScore;
 
         if ($score < 0) {
