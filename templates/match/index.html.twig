@@ -49,7 +49,7 @@
                 <div class="text-center">
                     <h3>
                             {{ match.full_name }}
-                            <span>&bull;</span> {{ match.age }}
+                            <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
                     </h3>
                     <div class="h5 font-weight-300">
                         <i class="ni location_pin mr-2"></i>{{ match.city }}
