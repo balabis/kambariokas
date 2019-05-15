@@ -18,8 +18,7 @@ class MatchesPaginationService
     public function getPagerfanta(array $matches): Pagerfanta
     {
         $adapter = $this->getAdapter($matches);
-        $pagerfanta = new Pagerfanta($adapter);
 
-        return $pagerfanta;
+        return new Pagerfanta($adapter);
     }
 }

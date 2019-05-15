@@ -232,8 +232,8 @@ class User implements UserInterface
             $dateOfBirth = $this->dateOfBirth->format('Y-m-d');
             $diff = date_diff(date_create($dateOfBirth), date_create($today));
             return $diff->format('%y');
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
