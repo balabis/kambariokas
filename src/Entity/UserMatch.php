@@ -31,6 +31,7 @@ class UserMatch
      */
     private $coeficient;
 
+
     public function getId(): ?int
     {
         return $this->id;

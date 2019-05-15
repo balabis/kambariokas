@@ -18,4 +18,14 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function findMatchesByCity($city, $userId)
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.city = :city')
+            ->andWhere('m.id != :id')
+            ->setParameters(['city'=>$city, 'id'=>$userId])
+            ->getQuery()
+            ->getResult();
+    }
 }

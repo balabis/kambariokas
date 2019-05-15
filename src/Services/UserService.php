@@ -8,7 +8,6 @@ use App\Repository\UserRepository;
 
 class UserService
 {
-
     private $userRepository;
 
     public function __construct(UserRepository $userRepository)
@@ -38,5 +37,16 @@ class UserService
         } else {
             return null;
         }
+    }
+
+    public function getAllUsersNamesByUUID(array $userMatch) : array
+    {
+        $userNames = [];
+
+        foreach ($userMatch as $user) {
+            $userNames[] = $this->getUserByUUID($user->getSecondUser());
+        }
+
+        return $userNames;
     }
 }

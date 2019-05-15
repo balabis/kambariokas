@@ -15,4 +15,5 @@ return [
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     FOS\MessageBundle\FOSMessageBundle::class => ['all' => true],
+    WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle::class => ['all' => true],
 ];
