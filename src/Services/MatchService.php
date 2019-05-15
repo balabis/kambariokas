@@ -33,8 +33,7 @@ class MatchService
         $this->deleteUserInfoAboutMatches($user);
 
         $users = $this->entityManager->getRepository(User::class)->findMatchesByCity($user->getCity(), $user->getId());
-        if (!empty($users))
-        {
+        if (!empty($users)) {
             $filteredUsers = $this->compare->filterByAnswers($users, $user);
         }
 
