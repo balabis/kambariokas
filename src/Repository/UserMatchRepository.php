@@ -36,7 +36,7 @@ class UserMatchRepository extends ServiceEntityRepository
         $currentDateFormatted = $date->format('Y-m-d');
 
         $sql = '
-        SELECT um.*, user.*, FLOOR(DATEDIFF(:currentDate, user.date_of_birth)/365.25) as age
+        SELECT um.*, user.*
         FROM user_match um
         LEFT JOIN user ON um.second_user = user.id
         WHERE um.first_user = :id
@@ -44,7 +44,7 @@ class UserMatchRepository extends ServiceEntityRepository
         ';
 
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['currentDate' => $currentDateFormatted, 'id'=>$userId]);
+        $stmt->execute(['id'=>$userId]);
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
