@@ -31,3 +31,7 @@ footer .row {
 .answer-emoji {
     font-size: 20px;
 }
+
+.user-match-card {
+    max-width: 350px;
+}
