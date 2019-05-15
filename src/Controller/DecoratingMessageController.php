@@ -3,11 +3,13 @@
 
 namespace App\Controller;
 
+use Doctrine\Common\Collections\Criteria;
 use FOS\MessageBundle\Controller\MessageController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DecoratingMessageController extends MessageController
 {
+
     public function inboxAction()
     {
         $threads = $this->getProvider()->getInboxThreads();
@@ -21,7 +23,7 @@ class DecoratingMessageController extends MessageController
     {
         $threads = $this->getProvider()->getInboxThreads();
         $thread = $this->getProvider()->getThread($threadId);
-        
+
         $form = $this->container->get('fos_message.reply_form.factory')->create($thread);
         $formHandler = $this->container->get('fos_message.reply_form.handler');
         if ($message = $formHandler->process($form)) {
@@ -30,10 +32,13 @@ class DecoratingMessageController extends MessageController
             )));
         }
 
+        $sortedMessages = $this->getSortedMessages($thread->getMessages());
+
         return $this->render('@FOSMessage/Message/thread.html.twig', array(
             'form' => $form->createView(),
             'thread' => $thread,
-            'threads' => $threads
+            'threads' => $threads,
+            'messages' => $sortedMessages
         ));
     }
 
@@ -53,5 +58,13 @@ class DecoratingMessageController extends MessageController
             'data' => $form->getData(),
             'threads' => $threads,
         ));
+    }
+
+    private function getSortedMessages($collection)
+    {
+        $criteria = Criteria::create()
+            ->orderBy(array('created_at' => Criteria::ASC));
+
+        return $collection->matching($criteria);
     }
 }

@@ -3,7 +3,7 @@
 {% block thread %}
     <div class="message-chat">
         <div class="chat-body">
-            {% for message in thread.messages %}
+            {% for message in messages %}
                 {% if (message.sender.id == app.user.id) %}
                     <div class="message my-message">
                 {% else %}
