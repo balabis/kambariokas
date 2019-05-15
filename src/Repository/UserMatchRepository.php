@@ -32,8 +32,6 @@ class UserMatchRepository extends ServiceEntityRepository
     public function findMatches($userId): array
     {
         $conn = $this->entityManager->getConnection();
-        $date = new \DateTime();
-        $currentDateFormatted = $date->format('Y-m-d');
 
         $sql = '
         SELECT um.*, user.*
