@@ -16,7 +16,6 @@ class QuestionnaireScoreService
     {
         $this->answerService = $answerService;
         $this->em = $em;
-
     }
 
     public function calculateQuestionnaireScore(Request $request, string $questionnaireTitle): ?float
@@ -39,8 +38,7 @@ class QuestionnaireScoreService
     {
         $repo = $this->em->getRepository(QuestionnaireScore::class);
         $scores = $repo->findBy(['userId' => $userId]);
-        foreach ($scores as $score)
-        {
+        foreach ($scores as $score) {
             $this->em->remove($score);
         }
         $this->em->flush();
