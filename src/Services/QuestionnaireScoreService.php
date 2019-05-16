@@ -3,15 +3,20 @@
 
 namespace App\Services;
 
+use App\Entity\QuestionnaireScore;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class QuestionnaireScoreService
 {
     private $answerService;
+    private $em;
 
-    public function __construct(AnswerService $answerService)
+    public function __construct(AnswerService $answerService, EntityManagerInterface $em)
     {
         $this->answerService = $answerService;
+        $this->em = $em;
+
     }
 
     public function calculateQuestionnaireScore(Request $request, string $questionnaireTitle): ?float
@@ -28,5 +33,16 @@ class QuestionnaireScoreService
         $scoreIndex = $score / $maxScore;
 
         return number_format($scoreIndex, 2, '.', '');
+    }
+
+    public function deleteQuestionnaireScore($userId)
+    {
+        $repo = $this->em->getRepository(QuestionnaireScore::class);
+        $scores = $repo->findBy(['userId' => $userId]);
+        foreach ($scores as $score)
+        {
+            $this->em->remove($score);
+        }
+        $this->em->flush();
     }
 }
