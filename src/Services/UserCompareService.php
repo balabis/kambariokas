@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Entity\QuestionnaireScore;
@@ -9,34 +8,54 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserCompareService
 {
-    public function filterByAnswers($users, User $user, EntityManagerInterface $entityManager) : array
+    private $entityManager;
+
+    private $minCoefficient;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $selectedUsers = array();
-        $userCoefficientAverage = $this->getUserCoefficientAverage($entityManager, $user);
+        $this->entityManager = $entityManager;
+        $this->minCoefficient = 50;
+    }
 
-        foreach ($users as $oneUser) {
-            $oneUserCoefficient = $this->getUserCoefficientAverage($entityManager, $oneUser);
-
-            if ($this->coincidenceCoefficient($userCoefficientAverage, $oneUserCoefficient) > 50) {
-                $selectedUsers[] = $oneUser;
+    public function filterByAnswers($users, User $user): array
+    {
+        $selectedUsers = [];
+        $userCoefficientAverage = $this->getUserCoefficientAverage($user);
+        if (!empty($userCoefficientAverage)) {
+            foreach ($users as $oneUser) {
+                $oneUserCoefficient =
+                    $this->getUserCoefficientAverage($oneUser);
+                if (!empty($oneUserCoefficient)) {
+                    if ($this->coincidenceCoefficient(
+                            $userCoefficientAverage,
+                            $oneUserCoefficient
+                        ) > $this->minCoefficient) {
+                        $selectedUsers[] = $oneUser;
+                    }
+                }
             }
         }
 
         return $selectedUsers;
     }
 
-    public function getUserCoefficientAverage(EntityManagerInterface $entityManager, User $user) : float
+    public function getUserCoefficientAverage(User $user): ?float
     {
-        $questionScores = $entityManager
+        $questionScores = $this->entityManager
             ->getRepository(QuestionnaireScore::class)
-            ->findBy(['userId' => $user->getId()]);
-
-        return ($questionScores[0]->getCleanliness() + $questionScores[0]->getSociability()
-            + $questionScores[0]->getSocialOpenness() + $questionScores[0]->getSocialFlexibility())/4;
+            ->findOneBy(['userId' => $user->getId()]);
+        if (!empty($questionScores)) {
+            return ($questionScores->getCleanliness() + $questionScores->getSociability()
+                    + $questionScores->getSocialOpenness() + $questionScores->getSocialFlexibility()) / 4;
+        }
+        return null;
     }
 
-    public function coincidenceCoefficient(float $userScore, float $otherUserScore) : float
-    {
+    public function coincidenceCoefficient(
+        float $userScore,
+        float $otherUserScore
+    ): float {
         $score = $userScore - $otherUserScore;
 
         if ($score < 0) {
