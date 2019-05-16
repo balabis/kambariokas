@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->isGranted('ROLE_USER')) {
-              return $this->redirectToRoute('home');
+              return $this->redirectToRoute('matched');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();

@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
     ): Response {
 
         if ($this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('matched');
         }
 
         $user = new User();
