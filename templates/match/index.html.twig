@@ -5,65 +5,82 @@
 {% block pageHeading %}{{ 'Match'|trans }}{% endblock %}
 
 {% block mainContent %}
-
-    <div class="d-flex mb-5 flex-wrap justify-content-center">
-        {% for match in matches.currentPageResults %}
-        <div class="card card-profile shadow user-match-card mx-md-3 mb-6">
-            <div class="row justify-content-center">
-                <div class="col-lg-3 order-lg-2">
-                    <div class="card-profile-image">
-                        <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
-                            {% if not match.profile_picture %}
-                                <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
-                            {% else %}
-                                <img src="{{ asset(match.profile_picture) }}" class="rounded-circle">
-                            {% endif %}
-                        </a>
+    <div class="container">
+        {% if matches is not empty %}
+            <div class="d-flex mb-5 flex-wrap justify-content-center">
+                {% for match in matches.currentPageResults %}
+                <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-3 order-lg-2">
+                            <div class="card-profile-image">
+                                <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
+                                    {% if not match.profile_picture %}
+                                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                                    {% else %}
+                                        <img src="{{ asset(match.profile_picture) }}" class="rounded-circle">
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div
-                    class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
-            >
-                <div class="d-flex justify-content-between">
-                    <a href="#" class="btn btn-sm btn-info">{{ 'Be flatmates'|trans }}</a>
-                    <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}" class="btn btn-sm
-                    btn-default"
-                    >{{ 'Profile'|trans }}</a
+                    <div
+                            class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
                     >
-                </div>
-            </div>
-            <div class="card-body pt-0">
-                <div class="row">
-                    <div class="col">
-                        <div
-                                class="card-profile-stats d-flex justify-content-center"
-                        >
-                            <div>
-                                <span class="heading">{{ match.coeficient }}%</span>
-                                <span class="description">{{ 'Match percent'|trans }}</span>
+                        <div class="d-flex justify-content-between">
+                            <a href="#" class="btn btn-sm btn-info">{{ 'Be flatmates'|trans }}</a>
+                            <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}" class="btn btn-sm
+                            btn-default"
+                            >{{ 'Profile'|trans }}</a
+                            >
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col">
+                                <div
+                                        class="card-profile-stats d-flex justify-content-center"
+                                >
+                                    <div>
+                                        <span class="heading">{{ match.coeficient }}%</span>
+                                        <span class="description">{{ 'Match percent'|trans }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <h3>
+                                    {{ match.full_name }}
+                                    <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
+                            </h3>
+                            <div class="h5 font-weight-300">
+                                <i class="ni location_pin mr-2"></i>{{ match.city }}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="text-center">
-                    <h3>
-                            {{ match.full_name }}
-                            <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
-                    </h3>
-                    <div class="h5 font-weight-300">
-                        <i class="ni location_pin mr-2"></i>{{ match.city }}
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        </div>
-        {% endfor %}
+            {% if matches.haveToPaginate %}
+                <div class="pagerfanta">
+                    {{ pagerfanta(matches, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
+                        'css_container_class': 'pagination justify-content-center','omitFirstPage': true}) }}
+                </div>
+            {% endif %}
+
+        {% endif %}
+
+        {% if not app.user.questionnaireScore %}
+            {% include 'match/blocks/no_filled_questionnaire.html.twig' %}
+        {% endif %}
+
+        {% if not app.user.city %}
+            {% include 'match/blocks/no_filled_profile.html.twig' %}
+        {% endif %}
+
+        {% if matches is empty and app.user.city and app.user.questionnaireScore %}
+            {% include 'match/blocks/no_matches.html.twig' %}
+        {% endif %}
+
     </div>
-    {% if matches.haveToPaginate %}
-        <div class="pagerfanta">
-            {{ pagerfanta(matches, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
-                'css_container_class': 'pagination justify-content-center','omitFirstPage': true}) }}
-        </div>
-    {% endif %}
 
 {% endblock %}

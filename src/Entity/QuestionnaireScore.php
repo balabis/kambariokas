@@ -42,6 +42,11 @@ class QuestionnaireScore
      */
     private $cleanliness;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="questionnaireScore", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function getId()
     {
         return $this->id;
@@ -103,6 +108,23 @@ class QuestionnaireScore
     public function setCleanliness($cleanliness): self
     {
         $this->cleanliness = $cleanliness;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $user->getQuestionnaireScore()) {
+            $user->setQuestionnaireScore($this);
+        }
 
         return $this;
     }
