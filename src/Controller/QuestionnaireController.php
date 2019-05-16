@@ -80,6 +80,6 @@ class QuestionnaireController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('profile.edit');
+        return $this->redirectToRoute('matched');
     }
 }
