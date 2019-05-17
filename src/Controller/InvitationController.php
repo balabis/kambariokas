@@ -4,19 +4,38 @@ namespace App\Controller;
 
 use App\Entity\Invite;
 use App\Entity\User;
+use App\Services\MatchesPaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InvitationController extends AbstractController
 {
     /**
-     * @Route("/invitation/{uuid}", name="invitation", methods={"GET"})
+     * @Route("/invitation", name="invitation_get", methods={"GET"})
      */
-    public function index($uuid, EntityManagerInterface $em)
+    public function show(EntityManagerInterface $em, MatchesPaginationService $ps, Request $request) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $invitesRepo = $em->getRepository(Invite::class);
+        $invites = $invitesRepo->findBy(['sender'=>$this->getUser()]);
+        $invitesPagination = $ps->getPagerfanta($invites);
+        $invitesPagination->setMaxPerPage(8);
+        $invitesPagination->setCurrentPage($request->query->get('page', 1));
+
+        return $this->render('invitation/index.html.twig', [
+            'invites'=>$invitesPagination
+        ]);
+    }
+
+
+    /**
+     * @Route("/invitation", name="invitation_post", methods={"POST"})
+     */
+    public function index(EntityManagerInterface $em, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+        $uuid = $request->request->get('uuid');
         $invite = new Invite();
         $invite->setSender($this->getUser());
 
@@ -27,6 +46,6 @@ class InvitationController extends AbstractController
         $em->persist($invite);
         $em->flush();
 
-        return $this->redirectToRoute('matched');
+        return $this->redirect($request->headers->get('referer'));
     }
 }
