@@ -27,8 +27,6 @@ class InvitationController extends AbstractController
         $em->persist($invite);
         $em->flush();
 
-        return $this->render('invitation/index.html.twig', [
-            'controller_name' => 'InvitationController',
-        ]);
+        return $this->redirectToRoute('matched');
     }
 }
