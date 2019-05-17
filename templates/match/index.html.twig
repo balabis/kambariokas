@@ -27,11 +27,21 @@
                             class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
                     >
                         <div class="d-flex justify-content-between">
-                            <a href="#" class="btn btn-sm btn-info">{{ 'Be flatmates'|trans }}</a>
+                            {% if not match.receiver_id %}
+                            <a href="{{ path('invitation', { 'uuid': match.second_user }) }}" class="btn btn-sm
+                            btn-info">
+                                {{ 'Be flatmates'|trans }}
+                            </a>
+                            {% else %}
+                            <a class="btn btn-sm
+                        btn-warning">
+                                {{ match.status|trans }}
+                            </a>
+                            {% endif %}
                             <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}" class="btn btn-sm
-                            btn-default"
-                            >{{ 'Profile'|trans }}</a
-                            >
+                            btn-default">
+                                {{ 'Profile'|trans }}
+                            </a>
                         </div>
                     </div>
                     <div class="card-body pt-0">
