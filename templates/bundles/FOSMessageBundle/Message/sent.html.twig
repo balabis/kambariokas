@@ -4,10 +4,10 @@
     <div class="contacts-list">
         <div class="inbox-categories">
             <div class="">
-                <a href="{{ path('fos_message_inbox') }}" class="active"> Inbox </a>
+                <a href="{{ path('app.message.inbox') }}" class="active"> Inbox </a>
             </div>
             <div class="active">
-                <a href="{{ path('fos_message_sent') }}" class="active"> Sent </a>
+                <a href="{{ path('app.message.sent') }}" class="active"> Sent </a>
             </div>
         </div>
         {% include '@FOSMessage/Message/threads_list.html.twig' with {'threads': threads} %}
@@ -15,7 +15,7 @@
     <div class="tab-content">
         <div class="tab-pane message-body active">
             <div class="message-top">
-                <a href="{{ path('fos_message_thread_new') }}" class="btn btn btn-success new-message"> <i class="fa fa-envelope"></i> New Message </a>
+                <a href="{{ path('app.message.new_thread') }}" class="btn btn btn-success new-message"> <i class="fa fa-envelope"></i> New Message </a>
             </div>
             {% block thread %}{% endblock %}
         </div>

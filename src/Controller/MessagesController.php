@@ -5,11 +5,11 @@ namespace App\Controller;
 
 use App\Services\UserService;
 use Doctrine\Common\Collections\Criteria;
+use FOS\MessageBundle\FormFactory\NewThreadMessageFormFactory;
 use FOS\MessageBundle\FormFactory\ReplyMessageFormFactory;
-use FOS\MessageBundle\FormHandler\NewThreadMessageFormHandler;
+use FOS\MessageBundle\FormHandler\ReplyMessageFormHandler;
 use FOS\MessageBundle\Provider\ProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -22,7 +22,7 @@ class MessagesController extends AbstractController
     public function __construct(
         ProviderInterface $provider,
         ReplyMessageFormFactory $formFactory,
-        NewThreadMessageFormHandler $formHandler
+        ReplyMessageFormHandler $formHandler
     ) {
         $this->provider = $provider;
         $this->formFactory = $formFactory;
@@ -67,7 +67,7 @@ class MessagesController extends AbstractController
 
         $form = $this->formFactory->create($thread);
         if ($message = $this->formHandler->process($form)) {
-            return new RedirectResponse($this->container->get('router')->generate('fos_message_thread_view', array(
+            return new RedirectResponse($this->container->get('router')->generate('app.message.thread', array(
                 'threadId' => $message->getThread()->getId(),
             )));
         }
