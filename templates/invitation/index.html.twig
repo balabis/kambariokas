@@ -1,20 +1,88 @@
-{% extends 'base.html.twig' %}
+{% extends 'main_layout.html.twig' %}
 
-{% block title %}Hello InvitationController!{% endblock %}
+{% block title %}{{ 'Invites'|trans }}{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block pageHeading %}{{ 'Invites'|trans }}{% endblock %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% block mainContent %}
+    <div class="container">
+        {% if invites is not empty %}
+            <div class="d-flex mb-5 flex-wrap justify-content-center">
+                {% for invite in invites.currentPageResults %}
+                    <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 order-lg-2">
+                                <div class="card-profile-image">
+                                    <a href="{{ path('profile.view', { 'uuid': invite.receiver.getId }) }}">
+                                        {% if not invite.receiver.profilePicture %}
+                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                                        {% else %}
+                                            <img src="{{ asset(invite.receiver.profilePicture) }}"
+                                                 class="rounded-circle">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                                class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
+                        >
+                            <div class="d-flex justify-content-between">
+                                {% if not invite.status %}
+                                    <form action="{{ path('invitation_post') }}" method="POST">
+                                        <input type="hidden" name="uuid" value="{{ match.second_user }}">
+                                        <button class="btn btn-sm
+                                    btn-info">
+                                            {{ 'Be flatmates'|trans }}
+                                        </button>
+                                    </form>
+                                {% elseif invite.status == 'pending' %}
+                                    <a class="btn btn-sm
+                        btn-warning">
+                                        {{ invite.status|trans }}
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path('profile.view', { 'uuid': invite.receiver.getId }) }}" class="btn
+                                btn-sm
+                            btn-default">
+                                    {{ 'Profile'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="row">
+                                <div class="col">
+                                    <div
+                                            class="card-profile-stats d-flex justify-content-center"
+                                    >
+                                        <div>
+{#                                            <span class="heading">{{ invite.coeficient }}%</span>#}
+                                            <span class="description">{{ 'Match percent'|trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h3>
+                                    {{ invite.receiver.fullName }}
+                                    <span>&bull;</span> {{ invite.receiver.userAge }}
+                                </h3>
+                                <div class="h5 font-weight-300">
+                                    <i class="ni location_pin mr-2"></i>{{ invite.receiver.city }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if invites.haveToPaginate %}
+                <div class="pagerfanta">
+                    {{ pagerfanta(invites, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
+                        'css_container_class': 'pagination justify-content-center','omitFirstPage': true}) }}
+                </div>
+            {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/code/src/Controller/InvitationController.php'|file_link(0) }}">src/Controller/InvitationController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/code/templates/invitation/index.html.twig'|file_link(0) }}">templates/invitation/index.html.twig</a></code></li>
-    </ul>
-</div>
+        {% endif %}
+    </div>
+
 {% endblock %}
