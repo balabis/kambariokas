@@ -27,6 +27,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\Controller\MessagesController:
+        arguments: ['@fos_message.provider.default',
+                    '@fos_message.reply_form.factory.default',
+                    '@fos_message.new_thread_form.handler.default']
+
     app.user_to_username_transformer:
         class: App\Form\DataTransformer\UserToUsernameTransformer
         arguments: ['@doctrine']
@@ -40,5 +45,3 @@ services:
         tags:
             - { name: form.type }
 
-    App\Controller\DecoratingMessageController:
-        decorates: FOS\MessageBundle\Controller\MessageController

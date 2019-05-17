@@ -28,7 +28,7 @@
             {% endfor %}
         </div>
         <div class="chat-footer">
-            <form action="{{ url('fos_message_thread_view', {'threadId': thread.id}) }}" method="post">
+            <form action="{{ url('app.message.thread', {'threadId': thread.id}) }}" method="post">
                 {{ form_row(form.body, {
                     'label': false,
                     'attr': { 'class': 'send-message-text' }
