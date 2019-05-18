@@ -38,4 +38,24 @@ class InviteRepository extends ServiceEntityRepository
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
+
+    public function findReceivedInvites($userId): array
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT um.*, u.*, i.*
+        FROM invite i
+        LEFT JOIN user u ON i.sender_id = u.id
+        LEFT JOIN user_match um ON um.first_user = i.receiver_id AND um.second_user = i.sender_id
+        WHERE i.receiver_id = :id AND um.first_user = :id
+        ORDER BY i.created_at ASC
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id'=>$userId]);
+
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
 }
