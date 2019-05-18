@@ -13,11 +13,11 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-3 order-lg-2">
                                 <div class="card-profile-image">
-                                    <a href="{{ path('profile.view', { 'uuid': invite.receiver.getId }) }}">
-                                        {% if not invite.receiver.profilePicture %}
+                                    <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}">
+                                        {% if not invite.profile_picture %}
                                             <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
                                         {% else %}
-                                            <img src="{{ asset(invite.receiver.profilePicture) }}"
+                                            <img src="{{ asset(invite.profile_picture) }}"
                                                  class="rounded-circle">
                                         {% endif %}
                                     </a>
@@ -30,7 +30,7 @@
                             <div class="d-flex justify-content-between">
                                 {% if not invite.status %}
                                     <form action="{{ path('invitation_post') }}" method="POST">
-                                        <input type="hidden" name="uuid" value="{{ match.second_user }}">
+                                        <input type="hidden" name="uuid" value="{{ match.receiver_id }}">
                                         <button class="btn btn-sm
                                     btn-info">
                                             {{ 'Be flatmates'|trans }}
@@ -42,7 +42,7 @@
                                         {{ invite.status|trans }}
                                     </a>
                                 {% endif %}
-                                <a href="{{ path('profile.view', { 'uuid': invite.receiver.getId }) }}" class="btn
+                                <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}" class="btn
                                 btn-sm
                             btn-default">
                                     {{ 'Profile'|trans }}
@@ -56,7 +56,7 @@
                                             class="card-profile-stats d-flex justify-content-center"
                                     >
                                         <div>
-{#                                            <span class="heading">{{ invite.coeficient }}%</span>#}
+                                            <span class="heading">{{ invite.coeficient }}%</span>
                                             <span class="description">{{ 'Match percent'|trans }}</span>
                                         </div>
                                     </div>
@@ -64,11 +64,11 @@
                             </div>
                             <div class="text-center">
                                 <h3>
-                                    {{ invite.receiver.fullName }}
-                                    <span>&bull;</span> {{ invite.receiver.userAge }}
+                                    {{ invite.full_name }}
+                                    <span>&bull;</span> {{ date().diff(date(invite.date_of_birth)).y }}
                                 </h3>
                                 <div class="h5 font-weight-300">
-                                    <i class="ni location_pin mr-2"></i>{{ invite.receiver.city }}
+                                    <i class="ni location_pin mr-2"></i>{{ invite.city }}
                                 </div>
                             </div>
                         </div>
