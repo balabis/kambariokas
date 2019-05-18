@@ -45,11 +45,11 @@
                     <hr class="my-4" />
                 </div>
                 {% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
-                    <button class="btn btn-icon btn-3 btn-primary float-right" type="button">
+                    <a href="{{ path('app.message.new_thread', {'participantId': user.id}) }}" class="btn btn-primary float-right" role="button">
                         <span class="btn-inner--icon"><i class="far fa-comments"></i></span>
 
                         <span class="btn-inner--text">{{ 'Message'|trans }}</span>
-                    </button>
+                    </a>
                 {% endif %}
             </div>
         </div>

@@ -3,7 +3,7 @@
         <div id="inbox" class="contacts-outter-wrapper tab-pane active">
             <div class="contacts-outter">
                 <ul class="list-unstyled contacts">
-                    {% set basePath = '/dashboard/messages/' %}
+                    {% set basePath = '/dashboard/messages/thread/' %}
                     {% for thread in threads %}
                         <li class="vcentered info-combo {{ app.request.pathInfo == basePath ~ thread.id ? 'active'}}">
                             {% if not fos_message_is_read(thread) and fos_message_nb_unread() > 0 %}

@@ -30,7 +30,9 @@ services:
     App\Controller\MessagesController:
         arguments: ['@fos_message.provider.default',
                     '@fos_message.reply_form.factory',
-                    '@fos_message.reply_form.handler']
+                    '@fos_message.reply_form.handler',
+                    '@fos_message.composer.default',
+                    '@fos_message.sender.default']
 
     app.user_to_username_transformer:
         class: App\Form\DataTransformer\UserToUsernameTransformer
