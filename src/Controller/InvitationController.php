@@ -33,7 +33,7 @@ class InvitationController extends AbstractController
     /**
      * @Route("/invitation", name="invitation_post", methods={"POST"})
      */
-    public function index(EntityManagerInterface $em, Request $request)
+    public function index(EntityManagerInterface $em, Request $request, \Swift_Mailer $mailer)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
@@ -49,7 +49,21 @@ class InvitationController extends AbstractController
         $em->persist($invite);
         $em->flush();
 
+        $message = (new \Swift_Message('Kvietimas tapti kambariokais'))
+            ->setFrom('geriausiaskambariokas@gmail.com')
+            ->setTo($receiver->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'emails/invitation.html.twig',
+                    [
+                        'senderName' => $this->getUser()->getFullName(),
+                        'uuid'=>$uuid
+                    ]
+                ),
+                'text/html'
+            );
 
+        $mailer->send($message);
 
         return $this->redirect($request->headers->get('referer'));
     }
