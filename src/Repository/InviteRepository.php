@@ -19,32 +19,23 @@ class InviteRepository extends ServiceEntityRepository
         parent::__construct($registry, Invite::class);
     }
 
-    // /**
-    //  * @return Invite[] Returns an array of Invite objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findSentInvites($userId): array
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Invite
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT um.*, u.*, i.*
+        FROM invite i
+        LEFT JOIN user u ON i.receiver_id = u.id 
+        LEFT JOIN user_match um ON um.second_user = i.receiver_id
+        WHERE i.sender_id = :id AND um.first_user = :id
+        ORDER BY i.created_at ASC
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id'=>$userId]);
+
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
-    */
 }
