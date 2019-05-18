@@ -37,8 +37,8 @@ class UserMatchRepository extends ServiceEntityRepository
         SELECT um.*, user.*, invite.*
         FROM user_match um
         LEFT JOIN user ON um.second_user = user.id
-        LEFT JOIN invite ON invite.sender_id = :id 
-        AND invite.receiver_id = user.id 
+        LEFT JOIN invite ON (invite.sender_id = :id 
+        AND invite.receiver_id = user.id) OR (invite.sender_id = user.id AND invite.receiver_id = :id) 
         WHERE um.first_user = :id
         ORDER BY um.coeficient DESC
         ';
