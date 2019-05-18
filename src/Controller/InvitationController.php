@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Invite;
 use App\Entity\User;
-use App\Entity\UserMatch;
+use App\Services\EmailService;
 use App\Services\MatchesPaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,7 +33,7 @@ class InvitationController extends AbstractController
     /**
      * @Route("/invitation", name="invitation_post", methods={"POST"})
      */
-    public function index(EntityManagerInterface $em, Request $request, \Swift_Mailer $mailer)
+    public function index(EntityManagerInterface $em, Request $request, EmailService $emailService)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
@@ -43,27 +43,12 @@ class InvitationController extends AbstractController
         $userRepo = $em->getRepository(User::class);
         $receiver = $userRepo->findOneBy(['id'=>$uuid]);
 
-
         $invite->setReceiver($receiver);
         $invite->setStatus('pending');
         $em->persist($invite);
         $em->flush();
 
-        $message = (new \Swift_Message('Kvietimas tapti kambariokais'))
-            ->setFrom('geriausiaskambariokas@gmail.com')
-            ->setTo($receiver->getEmail())
-            ->setBody(
-                $this->renderView(
-                    'emails/invitation.html.twig',
-                    [
-                        'senderName' => $this->getUser()->getFullName(),
-                        'uuid'=>$uuid
-                    ]
-                ),
-                'text/html'
-            );
-
-        $mailer->send($message);
+        $emailService->sentInvitationEmail($receiver->getEmail(), $this->getUser());
 
         return $this->redirect($request->headers->get('referer'));
     }
