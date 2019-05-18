@@ -4,7 +4,7 @@
             class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark"
     >
         <div class="container px-4">
-            <a class="navbar-brand pt-1" href="{{ path('home') }}">
+            <a class="navbar-brand pt-1" href="{{ path('matched') }}">
                 {{ 'Brand name'|trans }}
             </a>
             <button
@@ -23,7 +23,7 @@
                 <div class="navbar-collapse-header d-md-none">
                     <div class="row">
                         <div class="col-6 collapse-brand">
-                            <a href="{{ path('home') }}">
+                            <a href="{{ path('matched') }}">
                                 {{ 'Brand name'|trans }}
                             </a>
                         </div>
@@ -57,12 +57,6 @@
                             <span>{{ 'Match'|trans }}</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('questionnaire_get') }}">
-                            <i class="fas fa-question"></i>&nbsp;
-                            <span>{{ 'Questionnaire'|trans }}</span>
-                        </a>
-                    </li>
                     <li>
                         <a class="nav-link" href="{{ path('app.message.inbox') }}" class="dropdown-item">
                             <i class="far fa-envelope"></i>
@@ -83,14 +77,15 @@
                         >
                             <div class="media align-items-center">
                                 <span class="avatar avatar-sm rounded-circle">
-                                    {% if not app.user.profilepicture %}
+                                    {% if not app.user.profilePicture %}
                                         <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
                                     {% else %}
-                                        <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
+                                        <img src="{{ asset(app.user.profilePicture) }}" class="rounded-circle">
                                     {% endif %}
                                 </span>
                                 <div class="media-body ml-2 d-none d-lg-block">
-                                    <span class="mb-0 text-sm  font-weight-bold">{{ app.user.email }}</span>
+                                    <span class="mb-0 text-sm  font-weight-bold">{{ app.user.fullName ? app.user
+                                        .fullName : app.user.email }}&nbsp;<i class="fas fa-caret-down"></i></span>
                                     <span>
                                     {% if fos_message_nb_unread() > 0 %}
                                         <img src="{{ asset('newmessage.png') }}" >

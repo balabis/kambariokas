@@ -22,15 +22,17 @@ class UserCompareService
     {
         $selectedUsers = [];
         $userCoefficientAverage = $this->getUserCoefficientAverage($user);
-
-        foreach ($users as $oneUser) {
-            $oneUserCoefficient = $this->getUserCoefficientAverage($oneUser);
-            if (!empty($oneUserCoefficient)) {
-                if ($this->coincidenceCoefficient(
-                    $userCoefficientAverage,
-                    $oneUserCoefficient
-                ) > $this->minCoefficient) {
-                    $selectedUsers[] = $oneUser;
+        if (!empty($userCoefficientAverage)) {
+            foreach ($users as $oneUser) {
+                $oneUserCoefficient =
+                    $this->getUserCoefficientAverage($oneUser);
+                if (!empty($oneUserCoefficient)) {
+                    if ($this->coincidenceCoefficient(
+                        $userCoefficientAverage,
+                        $oneUserCoefficient
+                    ) > $this->minCoefficient) {
+                        $selectedUsers[] = $oneUser;
+                    }
                 }
             }
         }

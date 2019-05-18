@@ -67,7 +67,7 @@ class UserController extends AbstractController
             $entityManager->merge($user);
             $entityManager->flush();
 
-            return $this->redirect($request->getUri());
+            return $this->redirectToRoute('matched');
         } elseif ($form->isSubmitted() && !$form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->refresh($user);

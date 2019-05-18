@@ -78,6 +78,12 @@ class User implements UserInterface, ParticipantInterface
     private $aboutme;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\QuestionnaireScore", inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $questionnaireScore;
+
+    /**
      * @return mixed
      */
     public function getAboutme()
@@ -233,6 +239,18 @@ class User implements UserInterface, ParticipantInterface
     public function setCity(?string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getQuestionnaireScore(): ?QuestionnaireScore
+    {
+        return $this->questionnaireScore;
+    }
+
+    public function setQuestionnaireScore(QuestionnaireScore $questionnaireScore): self
+    {
+        $this->questionnaireScore = $questionnaireScore;
 
         return $this;
     }

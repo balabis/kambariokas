@@ -22,7 +22,7 @@ class MatchController extends AbstractController
         $service->filter($this->getUser());
         $matches = $service->getPossibleMatch($this->getUser());
         $matchesPagination = $ps->getPagerfanta($matches);
-        $matchesPagination->setMaxPerPage(10);
+        $matchesPagination->setMaxPerPage(8);
         $matchesPagination->setCurrentPage($request->query->get('page', 1));
 
         return $this->render('match/index.html.twig', [

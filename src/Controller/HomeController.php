@@ -1,9 +1,11 @@
 <?php
 
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class HomeController extends AbstractController
 {
@@ -14,8 +16,6 @@ class HomeController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        return $this->render('home/index.html.twig', [
-
-        ]);
+        return $this->redirectToRoute('matched');
     }
 }
