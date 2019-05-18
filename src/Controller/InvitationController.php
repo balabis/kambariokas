@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Invite;
 use App\Entity\User;
+use App\Entity\UserMatch;
 use App\Services\MatchesPaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,11 +19,11 @@ class InvitationController extends AbstractController
     public function show(EntityManagerInterface $em, MatchesPaginationService $ps, Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $invitesRepo = $em->getRepository(Invite::class);
-        $invites = $invitesRepo->findBy(['sender'=>$this->getUser()]);
+        $invites = $invitesRepo->findSentInvites($this->getUser()->getId());
         $invitesPagination = $ps->getPagerfanta($invites);
         $invitesPagination->setMaxPerPage(8);
         $invitesPagination->setCurrentPage($request->query->get('page', 1));
-
+//        dd($invitesPagination);
         return $this->render('invitation/index.html.twig', [
             'invites'=>$invitesPagination
         ]);
@@ -41,10 +42,14 @@ class InvitationController extends AbstractController
 
         $userRepo = $em->getRepository(User::class);
         $receiver = $userRepo->findOneBy(['id'=>$uuid]);
+
+
         $invite->setReceiver($receiver);
         $invite->setStatus('pending');
         $em->persist($invite);
         $em->flush();
+
+
 
         return $this->redirect($request->headers->get('referer'));
     }
