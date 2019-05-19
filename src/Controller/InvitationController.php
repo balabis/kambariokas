@@ -7,14 +7,19 @@ use App\Entity\User;
 use App\Services\EmailService;
 use App\Services\MatchesPaginationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Security("is_granted('ROLE_USER')")
+ * @Route("/invitation")
+ */
 class InvitationController extends AbstractController
 {
     /**
-     * @Route("/invitations/{group}", name="invitation_get", methods={"GET"}, defaults={"group":"received"})
+     * @Route("/{group}", name="invitation_get", methods={"GET"}, defaults={"group":"received"})
      */
     public function show(
         $group,
@@ -22,8 +27,6 @@ class InvitationController extends AbstractController
         MatchesPaginationService $ps,
         Request $request
     ) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $invitesRepo = $em->getRepository(Invite::class);
         if ($group === 'sent') {
             $invites = $invitesRepo->findSentInvites($this->getUser()->getId());
@@ -42,14 +45,13 @@ class InvitationController extends AbstractController
     }
 
     /**
-     * @Route("/invitation/sent", name="invitation_sent", methods={"POST"})
+     * @Route("/sent", name="invitation_sent", methods={"POST"})
      */
     public function invite(
         EntityManagerInterface $em,
         Request $request,
         EmailService $emailService
     ) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
         $invite = new Invite();
         $invite->setSender($this->getUser());
@@ -71,11 +73,10 @@ class InvitationController extends AbstractController
     }
 
     /**
-     * @Route("/invitation/cancel", name="invitation_cancel", methods={"POST"})
+     * @Route("/cancel", name="invitation_cancel", methods={"POST"})
      */
     public function cancelInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
 
         $inviteRepo = $em->getRepository(Invite::class);
@@ -89,11 +90,10 @@ class InvitationController extends AbstractController
     }
 
     /**
-     * @Route("/invitation/decline", name="invitation_decline", methods={"POST"})
+     * @Route("/decline", name="invitation_decline", methods={"POST"})
      */
     public function declineInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
 
         $inviteRepo = $em->getRepository(Invite::class);
@@ -107,11 +107,10 @@ class InvitationController extends AbstractController
     }
 
     /**
-     * @Route("/invitation/accept", name="invitation_accept", methods={"POST"})
+     * @Route("/accept", name="invitation_accept", methods={"POST"})
      */
     public function acceptInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
 
         $inviteRepo = $em->getRepository(Invite::class);
@@ -129,7 +128,6 @@ class InvitationController extends AbstractController
      */
     public function cancelInvitationDecision(Request $request, EntityManagerInterface $em)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
 
         $inviteRepo = $em->getRepository(Invite::class);
