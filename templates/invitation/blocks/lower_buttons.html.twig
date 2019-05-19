@@ -1,0 +1,52 @@
+{% if invite.status == 'pending' and invite.sender_id != app.user.id %}
+    <div class="d-flex justify-content-between">
+        <form action="{{ path('invitation_decline') }}" method="POST">
+            <input type="hidden" name="uuid" value="{{ invite.second_user }}">
+            <button class="btn btn-sm
+                                    btn-danger">
+                {{ 'Decline'|trans }}
+            </button>
+        </form>
+        <form action="{{ path('invitation_accept') }}" method="POST">
+            <input type="hidden" name="uuid" value="{{ invite.second_user }}">
+            <button class="btn btn-sm
+                                    btn-success">
+                {{ 'Accept'|trans }}
+            </button>
+        </form>
+    </div>
+{% endif %}
+
+{% if invite.status == 'declined' %}
+    {% if invite.sender_id != app.user.id %}
+        <div>
+            <a class="btn btn-block btn-danger mb-1">Jūs atmetėte kvietimą</a>
+            <form action="{{ path('invitation_decision_cancel') }}" method="POST">
+                <input type="hidden" name="uuid" value="{{ invite.second_user }}">
+                <button class="btn btn-block
+        btn-info">
+                    Atšaukti atmetimą
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <a class="btn btn-block btn-danger">Jūsų kvietimas atmestas</a>
+    {% endif %}
+{% endif %}
+
+{% if invite.status == 'accepted' %}
+    {% if invite.sender_id != app.user.id %}
+        <div>
+            <a class="btn btn-block btn-success mb-1">Jūs priėmėte kvietimą</a>
+            <form action="{{ path('invitation_decision_cancel') }}" method="POST">
+                <input type="hidden" name="uuid" value="{{ invite.second_user }}">
+                <button class="btn btn-block
+        btn-info">
+                    Atšaukti priėmimą
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <a class="btn btn-block btn-danger">Jūsų kvietimas atmestas</a>
+    {% endif %}
+{% endif %}

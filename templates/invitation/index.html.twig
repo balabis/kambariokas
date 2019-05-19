@@ -2,20 +2,18 @@
 
 {% block title %}{{ 'Invites'|trans }}{% endblock %}
 
-{% block pageHeading %}{{ 'Invites'|trans }}{% endblock %}
+{% block pageHeading %}{{ 'Invites'|trans }} - {{ group|trans }}{% endblock %}
 
 {% block mainContent %}
     <div class="container">
         <div class="mt--9 mb-8 text-center">
             <a href="{{ path('invitation_get', {group: 'received'}) }}" class="btn btn-default mx-2"><i class="fas
                 fa-inbox"></i>
-                Gauti</a>
+                {{ 'received'|trans }}</a>
             <a href="{{ path('invitation_get', {group: 'sent'}) }}" class="btn btn-default mx-2"><i class="fas
-                fa-paper-plane"></i> Išsiųsti</a>
+                fa-paper-plane"></i> {{ 'sent'|trans }}</a>
         </div>
         {% if invites is not empty %}
-
-
             <div class="d-flex mb-1 flex-wrap justify-content-center">
                 {% for invite in invites.currentPageResults %}
                     <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
@@ -38,32 +36,8 @@
                                 class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
                         >
                             <div class="d-flex justify-content-between">
-                                {% if invite.status == 'pending' %}
-                                    {% if invite.sender_id == app.user.id %}
-                                        <form action="{{ path('invitation_cancel') }}" method="POST">
-                                            <input type="hidden" name="uuid" value="{{ invite.second_user }}">
-                                            <button class="btn btn-sm  btn-danger">
-                                                {{ 'Cancel invitation'|trans }}
-                                            </button>
-                                        </form>
-                                        <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}" class="btn
-                                        btn-sm btn-default">
-                                            {{ 'Profile'|trans }}
-                                        </a>
-                                    {% else %}
-                                        <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}" class="btn
-                                        btn-sm btn-block btn-default">
-                                            {{ 'Profile'|trans }}
-                                        </a>
-                                    {% endif %}
-                                {% else %}
-                                        <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}"
-                                           class="btn btn-block btn-sm btn-default">
-                                            {{ 'Profile'|trans }}
-                                        </a>
 
-                                {% endif %}
-
+                                {% include 'invitation/blocks/upper_buttons.html.twig' %}
 
                             </div>
                         </div>
@@ -90,66 +64,7 @@
                                 </div>
                             </div>
 
-                            {% if invite.status == 'pending' and invite.sender_id != app.user.id %}
-                                <div class="d-flex justify-content-between">
-
-                                    <form action="{{ path('invitation_decline') }}" method="POST">
-                                        <input type="hidden" name="uuid" value="{{ invite.second_user }}">
-                                        <button class="btn btn-sm
-                                    btn-danger">
-                                            {{ 'Decline'|trans }}
-                                        </button>
-                                    </form>
-
-
-                                    <form action="{{ path('invitation_accept') }}" method="POST">
-                                        <input type="hidden" name="uuid" value="{{ invite.second_user }}">
-                                        <button class="btn btn-sm
-                                    btn-success">
-                                            {{ 'Accept'|trans }}
-                                        </button>
-                                    </form>
-
-                                </div>
-                            {% endif %}
-                            {% if invite.status == 'declined' %}
-                                {% if invite.sender_id != app.user.id %}
-                                    <div>
-                                        <a class="btn btn-block btn-danger mb-1">Jūs atmetėte kvietimą</a>
-                                        <form action="{{ path('invitation_decision_cancel') }}" method="POST">
-                                            <input type="hidden" name="uuid" value="{{ invite.second_user }}">
-                                            <button class="btn btn-block
-                                    btn-info">
-                                                Atšaukti atmetimą
-                                            </button>
-                                        </form>
-
-                                    </div>
-
-
-
-                                {% else %}
-                                    <a class="btn btn-block btn-danger">Jūsų kvietimas atmestas</a>
-                                {% endif %}
-                            {% endif %}
-                            {% if invite.status == 'accepted' %}
-                                {% if invite.sender_id != app.user.id %}
-                                    <div>
-                                        <a class="btn btn-block btn-success mb-1">Jūs priėmėte kvietimą</a>
-                                        <form action="{{ path('invitation_decision_cancel') }}" method="POST">
-                                            <input type="hidden" name="uuid" value="{{ invite.second_user }}">
-                                            <button class="btn btn-block
-                                    btn-info">
-                                                Atšaukti priėmimą
-                                            </button>
-                                        </form>
-                                    </div>
-
-                                {% else %}
-                                    <a class="btn btn-block btn-danger">Jūsų kvietimas atmestas</a>
-                                {% endif %}
-                            {% endif %}
-
+                            {% include 'invitation/blocks/lower_buttons.html.twig' %}
 
                         </div>
                     </div>

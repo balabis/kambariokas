@@ -145,7 +145,7 @@
                                     >
                                         <span
                                                 style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva,
-                                                sans-serif; color: #825ee4; font-size: 52px; line-height: 60px;
+                                                sans-serif; color: #825ee4; font-size: 45px; line-height: 60px;
                                                 font-weight: 300; letter-spacing: -1.5px; text-decoration: none;"
                                         >rumis&#173;.io
                                         </span
@@ -191,8 +191,7 @@
                                     >
                         <span
                                 style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">
-                                    Informuojame, kad rumis&#173;.io vartotojas {{ senderName }} išsiuntė Jums
-                                    kvietimą tapti kambariokais.
+                                    {{ firstParagraph }}
                         </span
                         >
                                     </font>
@@ -208,8 +207,7 @@
                                     >
                         <span
                                 style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">
-                            Norėdami peržiūrėti ir patvirtinti arba atmesti kvietimą spauskite mygtuką apačioje. Linkime
-                            geros dienos!
+                            {{ secondParagraph }}
                         </span
                         >
                                     </font>
@@ -228,7 +226,7 @@
                                         <tr>
                                             <td align="center" valign="top">
                                                 <a
-                                                        href="{{ absolute_url(path('profile.view', {'uuid': uuid})) }}"
+                                                        href="{{ absolute_url(path('invitation_get')) }}"
                                                         target="_blank"
                                                         style="display: block; border: 1px solid #27cbcc; border-radius: 4px; padding: 12px 23px; font-family: 'Source Sans Pro', Arial, Verdana, Tahoma, Geneva, sans-serif; color: #ffffff; font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;"
                                                 >
