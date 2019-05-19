@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use FOS\MessageBundle\Model\ParticipantInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -82,6 +84,22 @@ class User implements UserInterface, ParticipantInterface
      * @ORM\JoinColumn(nullable=true)
      */
     private $questionnaireScore;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invite", mappedBy="sender")
+     */
+    private $invitesSentTo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invite", mappedBy="receiver")
+     */
+    private $receivedInvitesFrom;
+
+    public function __construct()
+    {
+        $this->invitesSentTo = new ArrayCollection();
+        $this->receivedInvitesFrom = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -265,5 +283,67 @@ class User implements UserInterface, ParticipantInterface
         }
 
         return null;
+    }
+
+    /**
+     * @return Collection|Invite[]
+     */
+    public function getInvitesSentTo(): Collection
+    {
+        return $this->invitesSentTo;
+    }
+
+    public function addInvitesSentTo(Invite $invitesSentTo): self
+    {
+        if (!$this->invitesSentTo->contains($invitesSentTo)) {
+            $this->invitesSentTo[] = $invitesSentTo;
+            $invitesSentTo->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitesSentTo(Invite $invitesSentTo): self
+    {
+        if ($this->invitesSentTo->contains($invitesSentTo)) {
+            $this->invitesSentTo->removeElement($invitesSentTo);
+            // set the owning side to null (unless already changed)
+            if ($invitesSentTo->getSender() === $this) {
+                $invitesSentTo->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invite[]
+     */
+    public function getReceivedInvitesFrom(): Collection
+    {
+        return $this->receivedInvitesFrom;
+    }
+
+    public function addReceivedInvitesFrom(Invite $receivedInvitesFrom): self
+    {
+        if (!$this->receivedInvitesFrom->contains($receivedInvitesFrom)) {
+            $this->receivedInvitesFrom[] = $receivedInvitesFrom;
+            $receivedInvitesFrom->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedInvitesFrom(Invite $receivedInvitesFrom): self
+    {
+        if ($this->receivedInvitesFrom->contains($receivedInvitesFrom)) {
+            $this->receivedInvitesFrom->removeElement($receivedInvitesFrom);
+            // set the owning side to null (unless already changed)
+            if ($receivedInvitesFrom->getReceiver() === $this) {
+                $receivedInvitesFrom->setReceiver(null);
+            }
+        }
+
+        return $this;
     }
 }

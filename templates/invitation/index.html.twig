@@ -1,0 +1,83 @@
+{% extends 'main_layout.html.twig' %}
+
+{% block title %}{{ 'Invites'|trans }}{% endblock %}
+
+{% block pageHeading %}{{ 'Invites'|trans }} - {{ group|trans }}{% endblock %}
+
+{% block mainContent %}
+    <div class="container">
+        <div class="mt--9 mb-8 text-center">
+            <a href="{{ path('invitation_get', {group: 'received'}) }}" class="btn btn-default mx-2"><i class="fas
+                fa-inbox"></i>
+                {{ 'received'|trans }}</a>
+            <a href="{{ path('invitation_get', {group: 'sent'}) }}" class="btn btn-default mx-2"><i class="fas
+                fa-paper-plane"></i> {{ 'sent'|trans }}</a>
+        </div>
+        {% if invites is not empty %}
+            <div class="d-flex mb-1 flex-wrap justify-content-center">
+                {% for invite in invites.currentPageResults %}
+                    <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 order-lg-2">
+                                <div class="card-profile-image">
+                                    <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}">
+                                        {% if not invite.profile_picture %}
+                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}"
+                                                 class="rounded-circle">
+                                        {% else %}
+                                            <img src="{{ asset(invite.profile_picture) }}"
+                                                 class="rounded-circle">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                                class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
+                        >
+                            <div class="d-flex justify-content-between">
+
+                                {% include 'invitation/blocks/upper_buttons.html.twig' %}
+
+                            </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="row">
+                                <div class="col">
+                                    <div
+                                            class="card-profile-stats d-flex justify-content-center"
+                                    >
+                                        <div>
+                                            <span class="heading">{{ invite.coeficient }}%</span>
+                                            <span class="description">{{ 'Match percent'|trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h3>
+                                    {{ invite.full_name }}
+                                    <span>&bull;</span> {{ date().diff(date(invite.date_of_birth)).y }}
+                                </h3>
+                                <div class="h5 font-weight-300">
+                                    <i class="ni location_pin mr-2"></i>{{ invite.city }}
+                                </div>
+                            </div>
+
+                            {% include 'invitation/blocks/lower_buttons.html.twig' %}
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if invites.haveToPaginate %}
+                <div class="pagerfanta">
+                    {{ pagerfanta(invites, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
+                        'css_container_class': 'pagination justify-content-center','omitFirstPage': true}) }}
+                </div>
+            {% endif %}
+
+        {% endif %}
+    </div>
+
+{% endblock %}
