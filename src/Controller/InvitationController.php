@@ -25,12 +25,9 @@ class InvitationController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $invitesRepo = $em->getRepository(Invite::class);
-        if ($group === 'sent')
-        {
+        if ($group === 'sent') {
             $invites = $invitesRepo->findSentInvites($this->getUser()->getId());
-
-        } elseif ($group === 'received')
-        {
+        } elseif ($group === 'received') {
             $invites = $invitesRepo->findReceivedInvites($this->getUser()->getId());
         }
 
@@ -40,9 +37,9 @@ class InvitationController extends AbstractController
 
         return $this->render('invitation/index.html.twig', [
             'invites' => $invitesPagination,
+            'group' => $group
         ]);
     }
-
 
     /**
      * @Route("/invitation/sent", name="invitation_sent", methods={"POST"})
@@ -65,8 +62,10 @@ class InvitationController extends AbstractController
         $em->persist($invite);
         $em->flush();
 
-        $emailService->sentInvitationEmail($receiver->getEmail(),
-            $this->getUser());
+        $emailService->sentInvitationEmail(
+            $receiver->getEmail(),
+            $this->getUser()
+        );
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -74,34 +73,35 @@ class InvitationController extends AbstractController
     /**
      * @Route("/invitation/cancel", name="invitation_cancel", methods={"POST"})
      */
-    public function cancelInvitation(Request $request, EntityManagerInterface $em)
+    public function cancelInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
-
 
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy(['sender'=>$this->getUser(), 'receiver'=>$uuid]);
         $em->remove($invite);
         $em->flush();
 
-        return $this->redirect($request->headers->get('referer'));
+        $emailService->sentInviteCancelEmail($invite->getReceiver()->getEmail(), $this->getUser());
 
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**
      * @Route("/invitation/decline", name="invitation_decline", methods={"POST"})
      */
-    public function declineInvitation(Request $request, EntityManagerInterface $em)
+    public function declineInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
 
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy(['receiver'=>$this->getUser(), 'sender'=>$uuid]);
-
         $invite->setStatus('declined');
         $em->flush();
+
+        $emailService->sentDeclineInvitationEmail($invite->getSender()->getEmail(), $this->getUser());
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -109,16 +109,17 @@ class InvitationController extends AbstractController
     /**
      * @Route("/invitation/accept", name="invitation_accept", methods={"POST"})
      */
-    public function acceptInvitation(Request $request, EntityManagerInterface $em)
+    public function acceptInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $uuid = $request->request->get('uuid');
 
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy(['receiver'=>$this->getUser(), 'sender'=>$uuid]);
-
         $invite->setStatus('accepted');
         $em->flush();
+
+        $emailService->sentAcceptInvitationEmail($invite->getSender()->getEmail(), $this->getUser());
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -133,7 +134,6 @@ class InvitationController extends AbstractController
 
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy(['receiver'=>$this->getUser(), 'sender'=>$uuid]);
-
         $invite->setStatus('pending');
         $em->flush();
 
