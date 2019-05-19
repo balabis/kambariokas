@@ -75,7 +75,6 @@ class MessagesController extends AbstractController
         $inboxThreads = $this->provider->getInboxThreads();
         $sentThreads = $this->provider->getSentThreads();
         $threads = array_unique(array_merge($inboxThreads, $sentThreads), SORT_REGULAR);
-
         $thread = $this->provider->getThread($threadId);
 
         $form = $this->replyMessageFormFactoryformFactory->create($thread);
@@ -100,8 +99,11 @@ class MessagesController extends AbstractController
      */
     public function newThreadAction(UserService $userService, $participantId)
     {
+        $inboxThreads = $this->provider->getInboxThreads();
+        $sentThreads = $this->provider->getSentThreads();
+        $deletedThreads = $this->provider->getDeletedThreads();
+        $threads = array_unique(array_merge($inboxThreads, $sentThreads, $deletedThreads), SORT_REGULAR);
         $recipient = $userService->getUserByUUID($participantId);
-        $threads = $this->provider->getInboxThreads();
 
         // If there is a thread with this user already, return it.
         foreach ($threads as $thread) {
