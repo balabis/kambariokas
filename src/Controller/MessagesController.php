@@ -6,6 +6,8 @@ namespace App\Controller;
 use App\Services\UserService;
 use Doctrine\Common\Collections\Criteria;
 use FOS\MessageBundle\Composer\Composer;
+use FOS\MessageBundle\Deleter\Deleter;
+use FOS\MessageBundle\EntityManager\ThreadManager;
 use FOS\MessageBundle\FormFactory\ReplyMessageFormFactory;
 use FOS\MessageBundle\FormHandler\ReplyMessageFormHandler;
 use FOS\MessageBundle\Provider\ProviderInterface;
@@ -25,13 +27,17 @@ class MessagesController extends AbstractController
         ReplyMessageFormFactory $replyMessageFormFactoryformFactory,
         ReplyMessageFormHandler $replyMessageFormHandlerformHandler,
         Composer $composer,
-        Sender $sender
+        Sender $sender,
+        Deleter $deleter,
+        ThreadManager $threadManager
     ) {
         $this->provider = $provider;
         $this->replyMessageFormFactoryformFactory = $replyMessageFormFactoryformFactory;
         $this->replyMessageFormHandlerformHandler = $replyMessageFormHandlerformHandler;
         $this->composer = $composer;
         $this->sender = $sender;
+        $this->deleter = $deleter;
+        $this->threadManager = $threadManager;
     }
 
     protected $provider;
@@ -39,6 +45,8 @@ class MessagesController extends AbstractController
     protected $replyMessageFormHandlerformHandler;
     protected $composer;
     protected $sender;
+    protected $deleter;
+    protected $threadManager;
 
     /**
      * @Route("/", name="app.message.inbox")
@@ -138,13 +146,13 @@ class MessagesController extends AbstractController
     /**
      * @Route("/{threadId}/delete", name="app.message.delete_thread")
      */
-    public function deletedAction()
+    public function deletedAction($threadId)
     {
-        $threads = $this->provider->getDeletedThreads();
+        $thread = $this->provider->getThread($threadId);
+        $this->deleter->markAsDeleted($thread);
+        $this->threadManager->saveThread($thread);
 
-        return $this->render('@FOSMessage/Message/deleted.html.twig', array(
-            'threads' => $threads,
-        ));
+        return new RedirectResponse($this->container->get('router')->generate('app.message.inbox'));
     }
 
 
