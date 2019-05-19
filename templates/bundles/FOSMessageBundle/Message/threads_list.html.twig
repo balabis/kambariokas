@@ -5,18 +5,21 @@
                 <ul class="list-unstyled contacts">
                     {% set basePath = '/dashboard/messages/thread/' %}
                     {% for thread in threads %}
+                        {% set participant1 = thread.participants[0] %}
+                        {% set participant2 = thread.participants[1] %}
                         <li class="vcentered info-combo {{ app.request.pathInfo == basePath ~ thread.id ? 'active'}}">
                             {% if not fos_message_is_read(thread) and fos_message_nb_unread() > 0 %}
                                 <div class="message-count">{{ fos_message_nb_unread() }}</div>
                             {% endif %}
-                            <img alt="" class="img-circle medium-image" src="{{ asset(app.user.profilePicture) }}">
+                            <img alt=""
+                                 class="img-circle medium-image"
+                                 src="{{ asset(app.user.username == participant1.username ? participant2.profilePicture : participant1.profilePicture) }}"
+                            >
                             <div class="vcentered info-combo">
                                 <a href="{{ url('app.message.thread', {'threadId': thread.id}) }}" >
                                 <span>
-                                    {% set participant1 = thread.participants[0].username %}
-                                    {% set participant2 = thread.participants[1].username %}
                                     <h4 class="no-margin-bottom name">
-                                        {{ app.user.username == participant1 ? participant2 : participant1 }}
+                                        {{ app.user.username == participant1.username ? participant2.username : participant1.username }}
                                     </h4>
                                     <h6>
                                         {{ thread.lastMessage.body }}
