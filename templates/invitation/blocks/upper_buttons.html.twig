@@ -1,0 +1,25 @@
+{% if invite.status == 'pending' %}
+    {% if invite.sender_id == app.user.id %}
+        <form action="{{ path('invitation_cancel') }}" method="POST">
+            <input type="hidden" name="uuid" value="{{ invite.second_user }}">
+            <button class="btn btn-sm  btn-danger">
+                {{ 'Cancel invitation'|trans }}
+            </button>
+        </form>
+        <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}" class="btn
+                                        btn-sm btn-default">
+            {{ 'Profile'|trans }}
+        </a>
+    {% else %}
+        <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}" class="btn
+                                        btn-sm btn-block btn-default">
+            {{ 'Profile'|trans }}
+        </a>
+    {% endif %}
+{% else %}
+    <a href="{{ path('profile.view', { 'uuid': invite.receiver_id }) }}"
+       class="btn btn-block btn-sm btn-default">
+        {{ 'Profile'|trans }}
+    </a>
+
+{% endif %}
