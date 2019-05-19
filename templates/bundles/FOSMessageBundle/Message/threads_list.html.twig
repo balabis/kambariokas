@@ -9,7 +9,7 @@
                             {% if not fos_message_is_read(thread) and fos_message_nb_unread() > 0 %}
                                 <div class="message-count">{{ fos_message_nb_unread() }}</div>
                             {% endif %}
-                            <img alt="" class="img-circle medium-image" src="{{ asset(app.user.profilepicture) }}">
+                            <img alt="" class="img-circle medium-image" src="{{ asset(app.user.profilePicture) }}">
                             <div class="vcentered info-combo">
                                 <a href="{{ url('app.message.thread', {'threadId': thread.id}) }}" >
                                 <span>
