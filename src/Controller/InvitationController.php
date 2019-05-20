@@ -33,14 +33,15 @@ class InvitationController extends AbstractController
         } elseif ($group === 'received') {
             $invites = $invitesRepo->findReceivedInvites($this->getUser()->getId());
         }
-
+        $totalInvitesNumber = $invitesRepo->countAllInvites($this->getUser()->getId());
         $invitesPagination = $ps->getPagerfanta($invites);
         $invitesPagination->setMaxPerPage(8);
         $invitesPagination->setCurrentPage($request->query->get('page', 1));
 
         return $this->render('invitation/index.html.twig', [
             'invites' => $invitesPagination,
-            'group' => $group
+            'group' => $group,
+            'totalInvitesNumber' => $totalInvitesNumber
         ]);
     }
 

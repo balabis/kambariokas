@@ -58,4 +58,21 @@ class InviteRepository extends ServiceEntityRepository
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
+
+    public function countAllInvites($userId): string
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT COUNT(*)
+        FROM invite i
+        WHERE i.receiver_id = :id OR i.sender_id = :id
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id'=>$userId]);
+
+        return $stmt->fetchColumn();
+    }
 }
