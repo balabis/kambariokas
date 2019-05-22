@@ -9,9 +9,10 @@
         <div class="mt--9 mb-8 text-center">
             <a href="{{ path('invitation_get', {group: 'received'}) }}" class="btn btn-default mx-2"><i class="fas
                 fa-inbox"></i>
-                {{ 'received'|trans }}</a>
+                {{ 'received'|trans }} ({{ group == 'received' ? invites.count : totalInvitesNumber - invites.count }})</a>
             <a href="{{ path('invitation_get', {group: 'sent'}) }}" class="btn btn-default mx-2"><i class="fas
-                fa-paper-plane"></i> {{ 'sent'|trans }}</a>
+                fa-paper-plane"></i> {{ 'sent'|trans }} ({{ group == 'sent' ? invites.count : totalInvitesNumber -
+                invites.count }})</a>
         </div>
         {% if invites is not empty %}
             <div class="d-flex mb-1 flex-wrap justify-content-center">
