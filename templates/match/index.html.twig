@@ -7,6 +7,7 @@
 {% block mainContent %}
     <div class="container">
         {% if matches is not empty %}
+            {% include match/blocks/match_filter.html.twig %}
             <div class="d-flex mb-1 flex-wrap justify-content-center">
                 {% for match in matches.currentPageResults %}
                 <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
