@@ -49,6 +49,32 @@ class UserType extends AbstractType
                     return $value;
                 },
             ])
+            ->add('cityPart', TextareaType::class, [
+                'label' => 'City part',
+                'required' => false
+                ])
+            ->add('budget', ChoiceType::class, [
+                'choices' => array('iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn'),
+                'choice_label' => function ($choice, $key, $value) {
+                    return $value;
+                },
+                'required' => false
+            ])
+            ->add('occupation', ChoiceType::class, [
+                'choices' => array('Moksleivis', 'Studentas', 'Dirbantis', 'Bedarbis'),
+                'choice_label' => function ($choice, $key, $value) {
+                    return $value;
+                },
+                'required' => false
+            ])
+            ->add('university', TextareaType::class, [
+                'label' => 'University',
+                'required' => false
+            ])
+            ->add('hobbies', TextareaType::class, [
+                'label' => 'Hobbies',
+                'required' => false
+            ])
             ->add('aboutme', TextareaType::class, [
                 'label' => 'About me',
                 'required' => false,
@@ -57,7 +83,9 @@ class UserType extends AbstractType
                 'label' => 'Profile picture',
                 'data_class' => null,
                 'required' => false,
-            ]);
+            ])
+
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
