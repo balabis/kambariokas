@@ -2,11 +2,11 @@
 
 namespace App\Form;
 
-use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormTypeInterface;
 
 class MatchFilterFormType extends AbstractType
 {
@@ -19,6 +19,29 @@ class MatchFilterFormType extends AbstractType
                   'Male' => 'male',
                   'Female' => 'female',
                   ],
-              ]);
+              ])
+            ->add('minAge', NumberType::class, [
+                'attr' => [
+                    'min' => 10,
+                    'max'=>80,
+                    ],
+                'required' => false
+            ])
+            ->add('maxAge', NumberType::class, [
+                'attr' => [
+                    'min' => 10,
+                    'max'=>80,
+                ],
+                'required' =>false
+
+            ])
+            ->add("MatchPercent", NumberType::class, [
+                'attr' => [
+                    'min' => 50,
+                    'max'=>100,
+                ],
+                'required' =>false
+            ])
+            ->add('Save', SubmitType::class);
     }
 }
