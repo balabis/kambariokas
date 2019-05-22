@@ -30,10 +30,8 @@ class MatchController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             var_dump($form->getData());
-         //   $form->setData(["MatchPercent" => 0]);
+
             $service->filter($this->getUser(), $form->getData());
-
-
         }
 
         $matches = $service->getPossibleMatch($this->getUser());

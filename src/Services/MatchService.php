@@ -32,7 +32,7 @@ class MatchService
     {
         $this->deleteUserInfoAboutMatches($user);
 
-        $users = $this->entityManager->getRepository(User::class)->findMatchesByCity($user->getCity(), $user->getId());
+        $users = $this->entityManager->getRepository(User::class)->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
 
         if (!empty($users)) {
             $filteredUsers = $this->compare->filterByAnswers($users, $user, $formParameters['MatchPercent']);
