@@ -18,8 +18,12 @@ class UserCompareService
         $this->minCoefficient = 50;
     }
 
-    public function filterByAnswers($users, User $user): array
+    public function filterByAnswers($users, User $user, ?int $filterCoefficient): array
     {
+        if ($filterCoefficient != null) {
+            $this->minCoefficient = $filterCoefficient;
+        }
+
         $selectedUsers = [];
         $userCoefficientAverage = $this->getUserCoefficientAverage($user);
         if (!empty($userCoefficientAverage)) {
@@ -30,7 +34,7 @@ class UserCompareService
                     if ($this->coincidenceCoefficient(
                         $userCoefficientAverage,
                         $oneUserCoefficient
-                    ) > $this->minCoefficient) {
+                    ) >= $this->minCoefficient) {
                         $selectedUsers[] = $oneUser;
                     }
                 }

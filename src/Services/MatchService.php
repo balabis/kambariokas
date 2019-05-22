@@ -28,13 +28,14 @@ class MatchService
         $this->userMatchRepository = $userMatchRepository;
     }
 
-    public function filter(User $user) : void
+    public function filter(User $user, array $formParameters) : void
     {
         $this->deleteUserInfoAboutMatches($user);
 
         $users = $this->entityManager->getRepository(User::class)->findMatchesByCity($user->getCity(), $user->getId());
+
         if (!empty($users)) {
-            $filteredUsers = $this->compare->filterByAnswers($users, $user);
+            $filteredUsers = $this->compare->filterByAnswers($users, $user, $formParameters['MatchPercent']);
         }
 
         if (!empty($filteredUsers)) {
