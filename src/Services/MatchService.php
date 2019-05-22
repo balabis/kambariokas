@@ -16,16 +16,20 @@ class MatchService
 
     private $userMatchRepository;
 
+    private $ageFiltrationService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         CityService $cityService,
         UserCompareService $compareService,
-        UserMatchRepository $userMatchRepository
+        UserMatchRepository $userMatchRepository,
+        AgeFiltrationService $ageFiltrationService
     ) {
         $this->entityManager = $entityManager;
         $this->city = $cityService;
         $this->compare = $compareService;
         $this->userMatchRepository = $userMatchRepository;
+        $this->ageFiltrationService = $ageFiltrationService;
     }
 
     public function filter(User $user, array $formParameters) : void
@@ -33,6 +37,10 @@ class MatchService
         $this->deleteUserInfoAboutMatches($user);
 
         $users = $this->entityManager->getRepository(User::class)->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
+
+        if (!empty($users) && ($formParameters['minAge'] != null && $formParameters['maxAge'] != null)) {
+            $users = $this->ageFiltrationService->filterByAge($users, [$formParameters["minAge"], $formParameters["maxAge"]]);
+        }
 
         if (!empty($users)) {
             $filteredUsers = $this->compare->filterByAnswers($users, $user, $formParameters['MatchPercent']);
