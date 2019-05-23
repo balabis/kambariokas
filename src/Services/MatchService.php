@@ -36,10 +36,13 @@ class MatchService
     {
         $this->deleteUserInfoAboutMatches($user);
 
-        $users = $this->entityManager->getRepository(User::class)->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
+        $users = $this->entityManager
+            ->getRepository(User::class)
+            ->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
 
-        if (!empty($users) && ($formParameters['minAge'] != null && $formParameters['maxAge'] != null)) {
-            $users = $this->ageFiltrationService->filterByAge($users, [$formParameters["minAge"], $formParameters["maxAge"]]);
+        if (!empty($users)) {
+            $users = $this
+                ->ageFiltrationService->filterByAge($users, [$formParameters["minAge"], $formParameters["maxAge"]]);
         }
 
         if (!empty($users)) {
