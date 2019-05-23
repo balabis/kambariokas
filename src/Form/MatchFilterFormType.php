@@ -15,7 +15,7 @@ class MatchFilterFormType extends AbstractType
         $builder
           ->add('gender', ChoiceType::class, [
               'choices' => [
-                  'Prefer not to say' => 'default',
+                  'Does not matter' => 'default',
                   'Male' => 'male',
                   'Female' => 'female',
                   ],
@@ -35,13 +35,27 @@ class MatchFilterFormType extends AbstractType
                 'required' =>false
 
             ])
+            ->add('minCost', NumberType::class, [
+                'attr' => [
+                    'min' => 10,
+                    'max'=>80,
+                ],
+                'required' => false
+            ])
+            ->add('maxCost', NumberType::class, [
+                'attr' => [
+                    'min' => 10,
+                    'max'=>80,
+                ],
+                'required' =>false
+
+            ])
             ->add("MatchPercent", NumberType::class, [
                 'attr' => [
                     'min' => 50,
                     'max'=>100,
                 ],
                 'required' =>false
-            ])
-            ->add('Save', SubmitType::class);
+            ]);
     }
 }

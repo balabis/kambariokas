@@ -1,3 +1,26 @@
 <h1>Filtras</h1>
 {{ form_start(filterForm) }}
+{{ form_row(filterForm.gender, {
+    attr: {class: 'form-control' }
+}) }}
+{{ form_row(filterForm.MatchPercent, {
+    attr: {class: 'form-control' }
+}) }}
+{{ form_row(filterForm.minAge, {
+    attr: {class: 'form-control' }
+}) }}
+{{ form_row(filterForm.maxAge, {
+    attr: {class: 'form-control' }
+}) }}
+{{ form_row(filterForm.minCost, {
+    attr: {class: 'form-control' }
+}) }}
+{{ form_row(filterForm.maxCost, {
+    attr: {class: 'form-control' }
+}) }}
+<div class="text-right">
+    <button type="submit" class="btn btn-primary my-4">
+        {{ 'Search'|trans }}
+    </button>
+</div>
 {{ form_end(filterForm) }}
