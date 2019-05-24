@@ -35,20 +35,12 @@ class MatchFilterFormType extends AbstractType
                 'required' =>false
 
             ])
-            ->add('minCost', NumberType::class, [
-                'attr' => [
-                    'min' => 10,
-                    'max'=>80,
-                ],
+            ->add('budget', ChoiceType::class, [
+                'choices' => array('iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn'),
+                'choice_label' => function ($choice, $key, $value) {
+                    return $value;
+                },
                 'required' => false
-            ])
-            ->add('maxCost', NumberType::class, [
-                'attr' => [
-                    'min' => 10,
-                    'max'=>80,
-                ],
-                'required' =>false
-
             ])
             ->add("MatchPercent", NumberType::class, [
                 'attr' => [
