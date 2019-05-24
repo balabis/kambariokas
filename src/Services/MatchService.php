@@ -34,7 +34,7 @@ class MatchService
 
     public function filter(User $user, array $formParameters) : void
     {
-        $this->deleteUserInfoAboutMatches($user);
+       // $this->deleteUserInfoAboutMatches($user);
 
         $users = $this->entityManager
             ->getRepository(User::class)

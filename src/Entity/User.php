@@ -90,6 +90,34 @@ class User implements UserInterface
      */
     private $receivedInvitesFrom;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="100")
+     */
+    private $cityPart;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $budget;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $occupation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="255")
+     */
+    private $hobbies;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="100")
+     */
+    private $university;
+
     public function __construct()
     {
         $this->invitesSentTo = new ArrayCollection();
@@ -331,6 +359,66 @@ class User implements UserInterface
                 $receivedInvitesFrom->setReceiver(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCityPart(): ?string
+    {
+        return $this->cityPart;
+    }
+
+    public function setCityPart(?string $cityPart): self
+    {
+        $this->cityPart = $cityPart;
+
+        return $this;
+    }
+
+    public function getBudget(): ?string
+    {
+        return $this->budget;
+    }
+
+    public function setBudget(?string $budget): self
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    public function getOccupation(): ?string
+    {
+        return $this->occupation;
+    }
+
+    public function setOccupation(?string $occupation): self
+    {
+        $this->occupation = $occupation;
+
+        return $this;
+    }
+
+    public function getHobbies(): ?string
+    {
+        return $this->hobbies;
+    }
+
+    public function setHobbies(?string $hobbies): self
+    {
+        $this->hobbies = $hobbies;
+
+        return $this;
+    }
+
+    public function getUniversity(): ?string
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?string $university): self
+    {
+        $this->university = $university;
 
         return $this;
     }
