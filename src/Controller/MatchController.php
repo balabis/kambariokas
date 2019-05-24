@@ -22,15 +22,11 @@ class MatchController extends AbstractController
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-
-
         $form = $this->createForm(MatchFilterFormType::class);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            var_dump($form->getData());
-
             $service->filter($this->getUser(), $form->getData());
         }
 

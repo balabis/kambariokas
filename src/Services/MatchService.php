@@ -38,12 +38,12 @@ class MatchService
 
     public function filter(User $user, array $formParameters) : void
     {
-       // $this->deleteUserInfoAboutMatches($user);
+        $this->deleteUserInfoAboutMatches($user);
 
         $users = $this->entityManager
             ->getRepository(User::class)
             ->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
-        
+
         if ($formParameters["budget"] != null) {
             $users = $this->budgetFiltrationService->filterByBudget($users, $formParameters["budget"]);
         }
@@ -54,11 +54,11 @@ class MatchService
         }
 
         if (!empty($users)) {
-            $filteredUsers = $this->compare->filterByAnswers($users, $user, $formParameters['MatchPercent']);
+            $users = $this->compare->filterByAnswers($users, $user, $formParameters['MatchPercent']);
         }
 
-        if (!empty($filteredUsers)) {
-            $this->addNewMatchesToDatabase($filteredUsers, $user);
+        if (!empty($users)) {
+            $this->addNewMatchesToDatabase($users, $user);
         }
     }
 
