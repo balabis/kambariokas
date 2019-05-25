@@ -19,7 +19,7 @@
                                 <a href="{{ url('app.message.thread', {'threadId': thread.id}) }}" >
                                 <span>
                                     <h4 class="no-margin-bottom name">
-                                        {{ app.user.username == participant1.username ? participant2.username : participant1.username }}
+                                        {{ app.user.username == participant1.username ? participant2.fullName : participant1.fullName }}
                                     </h4>
                                     <h6>
                                         {{ thread.lastMessage.body }}
