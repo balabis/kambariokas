@@ -123,6 +123,12 @@ class User implements UserInterface, ParticipantInterface
      */
     private $university;
 
+    /**
+     * @ORM\Column(type="datetime", name="last_activity_at")
+     */
+    private $lastActivityAt;
+
+
     public function __construct()
     {
         $this->invitesSentTo = new ArrayCollection();
@@ -433,5 +439,23 @@ class User implements UserInterface, ParticipantInterface
         $this->university = $university;
 
         return $this;
+    }
+
+    public function setLastActivityAt($lastActivityAt)
+    {
+        $this->lastActivityAt = $lastActivityAt;
+    }
+
+    public function getLastActivityAt()
+    {
+        return $this->lastActivityAt;
+    }
+
+    public function isActiveNow()
+    {
+        // Delay during which the user will be considered as still active
+        $delay = new \DateTime('2 minutes ago');
+
+        return $this->getLastActivityAt() > $delay;
     }
 }

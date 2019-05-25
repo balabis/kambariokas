@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Form\UserType;
 use App\Services\FileUploader;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +26,22 @@ class UserController extends AbstractController
     {
         $user = $userService->getUserByUUID($uuid);
         $userAge = $userService->getUserAge($user);
+        $now = new DateTime();
+        $intervalFromLastVisit = $now->diff($user->getLastActivityAt());
+
+        if ($intervalFromLastVisit->d > 0) {
+            $lastVisit = $intervalFromLastVisit->d . 'd';
+        } elseif ($intervalFromLastVisit->h > 0) {
+            $lastVisit = $intervalFromLastVisit->h . 'h';
+        } else {
+            $lastVisit = $intervalFromLastVisit->i . 'min';
+        }
 
         return isset($user)
             ? $this->render('profile/profileView.html.twig', [
                 'user' => $user,
                 'userAge' => $userAge,
+                'lastVisit' => $lastVisit
             ])
             : $this->render('profile/profileNotFound.html.twig');
     }

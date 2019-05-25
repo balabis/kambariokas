@@ -35,3 +35,7 @@ footer .row {
 .user-match-card {
     max-width: 350px;
 }
+
+.fa-circle {
+    color: greenyellow;
+}
