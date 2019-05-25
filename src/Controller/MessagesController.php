@@ -125,6 +125,8 @@ class MessagesController extends AbstractController
 
         $this->sender->send($message);
         $sentThreads = $this->provider->getSentThreads();
+
+        // redirect to the newly created thread
         foreach ($sentThreads as $sentThread) {
             $threadParticipants = $sentThread->getParticipants();
             foreach ($threadParticipants as $threadParticipant) {
