@@ -1,0 +1,43 @@
+{% extends 'bundles/FOSMessageBundle/Message/inbox.html.twig' %}
+
+{% block thread %}
+    <div class="message-chat">
+        <div class="chat-body">
+            {% for message in messages %}
+                {% if (message.sender.id == app.user.id) %}
+                    <div class="message my-message">
+                {% else %}
+                    <div class="message info">
+                {% endif %}
+                    <img alt="" class="img-circle medium-image" src="{{ asset(message.sender.profilepicture) }}">
+
+                        <div class="message-body">
+                            <div class="message-body-inner">
+                                <div class="message-info">
+                                    <h4> {{ message.sender.fullName }} </h4>
+                                    <h5> <i class="far fa-clock"></i> {{ message.createdAt|date('Y-m-d H:i:s') }} </h5>
+                                </div>
+                                <hr>
+                                <div class="message-text">
+                                    {{ message.body }}
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+            {% endfor %}
+        </div>
+        <div class="chat-footer">
+            <form action="{{ url('app.message.thread', {'threadId': thread.id}) }}" method="post">
+                {{ form_row(form.body, {
+                    'label': false,
+                    'attr': { 'class': 'send-message-text' }
+                }) }}
+                <button type="submit" class="btn send-message-button btn-info">
+                    <i class="far fa-paper-plane"></i>
+                </button>
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

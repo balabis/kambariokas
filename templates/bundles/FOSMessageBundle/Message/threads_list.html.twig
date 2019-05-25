@@ -1,0 +1,52 @@
+{% if threads %}
+    <div class="tab-content">
+        <div id="inbox" class="contacts-outter-wrapper tab-pane active">
+            <div class="contacts-outter">
+                <ul class="list-unstyled contacts">
+                    {% set basePath = '/dashboard/messages/thread/' %}
+                    {% for thread in threads %}
+                        {% set participant1 = thread.participants[0] %}
+                        {% set participant2 = thread.participants[1] %}
+                        <li class="vcentered info-combo {{ app.request.pathInfo == basePath ~ thread.id ? 'active'}}">
+                            {% if not fos_message_is_read(thread) and fos_message_nb_unread() > 0 %}
+                                <div class="message-count">{{ fos_message_nb_unread() }}</div>
+                            {% endif %}
+                            <img alt=""
+                                 class="img-circle medium-image"
+                                 src="{{ asset(app.user.username == participant1.username ? participant2.profilePicture : participant1.profilePicture) }}"
+                            >
+                            <div class="vcentered info-combo">
+                                <a href="{{ url('app.message.thread', {'threadId': thread.id}) }}" >
+                                <span>
+                                    <h4 class="no-margin-bottom name">
+                                        {{ app.user.username == participant1.username ? participant2.fullName : participant1.fullName }}
+                                    </h4>
+                                    <h6>
+                                        {{ thread.lastMessage.body }}
+                                    </h6>
+                                </span>
+                                </a>
+                            </div>
+                            <div class="contacts-add">
+                                <span class="message-time"> {{ thread.lastMessage.createdAt|date('H:i') }}</span>
+                                {% if fos_message_can_delete_thread(thread) %}
+                                    {% if not fos_message_deleted_by_participant(thread) %}
+                                        {% set formAction %}{{ url('app.message.delete_thread', {'threadId': thread.id}) }}{% endset %}
+                                        {% set submitValue %}{% trans from 'FOSMessageBundle' %}delete{% endtrans %}{% endset %}
+                                    {% endif %}
+                                    <form action="{{ formAction }}" method="post" class="float-right">
+                                        <button type="submit" class="btn btn-link btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endif %}
+

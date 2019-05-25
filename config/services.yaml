@@ -26,3 +26,26 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Controller\MessagesController:
+        arguments: ['@fos_message.provider.default',
+                    '@fos_message.reply_form.factory',
+                    '@fos_message.reply_form.handler',
+                    '@fos_message.composer.default',
+                    '@fos_message.sender.default',
+                    '@fos_message.deleter.default',
+                    '@fos_message.thread_manager.default']
+
+    app.user_to_username_transformer:
+        class: App\Form\DataTransformer\UserToUsernameTransformer
+        arguments: ['@doctrine']
+
+    fos_user.user_to_username_transformer:
+        alias: app.user_to_username_transformer
+
+    app.form.username:
+        class: App\Form\UsernameFormType
+        arguments: ['@app.user_to_username_transformer']
+        tags:
+            - { name: form.type }
+

@@ -23,13 +23,12 @@ class MatchController extends AbstractController
 
         $form = $this->createForm(MatchFilterFormType::class);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $service->filter($this->getUser(), $form->getData());
         }
 
         $matches = $service->getPossibleMatch($this->getUser());
-
         $matchesPagination = $ps->getPagerfanta($matches);
         $matchesPagination->setMaxPerPage(8);
         $matchesPagination->setCurrentPage($request->query->get('page', 1));
