@@ -66,7 +66,7 @@ class UserCompareService
             $score *= -1;
         }
 
-        $scoreUsingPersent = $score * 100 / $userScore;
+        $scoreUsingPersent = $score * 100;
 
         return 100 - $scoreUsingPersent;
     }
