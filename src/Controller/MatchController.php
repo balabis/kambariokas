@@ -29,6 +29,7 @@ class MatchController extends AbstractController
         }
 
         $matches = $service->getPossibleMatch($this->getUser());
+
         $matchesPagination = $ps->getPagerfanta($matches);
         $matchesPagination->setMaxPerPage(8);
         $matchesPagination->setCurrentPage($request->query->get('page', 1));
