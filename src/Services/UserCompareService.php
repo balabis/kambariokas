@@ -26,10 +26,12 @@ class UserCompareService
 
         $selectedUsers = [];
         $userCoefficientAverage = $this->getUserCoefficientAverage($user);
+
         if (!empty($userCoefficientAverage)) {
             foreach ($users as $oneUser) {
                 $oneUserCoefficient =
                     $this->getUserCoefficientAverage($oneUser);
+
                 if (!empty($oneUserCoefficient)) {
                     if ($this->coincidenceCoefficient(
                         $userCoefficientAverage,
@@ -49,17 +51,17 @@ class UserCompareService
         $questionScores = $this->entityManager
             ->getRepository(QuestionnaireScore::class)
             ->findOneBy(['userId' => $user->getId()]);
+
         if (!empty($questionScores)) {
             return ($questionScores->getCleanliness() + $questionScores->getSociability()
                     + $questionScores->getSocialOpenness() + $questionScores->getSocialFlexibility()) / 4;
         }
+        
         return null;
     }
 
-    public function coincidenceCoefficient(
-        float $userScore,
-        float $otherUserScore
-    ): float {
+    public function coincidenceCoefficient(float $userScore, float $otherUserScore): float
+    {
         $score = $userScore - $otherUserScore;
 
         if ($score < 0) {
