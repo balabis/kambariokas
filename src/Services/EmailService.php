@@ -40,7 +40,7 @@ class EmailService
     public function sentInvitationEmail($email, $senderUser)
     {
         $firstParagraph =
-            'Informuojame, kad rumis.io vartotojas ' .
+            'Informuojame, kad rumis.&#8203;io vartotojas ' .
             $senderUser->getFullName() . ' išsiuntė Jums kvietimą tapti kambariokais.';
 
         $secondParagraph =
@@ -55,7 +55,7 @@ class EmailService
     public function sentInviteCancelEmail($email, $senderUser)
     {
         $firstParagraph =
-            'Informuojame, kad rumis.io vartotojas ' .
+            'Informuojame, kad rumis.&#8203;io vartotojas ' .
             $senderUser->getFullName() . ' atšaukė Jums išsiųstą kvietimą tapti kambariokais.';
 
         $secondParagraph =
@@ -70,7 +70,7 @@ class EmailService
     public function sentAcceptInvitationEmail($email, $senderUser)
     {
         $firstParagraph =
-            'Informuojame, kad rumis.io vartotojas ' .
+            'Informuojame, kad rumis.&#8203;io vartotojas ' .
             $senderUser->getFullName() . ' priėmė Jūsų išsiųstą kvietimą tapti kambariokais.';
 
         $secondParagraph =
@@ -85,7 +85,7 @@ class EmailService
     public function sentDeclineInvitationEmail($email, $senderUser)
     {
         $firstParagraph =
-            'Informuojame, kad rumis.io vartotojas ' .
+            'Informuojame, kad rumis.&#8203;io vartotojas ' .
             $senderUser->getFullName() . ' atmetė Jūsų išsiųstą kvietimą tapti kambariokais.';
 
         $secondParagraph =

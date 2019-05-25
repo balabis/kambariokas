@@ -138,19 +138,6 @@
                                     >
                                         &nbsp;
                                     </div>
-                                    <a
-                                            href="{{ absolute_url(path('login')) }}"
-                                            target="_blank"
-                                            style="display: block; max-width: 128px;"
-                                    >
-                                        <span
-                                                style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva,
-                                                sans-serif; color: #825ee4; font-size: 45px; line-height: 60px;
-                                                font-weight: 300; letter-spacing: -1.5px; text-decoration: none;"
-                                        >rumis&#173;.io
-                                        </span
-                                        >
-                                    </a>
                                     <div
                                             style="height: 73px; line-height: 73px; font-size: 71px;"
                                     >
@@ -191,7 +178,7 @@
                                     >
                         <span
                                 style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">
-                                    {{ firstParagraph }}
+                                    {{ firstParagraph|raw }}
                         </span
                         >
                                     </font>
@@ -207,7 +194,7 @@
                                     >
                         <span
                                 style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">
-                            {{ secondParagraph }}
+                            {{ secondParagraph|raw }}
                         </span
                         >
                                     </font>

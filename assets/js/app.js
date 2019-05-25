@@ -153,7 +153,7 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         styles: [{
             "featureType": "administrative",
-            "elementType": "labels.text.fill",
+            "elementType": "text.fill",
             "stylers": [{"color": "#444444"}]
         }, {"featureType": "landscape", "elementType": "all", "stylers": [{"color": "#f2f2f2"}]}, {
             "featureType": "poi",

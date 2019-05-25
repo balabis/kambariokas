@@ -102,12 +102,53 @@
                                         {{ form_row(form.dateOfBirth, {
                                             attr: { placeholder: 'Date of birth', class: 'form-control' }
                                         }) }}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        {{ form_row(form.budget, {
+                                            attr: { placeholder: 'Budget', class: 'form-control' }
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        {{ form_row(form.occupation, {
+                                            attr: { placeholder: 'Occupation', class: 'form-control' }
+                                        }) }}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        {{ form_row(form.cityPart, {
+                                            attr: { placeholder: 'City part', class: 'form-control' }
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        {{ form_row(form.university, {
+                                            attr: { placeholder: 'University', class: 'form-control' }
+                                        }) }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr class="my-4" />
                         <!-- Description -->
+                        <div class="pl-lg-4">
+                            <div class="form-group">
+                                {{ form_row(form.hobbies, {
+                                    attr: { placeholder: 'Hobbies', class: 'form-control' }
+                                }) }}
+                            </div>
+                        </div>
                         <div class="pl-lg-4">
                             <div class="form-group">
                                 {{ form_row(form.aboutme, {

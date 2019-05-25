@@ -36,12 +36,48 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <div class="h5 font-weight-300">
-                        <i class="ni location_pin mr-2"></i>{{ user.city }}
-                    </div>
-                    <div>
-                        <i class="ni education_hat mr-2"></i>{{ user.aboutme }}
-                    </div>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <i class="far fa-building"></i> {{ 'City'|trans }}: <strong>{{ user.city }}</strong>
+                        </li>
+                        {% if user.cityPart %}
+                        <li class="list-group-item">
+                            <i class="fas fa-map-marker-alt"></i> {{ 'City part'|trans }}: <strong>{{ user.cityPart }}</strong>
+                        </li>
+                        {% endif %}
+
+                        {% if user.budget %}
+                            <li class="list-group-item">
+                                <i class="fas fa-euro-sign"></i> Planuojamas biudžetas: <strong>{{ user.budget }}</strong>
+                            </li>
+                        {% endif %}
+
+                        {% if user.occupation %}
+                            <li class="list-group-item">
+                                <i class="fas fa-user-tie"></i> {{ 'Occupation'|trans }}: <strong>{{ user.occupation
+                                    }}</strong>
+                            </li>
+                        {% endif %}
+
+                        {% if user.university %}
+                            <li class="list-group-item">
+                                <i class="fas fa-university"></i> {{ 'University'|trans }}: <strong>{{ user.university }}</strong>
+                            </li>
+                        {% endif %}
+
+                        {% if user.hobbies %}
+                            <li class="list-group-item">
+                                <i class="fas fa-hiking"></i> {{ 'Hobbies'|trans }}: <strong>{{ user.hobbies }}</strong>
+                            </li>
+                        {% endif %}
+
+                        {% if user.aboutme %}
+                            <li class="list-group-item">
+                                <i class="fas fa-info"></i> Apie mane: <strong>{{ user.aboutme }}</strong>
+                            </li>
+                        {% endif %}
+                    </ul>
                     <hr class="my-4" />
                 </div>
                 {% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
