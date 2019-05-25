@@ -24,13 +24,14 @@ class UserRepository extends ServiceEntityRepository
         $query =  $this->createQueryBuilder('m')
             ->andWhere('m.city = :city')
             ->andWhere('m.id != :id');
+
         if ($gender != "default") {
-            $query
-                ->andWhere('m.gender = :gender')
+            $query->andWhere('m.gender = :gender')
                 ->setParameters(['city' => $city, 'id' => $userId, 'gender' => $gender]);
         } else {
             $query->setParameters(['city' => $city, 'id' => $userId]);
         }
+
         return $query
             ->getQuery()
             ->getResult();
