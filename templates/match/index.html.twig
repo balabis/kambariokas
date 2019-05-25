@@ -7,11 +7,11 @@
 {% block mainContent %}
     <div class="container">
         {% if matches is not empty %}
-            <div class="d-flex mb-1 flex-wrap justify-content-center ">
+            <div class="d-flex mb-1 flex-wrap justify-content-center">
                 {% for match in matches.currentPageResults %}
 
-                    <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
-                        <a class="nav-link" href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
+                    <div class="card card-profile shadow user-match-card mx-md-2 mb-6 ">
+                        <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
                         <div class="row justify-content-center">
                             <div class="col-lg-3 order-lg-2">
                                 <div class="card-profile-image">
@@ -50,37 +50,12 @@
                                 </div>
                             </div>
 
-
-
-                                {% if match.status == 'pending'  %}
-                                    {% if match.sender_id == app.user.id %}
-                                        <div class="alert
-                                    alert-warning">
-                                            {{ 'Pending invitation'|trans }}
-                                        </div>
-                                    {% else %}
-                                        <div class="alert alert-success">
-                                            {{ 'Received invitation'|trans }}
-                                        </div>
-                                    {% endif %}
-                                {% endif %}
-
-                                {% if match.status == 'declined' %}
-                                    <div class="alert alert-danger">
-                                        {{ 'Declined invitation'|trans }}
-                                    </div>
-                                {% endif %}
-
-                                {% if match.status == 'accepted' %}
-                                    <div class="alert alert-success">
-                                        {{ 'Accepted invitation'|trans }}
-                                    </div>
-                                {% endif %}
-
+                            {% include 'match/blocks/match_status.html.twig' %}
 
                         </div>
                         </a>
                     </div>
+
 
                 {% endfor %}
             </div>
