@@ -8,7 +8,6 @@ use App\Services\MatchService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\FormTypeInterface;
 
 class MatchController extends AbstractController
 {
@@ -24,8 +23,7 @@ class MatchController extends AbstractController
 
         $form = $this->createForm(MatchFilterFormType::class);
         $form->handleRequest($request);
-
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $service->filter($this->getUser(), $form->getData());
         }
