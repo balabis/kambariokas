@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 use App\Services\UserService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use FOS\MessageBundle\Composer\Composer;
 use FOS\MessageBundle\Deleter\Deleter;
@@ -58,13 +57,6 @@ class MessagesController extends AbstractController
         $sentThreads = $this->provider->getSentThreads();
         $threads = array_unique(array_merge($inboxThreads, $sentThreads), SORT_REGULAR);
 
-        usort($threads, function ($a, $b) {
-            $threadA = $this->provider->getThread($a->getId());
-            $threadB = $this->provider->getThread($b->getId());
-            return $this->getSortedMessages($threadB->getMessages())->last()
-                <=> $this->getSortedMessages($threadA->getMessages())->last();
-        });
-//        dd($threads);
         return $this->render('@FOSMessage/Message/inbox.html.twig', array(
             'threads' => $threads,
         ));
@@ -79,13 +71,6 @@ class MessagesController extends AbstractController
         $sentThreads = $this->provider->getSentThreads();
         $threads = array_unique(array_merge($inboxThreads, $sentThreads), SORT_REGULAR);
         $thread = $this->provider->getThread($threadId);
-
-        usort($threads, function ($a, $b) {
-            $threadA = $this->provider->getThread($a->getId());
-            $threadB = $this->provider->getThread($b->getId());
-            return $this->getSortedMessages($threadB->getMessages())->last()
-                <=> $this->getSortedMessages($threadA->getMessages())->last();
-        });
 
         $form = $this->replyMessageFormFactoryformFactory->create($thread);
         if ($message = $this->replyMessageFormHandlerformHandler->process($form)) {
