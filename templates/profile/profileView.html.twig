@@ -4,13 +4,6 @@
 <div class="row">
     <div class="col-xl-6 center order-xl-2 mb-5 mb-xl-0">
         <div class="card card-profile shadow">
-            <div>
-                {% if user.isActiveNow %}
-                    <i class="fas fa-circle float-right">  </i>
-                {% else %}
-                    <span class="badge badge-pill float-right">{{ 'Last active'|trans }} {{ lastVisit }}</span>
-                {% endif %}
-            </div>
             <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
                     <div class="card-profile-image">
@@ -39,6 +32,11 @@
                                     <span>&bull;</span> {{ userAge }}
                                 {% endif %}
                             </h2>
+                            {% if user.isActiveNow %}
+                                <h2>
+                                    &nbsp; <i class="fas fa-circle"></i>
+                                </h2>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

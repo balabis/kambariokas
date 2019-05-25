@@ -81,7 +81,15 @@
                                         class="card-profile-stats d-flex justify-content-center"
                                 >
                                     <div>
-                                        <span class="heading">{{ match.coeficient }}%</span>
+                                        <span class="heading">{{ match.coeficient }}%
+                                            {% set delay = "now"|date_modify('-2 minutes')|date("Y-m-d H:i:s") %}
+                                            {% if match.last_activity_at > delay %}
+                                                <span>
+                                                    <i class="fas fa-circle"></i>
+                                                </span>
+                                            {% endif %}
+                                        </span>
+
                                         <span class="description">{{ 'Match percent'|trans }}</span>
                                     </div>
                                 </div>
