@@ -7,97 +7,81 @@
 {% block mainContent %}
     <div class="container">
         {% if matches is not empty %}
-            <div class="d-flex mb-1 flex-wrap justify-content-center">
+            <div class="d-flex mb-1 flex-wrap justify-content-center ">
                 {% for match in matches.currentPageResults %}
-                <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3 order-lg-2">
-                            <div class="card-profile-image">
-                                <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
+
+                    <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
+                        <a class="nav-link" href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 order-lg-2">
+                                <div class="card-profile-image">
                                     {% if not match.profile_picture %}
                                         <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
                                     {% else %}
                                         <img src="{{ asset(match.profile_picture) }}" class="rounded-circle">
                                     {% endif %}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                            class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
-                    >
-                        <div class="d-flex justify-content-between">
-
-
-                            {% if not match.status %}
-                                <form action="{{ path('invitation_sent') }}" method="POST">
-                                    <input type="hidden" name="uuid" value="{{ match.second_user }}">
-                                    <button class="btn btn-sm
-                                    btn-info">
-                                    {{ 'Be flatmates'|trans }}
-                                    </button>
-                                </form>
-                            {% endif %}
-
-                            {% if match.status == 'pending'  %}
-                                {% if match.sender_id == app.user.id %}
-                                    <a class="btn btn-sm
-                                btn-warning">
-                                        {{ 'Pending invitation'|trans }}
-                                    </a>
-                                {% else %}
-                                    <a class="btn btn-sm
-                        btn-success">
-                                        {{ 'Received invitation'|trans }}
-                                    </a>
-                                {% endif %}
-                            {% endif %}
-
-                            {% if match.status == 'declined' %}
-                                <a class="btn btn-sm
-                        btn-danger">
-                                    {{ 'Declined invitation'|trans }}
-                                </a>
-                            {% endif %}
-
-                            {% if match.status == 'accepted' %}
-                                <a class="btn btn-sm
-                        btn-success">
-                                    {{ 'Accepted invitation'|trans }}
-                                </a>
-                            {% endif %}
-
-
-                            <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}" class="btn btn-sm
-                            btn-default">
-                                {{ 'Profile'|trans }}
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="row">
-                            <div class="col">
-                                <div
-                                        class="card-profile-stats d-flex justify-content-center"
-                                >
-                                    <div>
-                                        <span class="heading">{{ match.coeficient }}%</span>
-                                        <span class="description">{{ 'Match percent'|trans }}</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <h3>
-                                    {{ match.full_name }}
-                                    <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
-                            </h3>
-                            <div class="h5 font-weight-300">
-                                <i class="ni location_pin mr-2"></i>{{ match.city }}
+                        <div
+                                class="card-body text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
+                        >
+
+                            <div class="row">
+                                <div class="col">
+                                    <h3>
+                                        {{ match.full_name }}
+                                        <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
+                                    </h3>
+                                    <div class="h5 font-weight-300">
+                                        <i class="ni location_pin mr-2"></i>{{ match.city }}
+                                    </div>
+                                </div>
                             </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div
+                                            class="card-profile-stats d-flex justify-content-center"
+                                    >
+                                        <div class="rounded-circle bg-primary">
+                                            <span class="lead text-secondary">{{ match.coeficient }}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                                {% if match.status == 'pending'  %}
+                                    {% if match.sender_id == app.user.id %}
+                                        <div class="alert
+                                    alert-warning">
+                                            {{ 'Pending invitation'|trans }}
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-success">
+                                            {{ 'Received invitation'|trans }}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if match.status == 'declined' %}
+                                    <div class="alert alert-danger">
+                                        {{ 'Declined invitation'|trans }}
+                                    </div>
+                                {% endif %}
+
+                                {% if match.status == 'accepted' %}
+                                    <div class="alert alert-success">
+                                        {{ 'Accepted invitation'|trans }}
+                                    </div>
+                                {% endif %}
+
+
                         </div>
+                        </a>
                     </div>
-                </div>
+
                 {% endfor %}
             </div>
             {% if matches.haveToPaginate %}
