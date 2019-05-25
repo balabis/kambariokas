@@ -1,0 +1,13 @@
+{% extends 'main_layout.html.twig' %}
+
+{% block pageHeading %}
+    {{ 'Inbox'|trans }}
+{% endblock %}
+
+{% block mainContent %}
+    <div class="col-xl-10 center">
+        <div class="panel messages-panel">
+            {% block fos_message_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
