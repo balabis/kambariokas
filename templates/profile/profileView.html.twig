@@ -77,37 +77,136 @@
                                 <i class="fas fa-info"></i> Apie mane: <strong>{{ user.aboutme }}</strong>
                             </li>
                         {% endif %}
+                        {% if match and match.status == 'accepted' %}
+
+                            <li class="list-group-item bg-light">
+                                <h3><i class="fas fa-id-card-alt"></i> Kontaktai</h3>
+                                <p class="lead"><i class="fas fa-at"></i> El. paštas: <strong>{{ user.email
+                                        }}</strong></p>
+                                <p class="lead"><i class="fas fa-phone"></i> Telefonas: <strong>{{ user.userAge
+                                        }}</strong></p>
+                            </li>
+                        {% endif %}
                     </ul>
 
                     <hr class="my-4" />
                     {% if match %}
                         {% include 'match/blocks/match_status.html.twig' %}
                     {% endif %}
+
                 </div>
 
                     <div class="d-flex justify-content-center">
 
-                        {% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
-                        <button class="btn btn-icon btn-3 btn-primary float-right" type="button">
-                            <span class="btn-inner--icon"><i class="far fa-comments"></i></span>
-                            <span class="btn-inner--text">{{ 'Message'|trans }}</span>
-                        </button>
+
+
+                        {% if not match %}
+                            <form action="{{ path('invitation_sent') }}" method="POST">
+                                <input type="hidden" name="uuid" value="{{ user.id }}">
+                                <button class="btn btn-info">
+                                    {{ 'Be flatmates'|trans }}
+                                </button>
+                            </form>
+
+                        {% else %}
+
+                            {% if match.status == 'pending' %}
+                                {% if match.sender_id == app.user.id %}
+                                    <form action="{{ path('invitation_cancel') }}" method="POST">
+                                        <input type="hidden" name="uuid" value="{{ match.receiver_id }}">
+                                        <button class="btn btn-danger">
+                                            {{ 'Cancel invitation'|trans }}
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <form action="{{ path('invitation_decline') }}" method="POST">
+                                        <input type="hidden" name="uuid" value="{{ match.sender_id }}">
+                                        <button class="btn
+                                    btn-danger">
+                                            {{ 'Decline'|trans }}
+                                        </button>
+                                    </form>
+
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#exampleModal">
+                                        {{ 'Accept'|trans }}
+                                    </button>
+
+
+
+                                {% endif %}
+
+                            {% endif %}
+
+                            {% if match.status == 'declined' %}
+                                {% if match.sender_id != app.user.id %}
+                                        <form action="{{ path('invitation_decision_cancel') }}" method="POST">
+                                            <input type="hidden" name="uuid" value="{{ match.sender_id }}">
+                                            <button class="btn btn-block
+        btn-info">
+                                                Atšaukti atmetimą
+                                            </button>
+                                        </form>
+                                {% endif %}
+                            {% endif %}
                         {% endif %}
+
+
+
+
+
+
+                        {% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
+                            <a href="{{ path('app.message.new_thread', {'participantId': user.id}) }}" class="btn btn-primary" role="button">
+                                <span class="btn-inner--icon"><i class="far fa-comments"></i></span>
+
+                                <span class="btn-inner--text">{{ 'Message'|trans }}</span>
+                            </a>
+                        {% endif %}
+
+
 
                     </div>
 
-
-                {% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
-                    <a href="{{ path('app.message.new_thread', {'participantId': user.id}) }}" class="btn btn-primary float-right" role="button">
-                        <span class="btn-inner--icon"><i class="far fa-comments"></i></span>
-
-                        <span class="btn-inner--text">{{ 'Message'|trans }}</span>
-                    </a>
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+    {% if match and match.status == 'pending' and match.sender_id != app.user.id %}
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ar tikrai norite priimti kvietimą?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Priėmus kvietimą Jūsų el. pašto adresas bei telefono numeris bus išsiųsti Jūsų naujajam
+                        kambariokui. Jūs taip pat matysite naujojo kambarioko kontaktinius duomenis jo profilyje bei
+                        gausite juos el. paštu.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form action="{{ path('invitation_accept') }}" method="POST">
+
+                            <input type="hidden" name="uuid" value="{{ match.sender_id }}">
+
+                            <button class="btn
+                                    btn-success">
+                                {{ 'Accept'|trans }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
 {% endblock %}
 
 
