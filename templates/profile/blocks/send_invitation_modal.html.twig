@@ -1,0 +1,29 @@
+{% if not match %}
+    <!-- Modal -->
+    <div class="modal fade" id="sendInvitationModal" tabindex="-1" role="dialog" aria-labelledby="sendModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sendModalLabel">Ar tikrai norite išsiųsti kvietimą?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Jei Jūsų išsiųstą kvietimą priims, Jums bus atsiųsti kontaktiniai naujojo kambarioko duomenys, o
+                    jam bus nusiųsti Jūsų.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                    <form action="{{ path('invitation_sent') }}" method="POST">
+                        <input type="hidden" name="uuid" value="{{ user.id }}">
+                        <button class="btn btn-info">
+                            {{ 'Be flatmates'|trans }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
