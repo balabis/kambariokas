@@ -88,11 +88,10 @@ class UserController extends AbstractController
     /**
      * @Route("/user/activate", name="user_activate", methods={"POST"})
      */
-    public function activateUser (EntityManagerInterface $em, Request $request)
+    public function activateUser(EntityManagerInterface $em, Request $request)
     {
         $this->getUser()->setStatus('active');
         $em->flush();
         return $this->redirect($request->headers->get('referer'));
-
     }
 }

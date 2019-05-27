@@ -97,7 +97,7 @@ class EmailService
         $this->sentEmail($email, $firstParagraph, $secondParagraph, $subject);
     }
 
-    public function sentContactInfoEmail ($email, $user)
+    public function sentContactInfoEmail($email, $user)
     {
         $firstParagraph =
             'Jūs patvirtinote ' .

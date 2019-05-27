@@ -20,8 +20,7 @@ class MatchController extends AbstractController
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $matchesPagination = [];
-        if ($this->getUser()->getStatus() === 'active')
-        {
+        if ($this->getUser()->getStatus() === 'active') {
             $service->filter($this->getUser());
             $matches = $service->getPossibleMatch($this->getUser());
             $matchesPagination = $ps->getPagerfanta($matches);
