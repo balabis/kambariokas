@@ -117,10 +117,15 @@ class InvitationController extends AbstractController
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy(['receiver'=>$this->getUser(), 'sender'=>$uuid]);
         $invite->setStatus('accepted');
+
+        $invite->getSender()->setStatus('inactive');
+        $this->getUser()->setStatus('inactive');
+
         $em->flush();
 
         $emailService->sentAcceptInvitationEmail($invite->getSender()->getEmail(), $this->getUser());
         $emailService->sentContactInfoEmail($this->getUser()->getEmail(), $invite->getSender());
+
 
         return $this->redirect($request->headers->get('referer'));
     }
