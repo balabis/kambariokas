@@ -124,7 +124,7 @@ class User implements UserInterface, ParticipantInterface
     private $university;
 
     /**
-     * @ORM\Column(type="datetime", name="last_activity_at")
+     * @ORM\Column(type="datetime", name="last_activity_at", nullable=true)
      */
     private $lastActivityAt;
 

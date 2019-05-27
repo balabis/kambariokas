@@ -46,7 +46,7 @@ class UserController extends AbstractController
             ? $this->render('profile/profileView.html.twig', [
                 'user' => $user,
                 'userAge' => $userAge,
-                'match' => $invite
+                'match' => $invite,
                 'lastVisit' => $lastVisit
             ])
             : $this->render('profile/profileNotFound.html.twig');
