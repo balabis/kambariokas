@@ -3,8 +3,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Invite;
 use App\Form\UserType;
 use App\Services\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,15 +23,19 @@ class UserController extends AbstractController
     /**
      * @Route("/flatmate/{uuid}", name="profile.view", methods={"GET"})
      */
-    public function showUserProfile(UserService $userService, $uuid): Response
+    public function showUserProfile(UserService $userService, $uuid, EntityManagerInterface $em): Response
     {
         $user = $userService->getUserByUUID($uuid);
         $userAge = $userService->getUserAge($user);
+
+        $invitesRepo = $em->getRepository(Invite::class);
+        $invite = $invitesRepo->findUserToUserInvite($this->getUser()->getId(), $uuid);
 
         return isset($user)
             ? $this->render('profile/profileView.html.twig', [
                 'user' => $user,
                 'userAge' => $userAge,
+                'match' => $invite
             ])
             : $this->render('profile/profileNotFound.html.twig');
     }
@@ -77,5 +83,15 @@ class UserController extends AbstractController
             'form' => $form->createView(),
             'userAge' => $userAge,
         ]);
+    }
+
+    /**
+     * @Route("/user/activate", name="user_activate", methods={"POST"})
+     */
+    public function activateUser(EntityManagerInterface $em, Request $request)
+    {
+        $this->getUser()->setStatus('active');
+        $em->flush();
+        return $this->redirect($request->headers->get('referer'));
     }
 }

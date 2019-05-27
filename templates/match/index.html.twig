@@ -9,95 +9,10 @@
         {% if matches is not empty %}
             <div class="d-flex mb-1 flex-wrap justify-content-center">
                 {% for match in matches.currentPageResults %}
-                <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3 order-lg-2">
-                            <div class="card-profile-image">
-                                <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
-                                    {% if not match.profile_picture %}
-                                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
-                                    {% else %}
-                                        <img src="{{ asset(match.profile_picture) }}" class="rounded-circle">
-                                    {% endif %}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                            class="card-header text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
-                    >
-                        <div class="d-flex justify-content-between">
+
+                    {% include 'reusable_blocks/match_card.html.twig' %}
 
 
-                            {% if not match.status %}
-                                <form action="{{ path('invitation_sent') }}" method="POST">
-                                    <input type="hidden" name="uuid" value="{{ match.second_user }}">
-                                    <button class="btn btn-sm
-                                    btn-info">
-                                    {{ 'Be flatmates'|trans }}
-                                    </button>
-                                </form>
-                            {% endif %}
-
-                            {% if match.status == 'pending'  %}
-                                {% if match.sender_id == app.user.id %}
-                                    <a class="btn btn-sm
-                                btn-warning">
-                                        {{ 'Pending invitation'|trans }}
-                                    </a>
-                                {% else %}
-                                    <a class="btn btn-sm
-                        btn-success">
-                                        {{ 'Received invitation'|trans }}
-                                    </a>
-                                {% endif %}
-                            {% endif %}
-
-                            {% if match.status == 'declined' %}
-                                <a class="btn btn-sm
-                        btn-danger">
-                                    {{ 'Declined invitation'|trans }}
-                                </a>
-                            {% endif %}
-
-                            {% if match.status == 'accepted' %}
-                                <a class="btn btn-sm
-                        btn-success">
-                                    {{ 'Accepted invitation'|trans }}
-                                </a>
-                            {% endif %}
-
-
-                            <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}" class="btn btn-sm
-                            btn-default">
-                                {{ 'Profile'|trans }}
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="row">
-                            <div class="col">
-                                <div
-                                        class="card-profile-stats d-flex justify-content-center"
-                                >
-                                    <div>
-                                        <span class="heading">{{ match.coeficient }}%</span>
-                                        <span class="description">{{ 'Match percent'|trans }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h3>
-                                    {{ match.full_name }}
-                                    <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
-                            </h3>
-                            <div class="h5 font-weight-300">
-                                <i class="ni location_pin mr-2"></i>{{ match.city }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 {% endfor %}
             </div>
             {% if matches.haveToPaginate %}
@@ -109,16 +24,20 @@
 
         {% endif %}
 
-        {% if not app.user.questionnaireScore %}
-            {% include 'match/blocks/no_filled_questionnaire.html.twig' %}
-        {% endif %}
+        {% if app.user.status == 'active' %}
+            {% if not app.user.questionnaireScore %}
+                {% include 'match/blocks/no_filled_questionnaire.html.twig' %}
+            {% endif %}
 
-        {% if not app.user.city %}
-            {% include 'match/blocks/no_filled_profile.html.twig' %}
-        {% endif %}
+            {% if not app.user.city %}
+                {% include 'match/blocks/no_filled_profile.html.twig' %}
+            {% endif %}
 
-        {% if matches is empty and app.user.city and app.user.questionnaireScore %}
-            {% include 'match/blocks/no_matches.html.twig' %}
+            {% if matches is empty and app.user.city and app.user.questionnaireScore %}
+                {% include 'match/blocks/no_matches.html.twig' %}
+            {% endif %}
+        {% else %}
+            {% include 'reusable_blocks/inactive_user.html.twig' %}
         {% endif %}
 
     </div>

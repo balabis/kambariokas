@@ -49,7 +49,8 @@
 
                         {% if user.budget %}
                             <li class="list-group-item">
-                                <i class="fas fa-euro-sign"></i> Planuojamas biudžetas: <strong>{{ user.budget }}</strong>
+                                <i class="fas fa-euro-sign"></i> {{ 'Planned budget'|trans }}: <strong>{{ user.budget
+                                    }}</strong>
                             </li>
                         {% endif %}
 
@@ -74,23 +75,37 @@
 
                         {% if user.aboutme %}
                             <li class="list-group-item">
-                                <i class="fas fa-info"></i> Apie mane: <strong>{{ user.aboutme }}</strong>
+                                <i class="fas fa-info"></i> {{ 'About me'|trans }}: <strong>{{ user.aboutme }}</strong>
+                            </li>
+                        {% endif %}
+                        {% if match and match.status == 'accepted' %}
+
+                            <li class="list-group-item bg-light">
+                                <h3><i class="fas fa-id-card-alt"></i> {{ 'Contacts'|trans }}</h3>
+                                <p class="lead"><i class="fas fa-at"></i> {{ 'Email'|trans }}: <strong>{{ user.email
+                                        }}</strong></p>
+
                             </li>
                         {% endif %}
                     </ul>
                     <hr class="my-4" />
-                </div>
-                {% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
-                    <a href="{{ path('app.message.new_thread', {'participantId': user.id}) }}" class="btn btn-primary float-right" role="button">
-                        <span class="btn-inner--icon"><i class="far fa-comments"></i></span>
+                    {% if match %}
+                        {% include 'reusable_blocks/match_status.html.twig' %}
+                    {% endif %}
 
-                        <span class="btn-inner--text">{{ 'Message'|trans }}</span>
-                    </a>
-                {% endif %}
+                </div>
+                    <div class="d-flex justify-content-around">
+                        {% include 'profile/blocks/buttons.html.twig' %}
+                    </div>
             </div>
         </div>
     </div>
 </div>
+
+
+    {% include 'profile/blocks/confirm_invitation_accept_modal.html.twig' %}
+    {% include 'profile/blocks/send_invitation_modal.html.twig' %}
+
 {% endblock %}
 
 

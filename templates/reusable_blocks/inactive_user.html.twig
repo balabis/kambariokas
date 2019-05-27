@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="card bg-secondary mb-3 text-center">
+        <div class="card-body">
+            <h2 class="card-title">Šiuo metu jūsų vartotojas yra neaktyvus. Jūs nedalyvaujate suderinamumo algoritme ir
+                kiti vartotojai negali Jūsų matyti bei pakviesti tapti kambariokais.
+            </h2>
+            <form action="{{ path('user_activate') }}" method="POST">
+                <button class="btn btn-primary">{{ 'Become active'|trans }}</button>
+            </form>
+        </div>
+    </div>
+</div>
