@@ -22,3 +22,9 @@
         {{ 'Accepted invitation'|trans }}
     </div>
 {% endif %}
+
+{% if not match.status %}
+    <div class="alert">
+        <p></p>
+    </div>
+{% endif %}

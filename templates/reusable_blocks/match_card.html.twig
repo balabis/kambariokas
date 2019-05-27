@@ -1,0 +1,45 @@
+<div class="card card-profile shadow user-match-card mx-md-2 mb-6 ">
+    <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 order-lg-2">
+                <div class="card-profile-image">
+                    {% if not match.profile_picture %}
+                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                    {% else %}
+                        <img src="{{ asset(match.profile_picture) }}" class="rounded-circle">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div
+                class="card-body text-center border-0 pt-8 pt-md-4 pb-0 mt-md-8"
+        >
+
+            <div class="row">
+                <div class="col">
+                    <h3>
+                        {{ match.full_name }}
+                        <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
+                    </h3>
+                    <div class="h5 font-weight-300">
+                        <i class="far fa-building"></i>{{ match.city }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div
+                            class="card-profile-stats d-flex justify-content-center"
+                    >
+                        <div class="rounded-circle bg-primary">
+                            <span class="lead text-secondary">{{ match.coeficient }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include 'reusable_blocks/match_status.html.twig' %}
+
+        </div>
+    </a>
+</div>
