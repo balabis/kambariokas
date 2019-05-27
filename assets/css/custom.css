@@ -33,7 +33,13 @@ footer .row {
 }
 
 .user-match-card {
-    max-width: 350px;
+    min-width: 250px;
+}
+
+.user-match-card:hover
+{
+    transform: translateY(-5%);
+
 }
 
 .fa-circle {

@@ -12,166 +12,172 @@
     {%- endblock form_errors -%}
 
 {% block mainContent %}
-    {{ form_start(form) }}
-        <br>
-        <div class="row">
-            <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-                <div class="card card-profile shadow">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3 order-lg-2">
-                            <div class="card-profile-image">
-                                <a href="{{ path('profile.view', {uuid: app.user.id}) }}">
-                                    {% if not app.user.profilepicture %}
-                                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
-                                    {% else %}
-                                        <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
-                                    {% endif %}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                        <div class="d-flex justify-content-between">
-                            <br>
-                        </div>
-                    </div>
-                    <div class="card-body pt-0 pt-md-4">
-                        <div class="row">
-                            <div class="col">
-                                <div class=" d-flex justify-content-center mt-md-5">
-                                    <h2>
-                                        {{ app.user.fullname }} <span>&bull;</span> {{ userAge }}
-                                    </h2>
+    {% if app.user.status == 'active' %}
+        {{ form_start(form) }}
+            <br>
+            <div class="row">
+                <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+                    <div class="card card-profile shadow">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 order-lg-2">
+                                <div class="card-profile-image">
+                                    <a href="{{ path('profile.view', {uuid: app.user.id}) }}">
+                                        {% if not app.user.profilepicture %}
+                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                                        {% else %}
+                                            <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
+                                        {% endif %}
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <div class="h5 font-weight-300">
-                                {{ app.user.city }}
+                        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                            <div class="d-flex justify-content-between">
+                                <br>
+                            </div>
+                        </div>
+                        <div class="card-body pt-0 pt-md-4">
+                            <div class="row">
+                                <div class="col">
+                                    <div class=" d-flex justify-content-center mt-md-5">
+                                        <h2>
+                                            {{ app.user.fullname }} <span>&bull;</span> {{ userAge }}
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="h5 font-weight-300">
+                                    {{ app.user.city }}
+                                </div>
+                                <hr class="my-4" />
+                                <div>
+                                    {{ app.user.aboutme }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 order-xl-1">
+                    <div class="card bg-secondary shadow">
+                        <div class="card-header bg-white border-0">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h3 class="mb-0">{{ 'My account'|trans }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="heading-small text-muted mb-4">{{ 'User information'|trans }}</h6>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.fullName, {
+                                                attr: { placeholder: 'Full name', class: 'form-control' }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.gender, {
+                                                attr: { placeholder: 'Gender', class: 'form-control' }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <hr class="my-4" />
-                            <div>
-                                {{ app.user.aboutme }}
+                            <!-- Address -->
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.city, {
+                                                attr: { placeholder: 'City', class: 'form-control' }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.dateOfBirth, {
+                                                attr: { placeholder: 'Date of birth', class: 'form-control' }
+                                            }) }}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.budget, {
+                                                attr: { placeholder: 'Budget', class: 'form-control' }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.occupation, {
+                                                attr: { placeholder: 'Occupation', class: 'form-control' }
+                                            }) }}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.cityPart, {
+                                                attr: { placeholder: 'City part', class: 'form-control' }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            {{ form_row(form.university, {
+                                                attr: { placeholder: 'University', class: 'form-control' }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4" />
+                            <!-- Description -->
+                            <div class="pl-lg-4">
+                                <div class="form-group">
+                                    {{ form_row(form.hobbies, {
+                                        attr: { placeholder: 'Hobbies', class: 'form-control' }
+                                    }) }}
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="form-group">
+                                    {{ form_row(form.aboutme, {
+                                    attr: { placeholder: 'About me', class: 'form-control' }
+                                    }) }}
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="form-group">
+                                    {{ form_row(form.profilePicture, {
+                                        attr: { placeholder: 'Profile picture', class: 'form-control' }
+                                    }) }}
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary my-4">
+                                    {{ 'Save'|trans }}
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-8 order-xl-1">
-                <div class="card bg-secondary shadow">
-                    <div class="card-header bg-white border-0">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">{{ 'My account'|trans }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="heading-small text-muted mb-4">{{ 'User information'|trans }}</h6>
-                        <div class="pl-lg-4">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.fullName, {
-                                            attr: { placeholder: 'Full name', class: 'form-control' }
-                                        }) }}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.gender, {
-                                            attr: { placeholder: 'Gender', class: 'form-control' }
-                                        }) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="my-4" />
-                        <!-- Address -->
-                        <div class="pl-lg-4">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.city, {
-                                            attr: { placeholder: 'City', class: 'form-control' }
-                                        }) }}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.dateOfBirth, {
-                                            attr: { placeholder: 'Date of birth', class: 'form-control' }
-                                        }) }}
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.budget, {
-                                            attr: { placeholder: 'Budget', class: 'form-control' }
-                                        }) }}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.occupation, {
-                                            attr: { placeholder: 'Occupation', class: 'form-control' }
-                                        }) }}
+        {{ form_end(form) }}
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.cityPart, {
-                                            attr: { placeholder: 'City part', class: 'form-control' }
-                                        }) }}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ form_row(form.university, {
-                                            attr: { placeholder: 'University', class: 'form-control' }
-                                        }) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="my-4" />
-                        <!-- Description -->
-                        <div class="pl-lg-4">
-                            <div class="form-group">
-                                {{ form_row(form.hobbies, {
-                                    attr: { placeholder: 'Hobbies', class: 'form-control' }
-                                }) }}
-                            </div>
-                        </div>
-                        <div class="pl-lg-4">
-                            <div class="form-group">
-                                {{ form_row(form.aboutme, {
-                                attr: { placeholder: 'About me', class: 'form-control' }
-                                }) }}
-                            </div>
-                        </div>
-                        <div class="pl-lg-4">
-                            <div class="form-group">
-                                {{ form_row(form.profilePicture, {
-                                    attr: { placeholder: 'Profile picture', class: 'form-control' }
-                                }) }}
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-primary my-4">
-                                {{ 'Save'|trans }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    {% else %}
+        {% include 'reusable_blocks/inactive_user.html.twig' %}
+    {% endif %}
 
-    {{ form_end(form) }}
 {% endblock %}

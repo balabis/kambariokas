@@ -129,6 +129,11 @@ class User implements UserInterface, ParticipantInterface
     private $lastActivityAt;
 
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status = 'active';
+
     public function __construct()
     {
         $this->invitesSentTo = new ArrayCollection();
@@ -437,6 +442,18 @@ class User implements UserInterface, ParticipantInterface
     public function setUniversity(?string $university): self
     {
         $this->university = $university;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
