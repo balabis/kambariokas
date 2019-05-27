@@ -120,6 +120,7 @@ class InvitationController extends AbstractController
         $em->flush();
 
         $emailService->sentAcceptInvitationEmail($invite->getSender()->getEmail(), $this->getUser());
+        $emailService->sentContactInfoEmail($this->getUser()->getEmail(), $invite->getSender());
 
         return $this->redirect($request->headers->get('referer'));
     }
