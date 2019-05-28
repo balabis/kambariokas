@@ -72,6 +72,7 @@
                 </ul>
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex ml-lg-auto">
+                    <li>{{ mgilet_notification_render(app.user, {'template': 'temp.html.twig'}) }}</li>
                     <li class="nav-item dropdown">
                         <a
                                 class="nav-link pr-0"
@@ -96,10 +97,14 @@
                                     {% if fos_message_nb_unread() > 0 %}
                                         <img src="{{ asset('newmessage.png') }}" >
                                     {% endif %}
+
                                 </span>
                                 </div>
                             </div>
                         </a>
+
+
+
                         <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">{{ 'Welcome'|trans }}!</h6>
@@ -119,6 +124,7 @@
                             </a>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </div>

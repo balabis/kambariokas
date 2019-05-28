@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Services\EmailService;
 use App\Services\MatchesPaginationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Mgilet\NotificationBundle\Manager\NotificationManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,7 +52,8 @@ class InvitationController extends AbstractController
     public function invite(
         EntityManagerInterface $em,
         Request $request,
-        EmailService $emailService
+        EmailService $emailService,
+        NotificationManager $manager
     ) {
         $uuid = $request->request->get('uuid');
         $invite = new Invite();
@@ -69,6 +71,11 @@ class InvitationController extends AbstractController
             $receiver->getEmail(),
             $this->getUser()
         );
+
+        $notif = $manager->createNotification('Pakvietimas');
+        $notif->setMessage('Gautas pakvietimas nuo' . $this->getUser()->getFullName());
+        $notif->setLink($this->generateUrl('profile.view', ['uuid'=>$this->getUser()->getId()]));
+        $manager->addNotification(array($receiver), $notif, true);
 
         return $this->redirect($request->headers->get('referer'));
     }
