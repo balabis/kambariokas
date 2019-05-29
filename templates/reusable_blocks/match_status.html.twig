@@ -1,0 +1,30 @@
+{% if match.status == 'pending'  %}
+    {% if match.sender_id == app.user.id %}
+        <div class="alert
+                                    alert-warning">
+            {{ 'Pending invitation'|trans }}
+        </div>
+    {% else %}
+        <div class="alert alert-success">
+            {{ 'Received invitation'|trans }}
+        </div>
+    {% endif %}
+{% endif %}
+
+{% if match.status == 'declined' %}
+    <div class="alert alert-danger">
+        {{ 'Declined invitation'|trans }}
+    </div>
+{% endif %}
+
+{% if match.status == 'accepted' %}
+    <div class="alert alert-success">
+        {{ 'Accepted invitation'|trans }}
+    </div>
+{% endif %}
+
+{% if not match.status %}
+    <div class="alert">
+        <p></p>
+    </div>
+{% endif %}

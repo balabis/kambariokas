@@ -1,0 +1,57 @@
+{% if not match %}
+    <button type="button" class="btn btn-info" data-toggle="modal"
+            data-target="#sendInvitationModal">
+        {{ 'Be flatmates'|trans }}
+    </button>
+
+{% else %}
+
+    {% if match.status == 'pending' %}
+        {% if match.sender_id == app.user.id %}
+            <form action="{{ path('invitation_cancel') }}" method="POST">
+                <input type="hidden" name="uuid" value="{{ match.receiver_id }}">
+                <button class="btn btn-danger">
+                    {{ 'Cancel invitation'|trans }}
+                </button>
+            </form>
+
+
+        {% else %}
+            <form action="{{ path('invitation_decline') }}" method="POST">
+                <input type="hidden" name="uuid" value="{{ match.sender_id }}">
+                <button class="btn
+                                    btn-danger">
+                    {{ 'Decline'|trans }}
+                </button>
+            </form>
+
+            <button type="button" class="btn btn-success" data-toggle="modal"
+                    data-target="#acceptInvitationModal">
+                {{ 'Accept'|trans }}
+            </button>
+        {% endif %}
+
+    {% endif %}
+
+    {% if match.status == 'declined' %}
+        {% if match.sender_id != app.user.id %}
+            <form action="{{ path('invitation_decision_cancel') }}" method="POST">
+                <input type="hidden" name="uuid" value="{{ match.sender_id }}">
+                <button class="btn btn-block
+        btn-info">
+                    Atšaukti atmetimą
+                </button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+
+{% endif %}
+
+{% if app.request.pathInfo != '/flatmate/' ~ app.user.id %}
+    <a href="{{ path('app.message.new_thread', {'participantId': user.id}) }}" class="btn btn-primary" role="button">
+        <span class="btn-inner--icon"><i class="far fa-comments"></i></span>
+
+        <span class="btn-inner--text">{{ 'Message'|trans }}</span>
+    </a>
+{% endif %}

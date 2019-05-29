@@ -75,4 +75,21 @@ class InviteRepository extends ServiceEntityRepository
 
         return $stmt->fetchColumn();
     }
+
+    public function findUserToUserInvite($loggedUserId, $profileOwnerId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT i.*
+        FROM invite i
+        WHERE (i.receiver_id = :loggedUserId AND i.sender_id = :profileOwnerId) 
+        OR (i.receiver_id = :profileOwnerId AND i.sender_id = :loggedUserId)
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['loggedUserId'=>$loggedUserId, 'profileOwnerId'=>$profileOwnerId]);
+
+        return $stmt->fetch(\PDO::FETCH_OBJ);
+    }
 }
