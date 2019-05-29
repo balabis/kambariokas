@@ -44,7 +44,8 @@ class MatchService
             ->getRepository(User::class)
             ->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
 
-        if ($formParameters["budget"] != null) {
+
+        if (!empty($users) && $formParameters['budget'] != null) {
             $users = $this->budgetFiltrationService->filterByBudget($users, $formParameters["budget"]);
         }
 
@@ -69,7 +70,7 @@ class MatchService
         return $users;
     }
 
-    private function addNewMatchesToDatabase($users, User $user) :void
+    public function addNewMatchesToDatabase($users, User $user) :void
     {
         $query = "INSERT INTO user_match (first_user, second_user, coeficient) VALUES ";
         $i = 1;

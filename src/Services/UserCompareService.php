@@ -20,7 +20,7 @@ class UserCompareService
 
     public function filterByAnswers($users, User $user, ?int $filterCoefficient): array
     {
-        if ($filterCoefficient != null) {
+        if ($filterCoefficient === null) {
             $this->minCoefficient = $filterCoefficient;
         }
 

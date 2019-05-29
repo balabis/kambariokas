@@ -11,14 +11,14 @@ class AgeFiltrationService
     public function __construct()
     {
         $this->maxAge = 80;
-        $this->minAge = 1;
+        $this->minAge = 18;
     }
 
     public function filterByAge($users, array $age)
     {
-        if ($age[0] == null) {
+        if ($age[0] === null && $age[1] !== null) {
             $users = $this->filterBySetAge($users, [$this->minAge, $age[1]]);
-        } elseif ($age[1] == null) {
+        } elseif ($age[0] != null && $age[1] === null) {
             $users = $this->filterBySetAge($users, [$age[0], $this->maxAge]);
         } elseif ($age[0] != null && $age[1] != null) {
             $users = $this->filterBySetAge($users, $age);
