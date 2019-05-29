@@ -12,6 +12,8 @@ use FOS\MessageBundle\FormFactory\ReplyMessageFormFactory;
 use FOS\MessageBundle\FormHandler\ReplyMessageFormHandler;
 use FOS\MessageBundle\Provider\ProviderInterface;
 use FOS\MessageBundle\Sender\Sender;
+use Mgilet\NotificationBundle\Manager\NotificationManager;
+use Proxies\__CG__\Mgilet\NotificationBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -65,7 +67,7 @@ class MessagesController extends AbstractController
     /**
      * @Route("/thread/{threadId}", name="app.message.thread")
      */
-    public function threadAction($threadId)
+    public function threadAction($threadId, NotificationManager $notManager)
     {
         $inboxThreads = $this->provider->getInboxThreads();
         $sentThreads = $this->provider->getSentThreads();
@@ -74,6 +76,31 @@ class MessagesController extends AbstractController
 
         $form = $this->replyMessageFormFactoryformFactory->create($thread);
         if ($message = $this->replyMessageFormHandlerformHandler->process($form)) {
+
+
+            $receiver = $thread->getOtherParticipants($this->getUser());
+            $allNotifications = $notManager->getNotifications($receiver[0]);
+            $isAlreadyNotified = false;
+            foreach ($allNotifications as $notification)
+            {
+                if ($notification->getNotification()->getLink() === $this->generateUrl('app.message.thread',
+                    ['threadId' => $threadId]))
+                {
+                    $isAlreadyNotified = true;
+                    break;
+                }
+            }
+
+            if(! $isAlreadyNotified)
+            {
+                $notif = $notManager->createNotification('Žinutė',
+                    $this->getUser()->getFullName(),
+                    $this->generateUrl('app.message.thread',
+                        ['threadId' => $threadId]));
+
+                $notManager->addNotification($receiver, $notif, true);
+            }
+
             return new RedirectResponse($this->container->get('router')->generate('app.message.thread', array(
                 'threadId' => $message->getThread()->getId(),
             )));

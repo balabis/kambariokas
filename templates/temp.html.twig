@@ -50,11 +50,12 @@
 
     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
         {% for item in notificationList %}
-
-            <a class="dropdown-item" href="{{ item.notification.link }}" onclick="{{ item
-            .notification.removeNotifiableNotification(item) }}">{{ item
+            <form action="{{ path('delete_notification') }}" method="POST">
+            <input type="hidden" name="notificationId" value="{{ item.notification.id }}">
+            <button class="dropdown-item" href="{{ item.notification.link }}">{{ item
                 .notification
-                }}</a>
+                }}</button>
+            </form>
         {% endfor %}
     </div>
 </li>
