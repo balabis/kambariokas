@@ -2,10 +2,10 @@
 
 namespace App\Form;
 
-use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
+use Symfony\Component\Validator\Constraints\Range;
 
 class MatchFilterFormType extends AbstractType
 {
@@ -19,7 +19,16 @@ class MatchFilterFormType extends AbstractType
                   'Female' => 'female',
                   ],
               ])
-            ->add('MatchPercent', Filters\NumberFilterType::class)
+            ->add('MatchPercent', Filters\NumberFilterType::class, [
+                'constraints' => [
+                    new Range([
+                        'min'=> 50,
+                        'max' => 100,
+                        'minMessage' => "Value must be between 50 and 100",
+                        'maxMessage' => "Value must be between 50 and 100",
+                        ]),
+                ],
+            ])
             ->add('budget', Filters\ChoiceFilterType::class, [
                 'choices' => array('iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn'),
                 'choice_label' => function ($choice, $key, $value) {
