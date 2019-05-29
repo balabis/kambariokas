@@ -28,7 +28,6 @@ class MatchController extends AbstractController
             $matchesPagination->setCurrentPage($request->query->get('page', 1));
         }
 
-
         return $this->render('match/index.html.twig', [
             'matches' => $matchesPagination,
             'contentName' => 'Match',
