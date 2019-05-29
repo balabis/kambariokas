@@ -24,8 +24,8 @@ class MatchFilterFormType extends AbstractType
                     new Range([
                         'min'=> 50,
                         'max' => 100,
-                        'minMessage' => "Value must be between 50 and 100",
-                        'maxMessage' => "Value must be between 50 and 100",
+                        'minMessage' => "Match percent must be between 50 and 100",
+                        'maxMessage' => "Match percent must be between 50 and 100",
                         ]),
                 ],
             ])
@@ -36,6 +36,23 @@ class MatchFilterFormType extends AbstractType
                 },
                 'required' => false
             ])
-            ->add('age', Filters\NumberRangeFilterType::class);
+            ->add('minAge', Filters\NumberFilterType::class, [
+                'constraints' => [
+                    new Range([
+                        'min'=> 18,
+                        'max' => 80,
+                        'minMessage' => "Min age must be 18",
+                        'maxMessage' => "Max age must be 80",
+                    ])
+                ]])
+            ->add('maxAge', Filters\NumberFilterType::class, [
+                'constraints' => [
+                    new Range([
+                        'min'=> 18,
+                        'max' => 80,
+                        'minMessage' => "Min age must be 18",
+                        'maxMessage' => "Max age must be 80",
+                    ])
+                ]]);
     }
 }
