@@ -56,7 +56,7 @@ class UserCompareService
             return ($questionScores->getCleanliness() + $questionScores->getSociability()
                     + $questionScores->getSocialOpenness() + $questionScores->getSocialFlexibility()) / 4;
         }
-        
+
         return null;
     }
 

@@ -26,7 +26,8 @@
         "symfony/validator": "4.2.*",
         "symfony/webpack-encore-bundle": "^1.4",
         "symfony/yaml": "4.2.*",
-        "white-october/pagerfanta-bundle": "^1.2"
+        "white-october/pagerfanta-bundle": "^1.2",
+        "lexik/form-filter-bundle": "~5.0"
     },
     "config": {
         "preferred-install": {
