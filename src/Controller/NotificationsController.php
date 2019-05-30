@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NotificationsController extends AbstractController
 {
     /**
-     * @Route("/api/notification", name="delete_notification", methods={"POST"})
+     * @Route("/notification/delete", name="delete_notification", methods={"POST"})
      */
     public function deleteNotification(Request $request, NotificationManager $manager, EntityManagerInterface $em)
     {
@@ -34,5 +34,15 @@ class NotificationsController extends AbstractController
 //        $manager->r
 //
         return $this->redirect($notification->getLink());
+    }
+
+    /**
+     * @Route("/api/notification", name="api_notifications", methods={"POST"})
+     */
+    public function getNotifications(NotificationManager $notManager)
+    {
+        $notifications = $notManager->getNotifications($this->getUser());
+
+        return $this->json($notifications);
     }
 }

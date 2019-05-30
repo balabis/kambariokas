@@ -36,26 +36,22 @@
 {#    </div>#}
 {#</div>#}
 
-<li class="nav-item dropdown">
+<li id="notifications" class="nav-item dropdown" data-notification_route="{{ path('api_notifications') }}"
+    data-delete_notification_route="{{ path('delete_notification') }}">
     <a
-            class="nav-link pr-0"
+            class="nav-link pr-0 {{ notificationList ? 'text-danger' : '' }}"
             href="#"
             role="button"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
     >
-        >
+        <i class="fas fa-bell"></i>
     </a>
 
-    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
-        {% for item in notificationList %}
-            <form action="{{ path('delete_notification') }}" method="POST">
-            <input type="hidden" name="notificationId" value="{{ item.notification.id }}">
-            <button class="dropdown-item" href="{{ item.notification.link }}">{{ item
-                .notification
-                }}</button>
-            </form>
-        {% endfor %}
+    <div id="notification-list" class="dropdown-menu dropdown-menu-arrow dropdown-menu-right ">
+        {% if not notificationList %}
+            <p class="px-2 my-0">Nėra pranešimų</p>
+        {% endif %}
     </div>
 </li>

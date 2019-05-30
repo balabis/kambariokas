@@ -39,5 +39,8 @@ footer .row {
 .user-match-card:hover
 {
     transform: translateY(-5%);
+}
 
+.notification {
+    font-size: 1.3rem !important;
 }

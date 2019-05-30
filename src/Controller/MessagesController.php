@@ -13,10 +13,10 @@ use FOS\MessageBundle\FormHandler\ReplyMessageFormHandler;
 use FOS\MessageBundle\Provider\ProviderInterface;
 use FOS\MessageBundle\Sender\Sender;
 use Mgilet\NotificationBundle\Manager\NotificationManager;
-use Proxies\__CG__\Mgilet\NotificationBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/dashboard/messages")
