@@ -24,6 +24,7 @@ class UsersGenerator
         $cities = ['Vilnius', 'Kaunas'];
         $budgets = ['iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn', ''];
         $genders = ['male','female'];
+
         for ($i = 0; $i < $userCount; $i++) {
             $user = new User();
             $user->setCity($cities[rand(0, 1)]);
@@ -38,6 +39,7 @@ class UsersGenerator
             $user->setGender($genders[rand(0, 1)]);
             $this->entityManager->persist($user);
         }
+
         $this->entityManager->flush();
 
         $this->generateAnswers();
@@ -47,21 +49,24 @@ class UsersGenerator
     public function generateAnswers() : void
     {
         $usersId = $this->entityManager->getRepository(User::class)->findAll();
+
         foreach ($usersId as $user) {
             $answer = new QuestionnaireScore();
             $answer->setUserId($user->getId());
-            $answer->setCleanliness(2+(rand(0, 100)/100));
-            $answer->setSociability(2+(rand(0, 100)/100));
-            $answer->setSocialFlexibility(2+(rand(0, 100)/100));
-            $answer->setSocialOpenness(2+(rand(0, 100)/100));
+            $answer->setCleanliness(5*(rand(0, 100)/100));
+            $answer->setSociability(5*(rand(0, 100)/100));
+            $answer->setSocialFlexibility(5*(rand(0, 100)/100));
+            $answer->setSocialOpenness(5*(rand(0, 100)/100));
             $this->entityManager->persist($answer);
         }
+
         $this->entityManager->flush();
     }
 
     private function generateUserMatch() : void
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();
+        
         foreach ($users as $user) {
             $this->matchController->addNewMatchesToDatabase($users, $user);
         }
