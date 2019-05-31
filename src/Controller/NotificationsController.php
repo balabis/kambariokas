@@ -27,11 +27,11 @@ class NotificationsController extends AbstractController
     }
 
     /**
-     * @Route("/api/notification", name="api_notifications", methods={"POST"})
+     * @Route("/api/notification", name="api_notifications", methods={"GET"})
      */
     public function getNotifications(NotificationManager $notManager)
     {
-        $notifications = $notManager->getNotifications($this->getUser(), 'ASC', 15);
+        $notifications = $notManager->getNotifications($this->getUser(), 'ASC', 20);
 
         return $this->json($notifications);
     }

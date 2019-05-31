@@ -1,9 +1,8 @@
-
 <div id="notifications" class="nav-item dropdown " data-notification_route="{{ path('api_notifications') }}"
     data-delete_notification_route="{{ path('delete_notification') }}">
     <a
             id="notification-bell"
-            class="nav-link pr-0 {{ notificationList ? 'text-danger' : 'text-secondary'}}"
+            class="nav-link pr-0 text-secondary {{ notificationList ? 'text-danger' : ''}}"
             href="#"
             role="button"
             data-toggle="dropdown"
@@ -12,7 +11,6 @@
     >
         <i class="fas fa-bell"></i>
     </a>
-
     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right overflow-auto dropdown-list">
         <div id="notification-list">
             {% for item in notificationList %}
@@ -25,6 +23,5 @@
             {% endfor %}
         </div>
         <p id="no-notifications" class="px-2 my-0 {{ notificationList ? 'd-none' : '' }}">Nėra pranešimų</p>
-
     </div>
 </div>

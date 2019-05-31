@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class NotificationService
 {
     private $notificationManager;
-
     private $router;
     private $em;
 
@@ -42,7 +41,6 @@ class NotificationService
                 break;
             }
         }
-
         if (!$isAlreadyNotified) {
             $notif = $this->notificationManager->createNotification(
                 'Žinutė',
@@ -52,7 +50,6 @@ class NotificationService
                     ['threadId' => $threadId]
                 )
             );
-
             $this->notificationManager->addNotification(
                 [$messageReceiver],
                 $notif,
@@ -71,15 +68,12 @@ class NotificationService
                 ['uuid' => $senderUser->getId()]
             )
         );
-
         $this->notificationManager->addNotification([$receiver], $notif, true);
     }
 
     public function removeInviteNotificationsByUser($user, $profileOwnerUuid)
     {
         $allNotifications = $this->notificationManager->getNotifications($user);
-
-
         foreach ($allNotifications as $notifiableNotification) {
             if ($notifiableNotification->getNotification()
                     ->getLink() === $this->router->generate(
@@ -87,10 +81,7 @@ class NotificationService
                         ['uuid' => $profileOwnerUuid]
                     )) {
                 $currentNotification = $notifiableNotification->getNotification();
-
                 $this->em->remove($notifiableNotification);
-                $this->em->flush();
-
                 $this->em->remove($currentNotification);
                 $this->em->flush();
             }
@@ -99,9 +90,7 @@ class NotificationService
 
     public function deleteNotificationOnChatDelete($user, $threadId)
     {
-
         $allNotifications = $this->notificationManager->getNotifications($user);
-
         foreach ($allNotifications as $notifiableNotification) {
             if ($notifiableNotification->getNotification()
                     ->getLink() === $this->router->generate(
@@ -109,8 +98,6 @@ class NotificationService
                         ['threadId' => $threadId]
                     )) {
                 $this->em->remove($notifiableNotification);
-                $this->em->flush();
-
                 $this->em->remove($notifiableNotification->getNotification());
                 $this->em->flush();
             }

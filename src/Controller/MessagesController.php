@@ -129,8 +129,6 @@ class MessagesController extends AbstractController
             ->setBody('Labas!')
             ->getMessage();
 
-
-
         $this->sender->send($message);
         $sentThreads = $this->provider->getSentThreads();
 
@@ -160,9 +158,7 @@ class MessagesController extends AbstractController
         $thread = $this->provider->getThread($threadId);
         $this->deleter->markAsDeleted($thread);
         $this->threadManager->saveThread($thread);
-
         $notificationService->deleteNotificationOnChatDelete($this->getUser(), $threadId);
-
 
         return new RedirectResponse($this->container->get('router')->generate('app.message.inbox'));
     }

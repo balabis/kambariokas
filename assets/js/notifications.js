@@ -1,12 +1,12 @@
 var $ = require('jquery');
 
 ajaxCall();
-setInterval(ajaxCall, 20000);
+setInterval(ajaxCall, 5000);
 
 function ajaxCall() {
     var notificationRoute = $('#notifications').data('notification_route');
 
-    $.post(notificationRoute, function(response){
+    $.get(notificationRoute, function(response){
         if (response.length === 0) {
             if ($('#notification-bell').hasClass('text-danger')) {
                 $('#notification-bell').removeClass('text-danger');
@@ -22,9 +22,8 @@ function ajaxCall() {
                 $('#no-notifications').addClass('d-none');
             }
         }
+
         document.getElementById('notification-list').innerHTML = '';
-
-
         response.forEach(notification => {
             document.getElementById('notification-list').appendChild(createNotificationForm(notification));
         });

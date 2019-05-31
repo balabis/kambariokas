@@ -61,20 +61,16 @@ class InvitationController extends AbstractController
         $uuid = $request->request->get('uuid');
         $invite = new Invite();
         $invite->setSender($this->getUser());
-
         $userRepo = $em->getRepository(User::class);
         $receiver = $userRepo->findOneBy(['id' => $uuid]);
-
         $invite->setReceiver($receiver);
         $invite->setStatus('pending');
         $em->persist($invite);
         $em->flush();
-
         $emailService->sentInvitationEmail(
             $receiver->getEmail(),
             $this->getUser()
         );
-
         $notificationService->notifyAboutInviteAction('Pakvietimas', $this->getUser(), $receiver);
 
         return $this->redirect($request->headers->get('referer'));
@@ -90,7 +86,6 @@ class InvitationController extends AbstractController
         NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy([
             'sender' => $this->getUser(),
@@ -98,12 +93,10 @@ class InvitationController extends AbstractController
         ]);
         $em->remove($invite);
         $em->flush();
-
         $emailService->sentInviteCancelEmail(
             $invite->getReceiver()->getEmail(),
             $this->getUser()
         );
-
         $notificationService->notifyAboutInviteAction('Atšauktas kvietimas', $this->getUser(), $invite->getReceiver());
 
         return $this->redirect($request->headers->get('referer'));
@@ -119,7 +112,6 @@ class InvitationController extends AbstractController
         NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy([
             'receiver' => $this->getUser(),
@@ -127,10 +119,8 @@ class InvitationController extends AbstractController
         ]);
         $invite->setStatus('declined');
         $em->flush();
-
         $emailService->sentDeclineInvitationEmail($invite->getSender()
             ->getEmail(), $this->getUser());
-
         $notificationService->notifyAboutInviteAction('Atmestas kvietimas', $this->getUser(), $invite->getSender());
 
         return $this->redirect($request->headers->get('referer'));
@@ -146,26 +136,21 @@ class InvitationController extends AbstractController
         NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy([
             'receiver' => $this->getUser(),
             'sender' => $uuid,
         ]);
         $invite->setStatus('accepted');
-
         $invite->getSender()->setStatus('inactive');
         $this->getUser()->setStatus('inactive');
-
         $em->flush();
-
         $emailService->sentAcceptInvitationEmail($invite->getSender()
             ->getEmail(), $this->getUser());
         $emailService->sentContactInfoEmail(
             $this->getUser()->getEmail(),
             $invite->getSender()
         );
-
         $notificationService->notifyAboutInviteAction('Priimtas kvietimas', $this->getUser(), $invite->getSender());
 
         return $this->redirect($request->headers->get('referer'));
@@ -180,7 +165,6 @@ class InvitationController extends AbstractController
         EntityManagerInterface $em
     ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
         $invite = $inviteRepo->findOneBy([
             'receiver' => $this->getUser(),

@@ -1,5 +1,4 @@
-
-    <!-- Navbar -->
+<!-- Navbar -->
     <nav
             class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark"
     >
@@ -7,7 +6,6 @@
             <a class="navbar-brand pt-1" href="{{ path('matched') }}">
                 {{ 'Brand name'|trans }}
             </a>
-
             <button
                     class="navbar-toggler"
                     type="button"
@@ -73,7 +71,6 @@
                 </ul>
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex ml-lg-auto">
-
                     <li class="nav-item dropdown">
                         <a
                                 class="nav-link pr-0"
@@ -118,7 +115,6 @@
                             </a>
                         </div>
                     </li>
-
                 </ul>
             </div>
             {{ mgilet_notification_render(app.user, {'template': 'main_layout_blocks/notifications.html.twig'}) }}
