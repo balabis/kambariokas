@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use FOS\MessageBundle\Model\ParticipantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -14,11 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface
+class User implements UserInterface, ParticipantInterface
 {
     use TimestampableEntity;
     /**
-     * @var \Ramsey\Uuid\UuidInterface
      *
      * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
@@ -36,6 +36,11 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -89,6 +94,39 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Invite", mappedBy="receiver")
      */
     private $receivedInvitesFrom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="100")
+     */
+    private $cityPart;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $budget;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $occupation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="255")
+     */
+    private $hobbies;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="100")
+     */
+    private $university;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status = 'active';
 
     public function __construct()
     {
@@ -146,12 +184,19 @@ class User implements UserInterface
         return $this;
     }
 
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -333,5 +378,86 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function getCityPart(): ?string
+    {
+        return $this->cityPart;
+    }
+
+    public function setCityPart(?string $cityPart): self
+    {
+        $this->cityPart = $cityPart;
+
+        return $this;
+    }
+
+    public function getBudget(): ?string
+    {
+        return $this->budget;
+    }
+
+    public function setBudget(?string $budget): self
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    public function getOccupation(): ?string
+    {
+        return $this->occupation;
+    }
+
+    public function setOccupation(?string $occupation): self
+    {
+        $this->occupation = $occupation;
+
+        return $this;
+    }
+
+    public function getHobbies(): ?string
+    {
+        return $this->hobbies;
+    }
+
+    public function setHobbies(?string $hobbies): self
+    {
+        $this->hobbies = $hobbies;
+
+        return $this;
+    }
+
+    public function getUniversity(): ?string
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?string $university): self
+    {
+        $this->university = $university;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function isActive() : bool
+    {
+        if ($this->getStatus() === 'active') {
+            return true;
+        }
+
+        return false;
     }
 }

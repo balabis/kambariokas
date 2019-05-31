@@ -11,6 +11,7 @@ Register page text: Ir jums nebeteks vargti su nervinančiais kambariokais
 Sign in with credentials: Prisijungti naudojant el. paštą ir slaptažodį
 Sign up with credentials: Registruotis naudojant el. paštą ir slaptažodį
 Email: El. paštas
+Username: Vartotojo vardas
 Password: Slaptažodis
 Plain password: Slaptažodis
 Create new accout: Neturite paskyros? Registruotis
@@ -31,6 +32,7 @@ Match percent: Suderinamumo procentas
 Message: Rašyti žinutę
 Profile: Profilis
 Be flatmates: Tapti kambariokais
+Inbox: Žinutės
 Pending invitation: Išsiųstas kvietimas
 Invites: Pakvietimai
 Received invitation: Gautas kvietimas
@@ -59,3 +61,20 @@ Profile picture: Profilio nuotrauka
 Male: Vyras
 Female: Moteris
 Prefer not to say: Nenoriu atskleisti
+City part: Pageidaujama miesto dalis
+Budget: Kokį biudžetą galite skirti
+Planned budget: Planuojamas biudžetas
+Occupation: Užsiėmimas
+Hobbies: Hobiai
+University: Universitetas
+Contacts: Kontaktai
+Phone: Telefonas
+Close: Uždaryti
+Become active: Tapti aktyviu
+
+Search: Paieška
+Does not matter: Nesvarbu
+Min age: Minimalus amžius
+Max age: Maksimalus amžius
+Match filter: Raskite pačius tinkamiausius vartotojus!
+Age: Amžius

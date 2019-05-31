@@ -74,8 +74,8 @@ class EmailService
             $senderUser->getFullName() . ' priėmė Jūsų išsiųstą kvietimą tapti kambariokais.';
 
         $secondParagraph =
-            'Norėdami gauti daugiau informacijos spauskite mygtuką apačioje. 
-            Linkime geros dienos!';
+            'Vartotojo el. paštas: ' . $senderUser->getEmail() .
+            '. Linkime geros dienos!';
 
         $subject = 'Priimtas kvietimas tapti kambariokais';
 
@@ -93,6 +93,21 @@ class EmailService
             Linkime geros dienos!';
 
         $subject = 'Atmestas kvietimas tapti kambariokais';
+
+        $this->sentEmail($email, $firstParagraph, $secondParagraph, $subject);
+    }
+
+    public function sentContactInfoEmail($email, $user)
+    {
+        $firstParagraph =
+            'Jūs patvirtinote ' .
+            $user->getFullName() . ' kvietimą tapti kambariokais.';
+
+        $secondParagraph =
+            'Vartotojo el. paštas: ' . $user->getEmail() .
+            '. Linkime geros dienos!';
+
+        $subject = 'Priimtas kvietimas tapti kambariokais';
 
         $this->sentEmail($email, $firstParagraph, $secondParagraph, $subject);
     }
