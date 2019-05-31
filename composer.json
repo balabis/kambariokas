@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "friendsofsymfony/message-bundle": "^2.0",
         "doctrine/doctrine-bundle": "^1.11",
+        "mgilet/notification-bundle": "^3.1",
         "ramsey/uuid-doctrine": "^1.5",
         "sensio/framework-extra-bundle": "^5.3",
         "stof/doctrine-extensions-bundle": "^1.3",
