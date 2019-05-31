@@ -99,8 +99,10 @@ class InvitationController extends AbstractController
         $em->remove($invite);
         $em->flush();
 
-        $emailService->sentInviteCancelEmail($invite->getReceiver()->getEmail(),
-            $this->getUser());
+        $emailService->sentInviteCancelEmail(
+            $invite->getReceiver()->getEmail(),
+            $this->getUser()
+        );
 
         $notificationService->notifyAboutInviteAction('Atšauktas kvietimas', $this->getUser(), $invite->getReceiver());
 
@@ -159,8 +161,10 @@ class InvitationController extends AbstractController
 
         $emailService->sentAcceptInvitationEmail($invite->getSender()
             ->getEmail(), $this->getUser());
-        $emailService->sentContactInfoEmail($this->getUser()->getEmail(),
-            $invite->getSender());
+        $emailService->sentContactInfoEmail(
+            $this->getUser()->getEmail(),
+            $invite->getSender()
+        );
 
         $notificationService->notifyAboutInviteAction('Priimtas kvietimas', $this->getUser(), $invite->getSender());
 

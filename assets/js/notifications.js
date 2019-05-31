@@ -7,7 +7,6 @@ function ajaxCall() {
     var notificationRoute = $('#notifications').data('notification_route');
 
     $.post(notificationRoute, function(response){
-        console.log(response);
         if (response.length === 0) {
             if ($('#notification-bell').hasClass('text-danger')) {
                 $('#notification-bell').removeClass('text-danger');

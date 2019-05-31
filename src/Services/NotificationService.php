@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Mgilet\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,7 +18,6 @@ class NotificationService
         NotificationManager $notificationManager,
         UrlGeneratorInterface $router,
         EntityManagerInterface $em
-
     ) {
         $this->notificationManager = $notificationManager;
         $this->router = $router;
@@ -36,30 +34,43 @@ class NotificationService
         $isAlreadyNotified = false;
         foreach ($allNotifications as $notification) {
             if ($notification->getNotification()
-                    ->getLink() === $this->router->generate('app.message.thread',
-                    ['threadId' => $threadId])) {
+                    ->getLink() === $this->router->generate(
+                        'app.message.thread',
+                        ['threadId' => $threadId]
+                    )) {
                 $isAlreadyNotified = true;
                 break;
             }
         }
 
         if (!$isAlreadyNotified) {
-            $notif = $this->notificationManager->createNotification('Žinutė',
+            $notif = $this->notificationManager->createNotification(
+                'Žinutė',
                 $messageSender->getFullName(),
-                $this->router->generate('app.message.thread',
-                    ['threadId' => $threadId]));
+                $this->router->generate(
+                    'app.message.thread',
+                    ['threadId' => $threadId]
+                )
+            );
 
-            $this->notificationManager->addNotification([$messageReceiver],
-                $notif, true);
+            $this->notificationManager->addNotification(
+                [$messageReceiver],
+                $notif,
+                true
+            );
         }
     }
 
     public function notifyAboutInviteAction($name, $senderUser, $receiver)
     {
-        $notif = $this->notificationManager->createNotification($name,
+        $notif = $this->notificationManager->createNotification(
+            $name,
             $senderUser->getFullName(),
-            $this->router->generate('profile.view',
-                ['uuid' => $senderUser->getId()]));
+            $this->router->generate(
+                'profile.view',
+                ['uuid' => $senderUser->getId()]
+            )
+        );
 
         $this->notificationManager->addNotification([$receiver], $notif, true);
     }
@@ -71,9 +82,10 @@ class NotificationService
 
         foreach ($allNotifications as $notifiableNotification) {
             if ($notifiableNotification->getNotification()
-                    ->getLink() === $this->router->generate('profile.view',
-                    ['uuid' => $profileOwnerUuid])) {
-
+                    ->getLink() === $this->router->generate(
+                        'profile.view',
+                        ['uuid' => $profileOwnerUuid]
+                    )) {
                 $currentNotification = $notifiableNotification->getNotification();
 
                 $this->em->remove($notifiableNotification);
@@ -92,8 +104,10 @@ class NotificationService
 
         foreach ($allNotifications as $notifiableNotification) {
             if ($notifiableNotification->getNotification()
-                    ->getLink() === $this->router->generate('app.message.thread',
-                    ['threadId' => $threadId])) {
+                    ->getLink() === $this->router->generate(
+                        'app.message.thread',
+                        ['threadId' => $threadId]
+                    )) {
                 $this->em->remove($notifiableNotification);
                 $this->em->flush();
 

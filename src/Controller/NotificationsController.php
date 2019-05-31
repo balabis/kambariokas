@@ -3,7 +3,6 @@
 
 namespace App\Controller;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Mgilet\NotificationBundle\Manager\NotificationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
