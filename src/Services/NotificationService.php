@@ -44,8 +44,13 @@ class NotificationService
         }
     }
 
-    public function notifyAboutInviteAction()
+    public function notifyAboutInviteAction($name, $senderUser, $receiver)
     {
+        $notif = $this->notificationManager->createNotification($name,
+            $senderUser->getFullName(),
+            $this->router->generate('profile.view',
+                ['uuid' => $this->getUser()->getId()]));
 
+        $this->notificationManager->addNotification([$receiver], $notif, true);
     }
 }

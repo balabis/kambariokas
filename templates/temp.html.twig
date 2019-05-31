@@ -40,7 +40,7 @@
     data-delete_notification_route="{{ path('delete_notification') }}">
     <a
             id="notification-bell"
-            class="nav-link pr-0"
+            class="nav-link pr-0 {{ notificationList ? 'text-danger' : ''}}"
             href="#"
             role="button"
             data-toggle="dropdown"
@@ -51,8 +51,10 @@
     </a>
 
     <div id="notification-list" class="dropdown-menu dropdown-menu-arrow dropdown-menu-right ">
+        {% for notification in notificationList %}
 
-            <p id="no-notifications" class="px-2 my-0">Nėra pranešimų</p>
+        {% endfor %}
+        <p id="no-notifications" class="px-2 my-0">Nėra pranešimų</p>
 
     </div>
 </li>

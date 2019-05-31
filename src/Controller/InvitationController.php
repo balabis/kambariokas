@@ -6,13 +6,12 @@ use App\Entity\Invite;
 use App\Entity\User;
 use App\Services\EmailService;
 use App\Services\MatchesPaginationService;
+use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
-use Mgilet\NotificationBundle\Manager\NotificationManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Security("is_granted('ROLE_USER')")
@@ -57,7 +56,7 @@ class InvitationController extends AbstractController
         EntityManagerInterface $em,
         Request $request,
         EmailService $emailService,
-        NotificationManager $notManager
+        NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
         $invite = new Invite();
@@ -76,12 +75,7 @@ class InvitationController extends AbstractController
             $this->getUser()
         );
 
-        $notif = $notManager->createNotification('Pakvietimas',
-            $this->getUser()->getFullName(),
-            $this->generateUrl('profile.view',
-                ['uuid' => $this->getUser()->getId()]));
-
-        $notManager->addNotification([$receiver], $notif, true);
+        $notificationService->notifyAboutInviteAction('Pakvietimas', $this->getUser(), $receiver);
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -93,7 +87,7 @@ class InvitationController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         EmailService $emailService,
-        NotificationManager $notManager
+        NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
 
@@ -108,13 +102,7 @@ class InvitationController extends AbstractController
         $emailService->sentInviteCancelEmail($invite->getReceiver()->getEmail(),
             $this->getUser());
 
-        $notif = $notManager->createNotification('Atšauktas kvietimas',
-            $this->getUser()->getFullName(),
-            $this->generateUrl('profile.view',
-                ['uuid' => $this->getUser()->getId()]));
-
-
-        $notManager->addNotification([$invite->getReceiver()], $notif, true);
+        $notificationService->notifyAboutInviteAction('Atšauktas kvietimas', $this->getUser(), $invite->getReceiver());
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -126,7 +114,7 @@ class InvitationController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         EmailService $emailService,
-        NotificationManager $notManager
+        NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
 
@@ -141,13 +129,7 @@ class InvitationController extends AbstractController
         $emailService->sentDeclineInvitationEmail($invite->getSender()
             ->getEmail(), $this->getUser());
 
-        $notif = $notManager->createNotification('Atmestas kvietimas',
-            $this->getUser()->getFullName(),
-            $this->generateUrl('profile.view',
-                ['uuid' => $this->getUser()->getId()]));
-
-
-        $notManager->addNotification([$invite->getSender()], $notif, true);
+        $notificationService->notifyAboutInviteAction('Atmestas kvietimas', $this->getUser(), $invite->getSender());
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -159,7 +141,7 @@ class InvitationController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         EmailService $emailService,
-        NotificationManager $notManager
+        NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
 
@@ -180,14 +162,7 @@ class InvitationController extends AbstractController
         $emailService->sentContactInfoEmail($this->getUser()->getEmail(),
             $invite->getSender());
 
-
-        $notif = $notManager->createNotification('Priimtas kvietimas',
-            $this->getUser()->getFullName(),
-            $this->generateUrl('profile.view',
-                ['uuid' => $this->getUser()->getId()]));
-
-
-        $notManager->addNotification([$invite->getSender()], $notif, true);
+        $notificationService->notifyAboutInviteAction('Priimtas kvietimas', $this->getUser(), $invite->getSender());
 
         return $this->redirect($request->headers->get('referer'));
     }
