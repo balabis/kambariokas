@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Services\NotificationService;
 use App\Services\UserService;
 use Doctrine\Common\Collections\Criteria;
 use FOS\MessageBundle\Composer\Composer;
@@ -67,7 +68,7 @@ class MessagesController extends AbstractController
     /**
      * @Route("/thread/{threadId}", name="app.message.thread")
      */
-    public function threadAction($threadId, NotificationManager $notManager)
+    public function threadAction($threadId, NotificationService $notificationService)
     {
         $inboxThreads = $this->provider->getInboxThreads();
         $sentThreads = $this->provider->getSentThreads();
@@ -76,30 +77,8 @@ class MessagesController extends AbstractController
 
         $form = $this->replyMessageFormFactoryformFactory->create($thread);
         if ($message = $this->replyMessageFormHandlerformHandler->process($form)) {
-
-
             $receiver = $thread->getOtherParticipants($this->getUser());
-            $allNotifications = $notManager->getNotifications($receiver[0]);
-            $isAlreadyNotified = false;
-            foreach ($allNotifications as $notification)
-            {
-                if ($notification->getNotification()->getLink() === $this->generateUrl('app.message.thread',
-                    ['threadId' => $threadId]))
-                {
-                    $isAlreadyNotified = true;
-                    break;
-                }
-            }
-
-            if(! $isAlreadyNotified)
-            {
-                $notif = $notManager->createNotification('Žinutė',
-                    $this->getUser()->getFullName(),
-                    $this->generateUrl('app.message.thread',
-                        ['threadId' => $threadId]));
-
-                $notManager->addNotification($receiver, $notif, true);
-            }
+            $notificationService->notifyAboutNewMessage($receiver, $this->getUser(), $threadId);
 
             return new RedirectResponse($this->container->get('router')->generate('app.message.thread', array(
                 'threadId' => $message->getThread()->getId(),

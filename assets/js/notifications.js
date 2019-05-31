@@ -8,24 +8,25 @@ function ajaxCall() {
 
     $.post(notificationRoute, function(response){
         if (response.length === 0) {
-            if (document.getElementById('notification-bell').classList.contains('text-danger')) {
-                document.getElementById('notification-bell').classList.remove('text-danger');
+            if ($('#notification-bell').hasClass('text-danger')) {
+                $('#notification-bell').removeClass('text-danger');
             }
-            if (document.getElementById('no-notifications').classList.contains('d-none')) {
-                document.getElementById('no-notifications').classList.remove('d-none');
+            if ($('#no-notifications').hasClass('d-none')) {
+                $('#no-notifications').removeClass('d-none');
             }
         } else {
-            if (! document.getElementById('notification-bell').classList.contains('text-danger')) {
-                document.getElementById('notification-bell').classList.add('text-danger');
+            if (! $('#notification-bell').hasClass('text-danger')) {
+                $('#notification-bell').addClass('text-danger');
             }
-            if (! document.getElementById('no-notifications').classList.contains('d-none')) {
-                document.getElementById('no-notifications').classList.add('d-none');
+            if (! $('#no-notifications').hasClass('d-none')) {
+                $('#no-notifications').removeClass('d-none');
             }
         }
 
+
         response.forEach(notification => {
             createNotificationForm(notification);
-        })
+        });
     })
 }
 

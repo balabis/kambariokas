@@ -29,7 +29,7 @@ class NotificationsController extends AbstractController
      */
     public function getNotifications(NotificationManager $notManager)
     {
-        $notifications = $notManager->getNotifications($this->getUser());
+        $notifications = $notManager->getNotifications($this->getUser(), 'ASC', 10);
 
         return $this->json($notifications);
     }
