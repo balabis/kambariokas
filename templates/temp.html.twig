@@ -39,7 +39,8 @@
 <li id="notifications" class="nav-item dropdown" data-notification_route="{{ path('api_notifications') }}"
     data-delete_notification_route="{{ path('delete_notification') }}">
     <a
-            class="nav-link pr-0 {{ notificationList ? 'text-danger' : '' }}"
+            id="notification-bell"
+            class="nav-link pr-0"
             href="#"
             role="button"
             data-toggle="dropdown"
@@ -50,8 +51,8 @@
     </a>
 
     <div id="notification-list" class="dropdown-menu dropdown-menu-arrow dropdown-menu-right ">
-        {% if not notificationList %}
-            <p class="px-2 my-0">Nėra pranešimų</p>
-        {% endif %}
+
+            <p id="no-notifications" class="px-2 my-0">Nėra pranešimų</p>
+
     </div>
 </li>
