@@ -10,20 +10,16 @@ class MatchService
 {
     private $entityManager;
 
-    private $city;
-
     private $compare;
 
     private $userMatchRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        CityService $cityService,
         UserCompareService $compareService,
         UserMatchRepository $userMatchRepository
     ) {
         $this->entityManager = $entityManager;
-        $this->city = $cityService;
         $this->compare = $compareService;
         $this->userMatchRepository = $userMatchRepository;
     }
