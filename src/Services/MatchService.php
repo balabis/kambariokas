@@ -95,6 +95,7 @@ class MatchService
         $query .="'";
         $query .=$user->getId();
         $query .= "'";
+        
         $this->userMatchRepository->query($query);
     }
 }
