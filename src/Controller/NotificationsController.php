@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use Doctrine\ORM\EntityManagerInterface;
 use Mgilet\NotificationBundle\Manager\NotificationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +15,14 @@ class NotificationsController extends AbstractController
     /**
      * @Route("/notification/delete", name="delete_notification", methods={"POST"})
      */
-    public function deleteNotification(Request $request, NotificationManager $manager)
+    public function deleteNotification(Request $request, NotificationManager $manager, EntityManagerInterface $em)
     {
         $notifId = $request->request->get('notificationId');
         $notification = $manager->getNotification($notifId);
-        $manager->removeNotification(array($this->getUser()), $notification, true);
-        $manager->deleteNotification($notification, true);
+
+        $em->remove($notification->getNotifiableNotifications()[0]);
+        $em->remove($notification);
+        $em->flush();
 
         return $this->redirect($notification->getLink());
     }
@@ -29,7 +32,7 @@ class NotificationsController extends AbstractController
      */
     public function getNotifications(NotificationManager $notManager)
     {
-        $notifications = $notManager->getNotifications($this->getUser(), 'ASC', 10);
+        $notifications = $notManager->getNotifications($this->getUser(), 'ASC', 15);
 
         return $this->json($notifications);
     }

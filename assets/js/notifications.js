@@ -7,6 +7,7 @@ function ajaxCall() {
     var notificationRoute = $('#notifications').data('notification_route');
 
     $.post(notificationRoute, function(response){
+        console.log(response);
         if (response.length === 0) {
             if ($('#notification-bell').hasClass('text-danger')) {
                 $('#notification-bell').removeClass('text-danger');
@@ -19,13 +20,14 @@ function ajaxCall() {
                 $('#notification-bell').addClass('text-danger');
             }
             if (! $('#no-notifications').hasClass('d-none')) {
-                $('#no-notifications').removeClass('d-none');
+                $('#no-notifications').addClass('d-none');
             }
         }
+        document.getElementById('notification-list').innerHTML = '';
 
 
         response.forEach(notification => {
-            createNotificationForm(notification);
+            document.getElementById('notification-list').appendChild(createNotificationForm(notification));
         });
     })
 }
@@ -51,6 +53,5 @@ function createNotificationForm (notification) {
     form.appendChild(input);
     form.appendChild(button);
 
-    document.getElementById('notification-list').innerHTML = '';
-    document.getElementById('notification-list').appendChild(form);
+    return form;
 }

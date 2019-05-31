@@ -7,6 +7,7 @@
             <a class="navbar-brand pt-1" href="{{ path('matched') }}">
                 {{ 'Brand name'|trans }}
             </a>
+
             <button
                     class="navbar-toggler"
                     type="button"
@@ -44,8 +45,8 @@
                     </div>
                 </div>
                 <!-- Navbar items -->
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
+                <ul class="navbar-nav ml-auto ">
+                    <li class="nav-item d-md-none">
                         <a class="nav-link" href="{{ path('profile.edit') }}">
                             <i class="far fa-id-card"></i>&nbsp;
                             <span>{{ 'My profile'|trans }}</span>
@@ -57,7 +58,7 @@
                             <span>{{ 'Match'|trans }}</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="nav-item d-md-none">
                         <a class="nav-link" href="{{ path('app.message.inbox') }}" class="dropdown-item">
                             <i class="far fa-envelope"></i>
                             <span>{{ 'Inbox'|trans }}</span>
@@ -72,7 +73,7 @@
                 </ul>
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex ml-lg-auto">
-                    <li>{{ mgilet_notification_render(app.user, {'template': 'temp.html.twig'}) }}</li>
+
                     <li class="nav-item dropdown">
                         <a
                                 class="nav-link pr-0"
@@ -94,9 +95,6 @@
                                     <span class="mb-0 text-sm  font-weight-bold">{{ app.user.fullName ? app.user
                                         .fullName : app.user.email }}&nbsp;<i class="fas fa-caret-down"></i></span>
                                     <span>
-                                    {% if fos_message_nb_unread() > 0 %}
-                                        <img src="{{ asset('newmessage.png') }}" >
-                                    {% endif %}
 
                                 </span>
                                 </div>
@@ -127,5 +125,6 @@
 
                 </ul>
             </div>
+            {{ mgilet_notification_render(app.user, {'template': 'main_layout_blocks/notifications.html.twig'}) }}
         </div>
     </nav>

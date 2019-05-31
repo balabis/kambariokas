@@ -78,7 +78,7 @@ class MessagesController extends AbstractController
         $form = $this->replyMessageFormFactoryformFactory->create($thread);
         if ($message = $this->replyMessageFormHandlerformHandler->process($form)) {
             $receiver = $thread->getOtherParticipants($this->getUser());
-            $notificationService->notifyAboutNewMessage($receiver, $this->getUser(), $threadId);
+            $notificationService->notifyAboutNewMessage($receiver[0], $this->getUser(), $threadId);
 
             return new RedirectResponse($this->container->get('router')->generate('app.message.thread', array(
                 'threadId' => $message->getThread()->getId(),
@@ -98,7 +98,7 @@ class MessagesController extends AbstractController
     /**
      * @Route("/new/{participantId}", name="app.message.new_thread")
      */
-    public function newThreadAction(UserService $userService, $participantId)
+    public function newThreadAction(UserService $userService, $participantId, NotificationService $notificationService)
     {
         $inboxThreads = $this->provider->getInboxThreads();
         $sentThreads = $this->provider->getSentThreads();
@@ -129,6 +129,8 @@ class MessagesController extends AbstractController
             ->setBody('Labas!')
             ->getMessage();
 
+
+
         $this->sender->send($message);
         $sentThreads = $this->provider->getSentThreads();
 
@@ -137,6 +139,8 @@ class MessagesController extends AbstractController
             $threadParticipants = $sentThread->getParticipants();
             foreach ($threadParticipants as $threadParticipant) {
                 if ($threadParticipant->getId() == $participantId) {
+                    $notificationService->notifyAboutNewMessage($recipient, $this->getUser(), $sentThread->getId());
+
                     return new RedirectResponse(
                         $this->container->get('router')->generate(
                             'app.message.thread',
@@ -151,11 +155,14 @@ class MessagesController extends AbstractController
     /**
      * @Route("/{threadId}/delete", name="app.message.delete_thread")
      */
-    public function deletedAction($threadId)
+    public function deletedAction($threadId, NotificationService $notificationService)
     {
         $thread = $this->provider->getThread($threadId);
         $this->deleter->markAsDeleted($thread);
         $this->threadManager->saveThread($thread);
+
+        $notificationService->deleteNotificationOnChatDelete($this->getUser(), $threadId);
+
 
         return new RedirectResponse($this->container->get('router')->generate('app.message.inbox'));
     }

@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Invite;
 use App\Form\UserType;
 use App\Services\FileUploader;
+use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Mgilet\NotificationBundle\Entity\NotifiableNotification;
 use Mgilet\NotificationBundle\Manager\NotificationManager;
@@ -25,7 +26,7 @@ class UserController extends AbstractController
     /**
      * @Route("/flatmate/{uuid}", name="profile.view", methods={"GET"})
      */
-    public function showUserProfile(UserService $userService, $uuid, EntityManagerInterface $em, NotificationManager $notManager): Response
+    public function showUserProfile(UserService $userService, $uuid, EntityManagerInterface $em, NotificationService $notificationService): Response
     {
         $user = $userService->getUserByUUID($uuid);
         $userAge = $userService->getUserAge($user);
@@ -33,25 +34,7 @@ class UserController extends AbstractController
         $invitesRepo = $em->getRepository(Invite::class);
         $invite = $invitesRepo->findUserToUserInvite($this->getUser()->getId(), $uuid);
 
-
-        $allNotifications = $notManager->getNotifications($this->getUser());
-        $isNotification = false;
-        foreach ($allNotifications as $notification)
-        {
-            if ($notification->getNotification()->getLink() === $this->generateUrl('profile.view',
-                    ['uuid' => $uuid]))
-            {
-                $isNotification = true;
-                $foundNotification = $notification->getNotification();
-                break;
-            }
-        }
-
-        if($isNotification)
-        {
-            $notManager->removeNotification(array($this->getUser()), $foundNotification, true);
-            $notManager->deleteNotification($foundNotification, true);
-        }
+        $notificationService->removeInviteNotificationsByUser($this->getUser(), $uuid);
 
         return isset($user)
             ? $this->render('profile/profileView.html.twig', [
