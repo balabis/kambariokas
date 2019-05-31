@@ -25,6 +25,7 @@ class QuestionnaireScoreService
 
         $maxScore = count($answers) * $this->answerService->getMaxAnswerValue();
         $score = 0;
+
         foreach ($answers as $key => $value) {
             $score += (int)$value;
         }
@@ -38,9 +39,11 @@ class QuestionnaireScoreService
     {
         $repo = $this->em->getRepository(QuestionnaireScore::class);
         $scores = $repo->findBy(['userId' => $userId]);
+
         foreach ($scores as $score) {
             $this->em->remove($score);
         }
+
         $this->em->flush();
     }
 }

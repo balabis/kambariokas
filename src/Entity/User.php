@@ -451,4 +451,13 @@ class User implements UserInterface, ParticipantInterface
 
         return $this;
     }
+
+    public function isActive() : bool
+    {
+        if ($this->getStatus() === 'active') {
+            return true;
+        }
+
+        return false;
+    }
 }
