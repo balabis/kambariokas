@@ -1,2 +1,5 @@
 There is already an account with this email: Vartotojas su šiuos el. paštu jau registruotas
 Your password should be at least {{ limit }} characters: Slaptažodį turi sudaryti bent {{ limit }} simboliai
+Match percent must be between 50 and 100: Suderinimo procentas privalo buti nuo 50 iki 100
+Min age must be 18: Mažiausias amžius turi būti 18
+Max age must be 80: Didžiausias amžius turi būti 80
