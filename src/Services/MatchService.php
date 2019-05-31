@@ -74,12 +74,14 @@ class MatchService
     {
         $query = "INSERT INTO user_match (first_user, second_user, coeficient) VALUES ";
         $i = 1;
+
         foreach ($users as $oneUser) {
             if ($i === 1) {
                 $query .= "('";
             } else {
                 $query .= ",('";
             }
+
             $query .= $user->getId() . "','" . $oneUser->getId() . "',"
                 . round($this->compare->coincidenceCoefficient($this->compare
                     ->getUserCoefficientAverage($user), $this->compare
@@ -87,6 +89,7 @@ class MatchService
             $query .=")";
             $i++;
         }
+
         $this->userMatchRepository->query($query);
     }
 
