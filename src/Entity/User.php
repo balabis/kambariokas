@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Mgilet\NotificationBundle\Annotation\Notifiable;
+use Mgilet\NotificationBundle\NotifiableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,8 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @Notifiable(name="User")
  */
-class User implements UserInterface, ParticipantInterface
+class User implements UserInterface, ParticipantInterface, NotifiableInterface
 {
     use TimestampableEntity;
     /**
@@ -474,5 +477,14 @@ class User implements UserInterface, ParticipantInterface
         $delay = new \DateTime('2 minutes ago');
 
         return $this->getLastActivityAt() > $delay;
+    }
+
+    public function isActive() : bool
+    {
+        if ($this->getStatus() === 'active') {
+            return true;
+        }
+
+        return false;
     }
 }

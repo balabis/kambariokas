@@ -7,6 +7,7 @@ use App\Entity\Invite;
 use App\Form\UserType;
 use App\Services\FileUploader;
 use DateTime;
+use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,12 @@ class UserController extends AbstractController
     /**
      * @Route("/flatmate/{uuid}", name="profile.view", methods={"GET"})
      */
-    public function showUserProfile(UserService $userService, $uuid, EntityManagerInterface $em): Response
-    {
+    public function showUserProfile(
+        UserService $userService,
+        $uuid,
+        EntityManagerInterface $em,
+        NotificationService $notificationService
+    ): Response {
         $user = $userService->getUserByUUID($uuid);
         $userAge = $userService->getUserAge($user);
         $now = new DateTime();
@@ -40,7 +45,15 @@ class UserController extends AbstractController
         }
 
         $invitesRepo = $em->getRepository(Invite::class);
-        $invite = $invitesRepo->findUserToUserInvite($this->getUser()->getId(), $uuid);
+        $invite = $invitesRepo->findUserToUserInvite(
+            $this->getUser()->getId(),
+            $uuid
+        );
+
+        $notificationService->removeInviteNotificationsByUser(
+            $this->getUser(),
+            $uuid
+        );
 
         return isset($user)
             ? $this->render('profile/profileView.html.twig', [

@@ -2,3 +2,7 @@ logout:
   path: /logout
   methods: GET
 
+mgilet_notification:
+  resource: "@MgiletNotificationBundle/Controller/"
+  prefix: /notifications
+

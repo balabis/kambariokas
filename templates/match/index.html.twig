@@ -5,8 +5,13 @@
 {% block pageHeading %}{{ 'Match'|trans }}{% endblock %}
 
 {% block mainContent %}
+    {% if app.user.questionnaireScore and app.user.city%}
+        {% include 'match/blocks/match_filter.html.twig' %}
+    {% endif %}
+
+    {% if matches is not empty %}
+
     <div class="container">
-        {% if matches is not empty %}
             <div class="d-flex mb-1 flex-wrap justify-content-center">
                 {% for match in matches.currentPageResults %}
 
