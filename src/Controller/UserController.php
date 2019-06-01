@@ -89,7 +89,7 @@ class UserController extends AbstractController
             if (isset($file)) {
                 $fileName = $fileUploader->uploadProfilePicture($file, $userId);
                 $user->setProfilePicture($fileName);
-            } elseif (!preg_match('/uploads\/profile_pictures\/default\/.*/', $user->getProfilePicture())) {
+            } elseif (!preg_match('/uploads\/profile_pictures\/default\/.*/', $userProfilePicture)) {
                 $user->setProfilePicture($userProfilePicture);
             } else {
                 $user->setProfilePicture('uploads/profile_pictures/default/' . $gender . '.png');
