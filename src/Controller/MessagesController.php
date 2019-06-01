@@ -59,10 +59,11 @@ class MessagesController extends AbstractController
         $inboxThreads = $this->provider->getInboxThreads();
         $sentThreads = $this->provider->getSentThreads();
         $threads = array_unique(array_merge($inboxThreads, $sentThreads), SORT_REGULAR);
+        $firstThreadId = $threads[0]->getId();
 
-        return $this->render('@FOSMessage/Message/inbox.html.twig', array(
-            'threads' => $threads,
-        ));
+        return new RedirectResponse($this->container->get('router')->generate('app.message.thread', [
+            'threadId' => $firstThreadId,
+        ]));
     }
 
     /**
