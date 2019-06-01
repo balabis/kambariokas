@@ -76,7 +76,8 @@ final class Version20190601141108 extends AbstractMigration
         utf8mb4_unicode_ci, CHANGE link link VARCHAR(4000) DEFAULT \'NULL\' COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE questionnaire_score CHANGE sociability sociability NUMERIC(3, 2) DEFAULT 
         \'NULL\', CHANGE social_openness social_openness NUMERIC(3, 2) DEFAULT \'NULL\', CHANGE social_flexibility 
-        social_flexibility NUMERIC(3, 2) DEFAULT \'NULL\', CHANGE cleanliness cleanliness NUMERIC(3, 2) DEFAULT \'NULL\'');
+        social_flexibility NUMERIC(3, 2) DEFAULT \'NULL\', CHANGE cleanliness cleanliness NUMERIC(3, 2) 
+        DEFAULT \'NULL\'');
         $this->addSql('ALTER TABLE thread CHANGE created_by_id created_by_id CHAR(36) DEFAULT \'NULL\' COLLATE 
         utf8mb4_unicode_ci COMMENT \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE thread_metadata CHANGE thread_id thread_id CHAR(36) DEFAULT \'NULL\' COLLATE 
