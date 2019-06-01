@@ -73,6 +73,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->getData()->getProfilePicture();
             $gender = $form->getData()->getGender();
+
             if (isset($file)) {
                 $fileName = $fileUploader->uploadProfilePicture($file, $userId);
                 $user->setProfilePicture($fileName);
