@@ -120,4 +120,14 @@ class UserController extends AbstractController
         $em->flush();
         return $this->redirect($request->headers->get('referer'));
     }
+
+    /**
+     * @Route("/user/inactivate", name="user_inactivate", methods={"POST"})
+     */
+    public function inactivateUser(EntityManagerInterface $em, Request $request)
+    {
+        $this->getUser()->setStatus('active');
+        $em->flush();
+        return $this->redirect($request->headers->get('referer'));
+    }
 }
