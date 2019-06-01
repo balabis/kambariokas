@@ -41,11 +41,6 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $username;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $gender;
@@ -193,19 +188,12 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
         return $this;
     }
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
