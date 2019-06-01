@@ -22,7 +22,6 @@ class QuestionnaireController extends AbstractController
         AnswerService $answerService
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-//        dd($this->getUser()->getQuestionnaireScore()->getCleanliness());
         $questionRepository = $em->getRepository(Question::class);
         $questions = $questionRepository->findAllJoinedWithQuestionnaire();
 
