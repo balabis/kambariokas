@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Invite;
 use App\Form\UserType;
 use App\Services\FileUploader;
+use DateTime;
 use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +33,16 @@ class UserController extends AbstractController
     ): Response {
         $user = $userService->getUserByUUID($uuid);
         $userAge = $userService->getUserAge($user);
+        $now = new DateTime();
+        $intervalFromLastVisit = $now->diff($user->getLastActivityAt());
+
+        if ($intervalFromLastVisit->d > 0) {
+            $lastVisit = $intervalFromLastVisit->d . 'd';
+        } elseif ($intervalFromLastVisit->h > 0) {
+            $lastVisit = $intervalFromLastVisit->h . 'h';
+        } else {
+            $lastVisit = $intervalFromLastVisit->i . 'min';
+        }
 
         $invitesRepo = $em->getRepository(Invite::class);
         $invite = $invitesRepo->findUserToUserInvite(
@@ -49,6 +60,7 @@ class UserController extends AbstractController
                 'user' => $user,
                 'userAge' => $userAge,
                 'match' => $invite,
+                'lastVisit' => $lastVisit
             ])
             : $this->render('profile/profileNotFound.html.twig');
     }
