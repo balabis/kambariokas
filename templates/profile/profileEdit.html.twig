@@ -11,10 +11,13 @@
         {%- endif -%}
     {%- endblock form_errors -%}
 
+{% block pageHeading %}
+    {{ 'My profile'|trans }}
+{% endblock %}
+
 {% block mainContent %}
     {% if app.user.status == 'active' %}
         {{ form_start(form) }}
-            <br>
             <div class="row">
                 <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
                     <div class="card card-profile shadow">
