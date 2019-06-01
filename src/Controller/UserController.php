@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Invite;
 use App\Form\UserType;
 use App\Services\FileUploader;
+use DateTime;
 use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +33,16 @@ class UserController extends AbstractController
     ): Response {
         $user = $userService->getUserByUUID($uuid);
         $userAge = $userService->getUserAge($user);
+        $now = new DateTime();
+        $intervalFromLastVisit = $now->diff($user->getLastActivityAt());
+
+        if ($intervalFromLastVisit->d > 0) {
+            $lastVisit = $intervalFromLastVisit->d . 'd';
+        } elseif ($intervalFromLastVisit->h > 0) {
+            $lastVisit = $intervalFromLastVisit->h . 'h';
+        } else {
+            $lastVisit = $intervalFromLastVisit->i . 'min';
+        }
 
         $invitesRepo = $em->getRepository(Invite::class);
         $invite = $invitesRepo->findUserToUserInvite(
@@ -49,6 +60,7 @@ class UserController extends AbstractController
                 'user' => $user,
                 'userAge' => $userAge,
                 'match' => $invite,
+                'lastVisit' => $lastVisit
             ])
             : $this->render('profile/profileNotFound.html.twig');
     }
@@ -61,24 +73,25 @@ class UserController extends AbstractController
         UserService $userService,
         FileUploader $fileUploader
     ) {
-
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->getUser();
         $userAge = $userService->getUserAge($user);
+        $userId = $user->getId()->toString();
+        $userProfilePicture = $user->getProfilePicture();
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->getData()->getProfilePicture();
+            $gender = $form->getData()->getGender();
 
             if (isset($file)) {
-                $userId = $user->getId()->toString();
                 $fileName = $fileUploader->uploadProfilePicture($file, $userId);
                 $user->setProfilePicture($fileName);
+            } elseif (!preg_match('/uploads\/profile_pictures\/default\/.*/', $userProfilePicture)) {
+                $user->setProfilePicture($userProfilePicture);
             } else {
-                $gender = $form->getData()->getGender();
                 $user->setProfilePicture('uploads/profile_pictures/default/' . $gender . '.png');
             }
 

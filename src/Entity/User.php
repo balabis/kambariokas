@@ -41,11 +41,6 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $username;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $gender;
@@ -127,6 +122,12 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $university;
 
     /**
+     * @ORM\Column(type="datetime", name="last_activity_at", nullable=true)
+     */
+    private $lastActivityAt;
+
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $status = 'active';
@@ -187,19 +188,12 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
         return $this;
     }
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -453,6 +447,24 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
         $this->status = $status;
 
         return $this;
+    }
+
+    public function setLastActivityAt($lastActivityAt)
+    {
+        $this->lastActivityAt = $lastActivityAt;
+    }
+
+    public function getLastActivityAt()
+    {
+        return $this->lastActivityAt;
+    }
+
+    public function isActiveNow()
+    {
+        // Delay during which the user will be considered as still active
+        $delay = new \DateTime('2 minutes ago');
+
+        return $this->getLastActivityAt() > $delay;
     }
 
     public function isActive() : bool
