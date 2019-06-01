@@ -25,7 +25,7 @@ class MatchController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->getUser()->isActive()) {
+            if ($this->getUser()->getIsActive()) {
                 $service->filter($this->getUser(), $form->getData());
             }
         }

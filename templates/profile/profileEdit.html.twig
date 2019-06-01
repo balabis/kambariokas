@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block mainContent %}
-    {% if app.user.status == 'active' %}
+    {% if app.user.isActive %}
         {{ form_start(form) }}
             <div class="row">
                 <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
@@ -168,18 +168,13 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
-
-
-
-                                <button class="btn btn-danger" data-toggle="modal" data-target="#becomeInactive">
+                                <a class="btn btn-danger" data-toggle="modal" data-target="#becomeInactive">
                                     {{ 'Inactivate user'|trans }}
-                                </button>
+                                </a>
                                 <button type="submit" class="btn btn-primary">
                                     {{ 'Save'|trans }}
                                 </button>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -191,4 +186,5 @@
         {% include 'reusable_blocks/inactive_user.html.twig' %}
     {% endif %}
 
+    {% include'profile/blocks/become_inactive_modal.html.twig' %}
 {% endblock %}

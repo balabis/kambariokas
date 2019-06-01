@@ -15,13 +15,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans }}</button>
-                <form action="{{ path('invitation_accept') }}" method="POST">
-
-                    <input type="hidden" name="uuid" value="{{ match.sender_id }}">
-
-                    <button class="btn
-                                btn-success">
-                        {{ 'Accept'|trans }}
+                <form action="{{ path('user_inactivate') }}" method="POST">
+                    <button class="btn btn-danger">
+                        {{ 'Inactivate user'|trans }}
                     </button>
                 </form>
             </div>

@@ -29,7 +29,7 @@
 
         {% endif %}
 
-        {% if app.user.status == 'active' %}
+        {% if app.user.isActive %}
             {% if not app.user.questionnaireScore %}
                 {% include 'match/blocks/no_filled_questionnaire.html.twig' %}
             {% endif %}

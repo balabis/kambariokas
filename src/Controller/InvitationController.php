@@ -142,8 +142,8 @@ class InvitationController extends AbstractController
             'sender' => $uuid,
         ]);
         $invite->setStatus('accepted');
-        $invite->getSender()->setStatus('inactive');
-        $this->getUser()->setStatus('inactive');
+        $invite->getSender()->setIsActive(false);
+        $this->getUser()->setIsActive(false);
         $em->flush();
         $emailService->sentAcceptInvitationEmail($invite->getSender()
             ->getEmail(), $this->getUser());
