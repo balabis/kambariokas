@@ -25,13 +25,25 @@
             <div class="card-body pt-0 pt-md-4">
                 <div class="row">
                     <div class="col">
-                        <div class=" d-flex justify-content-center mt-md-5">
+                        <div class="d-flex justify-content-center mt-md-5">
                             <h2>
                                 {{ user.fullName }}
                                 {% if userAge %}
                                     <span>&bull;</span> {{ userAge }}
                                 {% endif %}
                             </h2>
+                            {% if user.isActiveNow %}
+                                <h2>
+                                    &nbsp; <i class="fas fa-circle"></i>
+                                </h2>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <small>
+                                {% if not user.isActiveNow %}
+                                    {{ 'Last active'|trans }} {{ lastVisit }}
+                                {% endif %}
+                            </small>
                         </div>
                     </div>
                 </div>
