@@ -10,9 +10,9 @@
             <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                     {% if not match.profile_picture %}
-                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                        <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="center-cropped rounded-circle">
                     {% else %}
-                        <img src="{{ asset(match.profile_picture) }}" class="rounded-circle">
+                        <img src="{{ asset(match.profile_picture) }}" class="center-cropped-card rounded-circle">
                     {% endif %}
                 </div>
             </div>

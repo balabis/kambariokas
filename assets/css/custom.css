@@ -51,3 +51,24 @@ footer .row {
     overflow-x: hidden;
     max-width: 320px;
 }
+
+.center-cropped-profile {
+    object-fit: cover;
+    object-position: center;
+    height: 180px;
+    width: 170px;
+}
+
+.center-cropped-card {
+    object-fit: cover;
+    object-position: center;
+    height: 170px;
+    width: 170px;
+}
+
+.center-cropped-nav {
+    object-fit: cover;
+    object-position: center;
+    height: 36px;
+    width: 36px;
+}
