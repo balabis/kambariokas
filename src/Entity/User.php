@@ -126,11 +126,10 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
      */
     private $lastActivityAt;
 
-
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      */
-    private $status = 'active';
+    private $isActive = true;
 
     public function __construct()
     {
@@ -437,18 +436,6 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function setLastActivityAt($lastActivityAt)
     {
         $this->lastActivityAt = $lastActivityAt;
@@ -467,12 +454,15 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
         return $this->getLastActivityAt() > $delay;
     }
 
-    public function isActive() : bool
+    public function getIsActive(): ?bool
     {
-        if ($this->getStatus() === 'active') {
-            return true;
-        }
+        return $this->isActive;
+    }
 
-        return false;
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
     }
 }

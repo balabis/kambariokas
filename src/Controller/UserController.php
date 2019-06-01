@@ -116,7 +116,17 @@ class UserController extends AbstractController
      */
     public function activateUser(EntityManagerInterface $em, Request $request)
     {
-        $this->getUser()->setStatus('active');
+        $this->getUser()->setIsActive(true);
+        $em->flush();
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/user/inactivate", name="user_inactivate", methods={"POST"})
+     */
+    public function inactivateUser(EntityManagerInterface $em, Request $request)
+    {
+        $this->getUser()->setIsActive(false);
         $em->flush();
         return $this->redirect($request->headers->get('referer'));
     }
