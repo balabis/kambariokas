@@ -26,9 +26,9 @@
                                 <div class="card-profile-image">
                                     <a href="{{ path('profile.view', {uuid: app.user.id}) }}">
                                         {% if not app.user.profilepicture %}
-                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="center-cropped-profile rounded-circle">
                                         {% else %}
-                                            <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
+                                            <img src="{{ asset(app.user.profilepicture) }}" class="center-cropped-profile rounded-circle">
                                         {% endif %}
                                     </a>
                                 </div>
