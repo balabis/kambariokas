@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Services\NotificationService;
 use App\Services\UserService;
 use Doctrine\Common\Collections\Criteria;
 use FOS\MessageBundle\Composer\Composer;
@@ -12,9 +13,11 @@ use FOS\MessageBundle\FormFactory\ReplyMessageFormFactory;
 use FOS\MessageBundle\FormHandler\ReplyMessageFormHandler;
 use FOS\MessageBundle\Provider\ProviderInterface;
 use FOS\MessageBundle\Sender\Sender;
+use Mgilet\NotificationBundle\Manager\NotificationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/dashboard/messages")
@@ -65,7 +68,7 @@ class MessagesController extends AbstractController
     /**
      * @Route("/thread/{threadId}", name="app.message.thread")
      */
-    public function threadAction($threadId)
+    public function threadAction($threadId, NotificationService $notificationService)
     {
         $inboxThreads = $this->provider->getInboxThreads();
         $sentThreads = $this->provider->getSentThreads();
@@ -74,6 +77,9 @@ class MessagesController extends AbstractController
 
         $form = $this->replyMessageFormFactoryformFactory->create($thread);
         if ($message = $this->replyMessageFormHandlerformHandler->process($form)) {
+            $receiver = $thread->getOtherParticipants($this->getUser());
+            $notificationService->notifyAboutNewMessage($receiver[0], $this->getUser(), $threadId);
+
             return new RedirectResponse($this->container->get('router')->generate('app.message.thread', array(
                 'threadId' => $message->getThread()->getId(),
             )));
@@ -92,7 +98,7 @@ class MessagesController extends AbstractController
     /**
      * @Route("/new/{participantId}", name="app.message.new_thread")
      */
-    public function newThreadAction(UserService $userService, $participantId)
+    public function newThreadAction(UserService $userService, $participantId, NotificationService $notificationService)
     {
         $inboxThreads = $this->provider->getInboxThreads();
         $sentThreads = $this->provider->getSentThreads();
@@ -131,6 +137,8 @@ class MessagesController extends AbstractController
             $threadParticipants = $sentThread->getParticipants();
             foreach ($threadParticipants as $threadParticipant) {
                 if ($threadParticipant->getId() == $participantId) {
+                    $notificationService->notifyAboutNewMessage($recipient, $this->getUser(), $sentThread->getId());
+
                     return new RedirectResponse(
                         $this->container->get('router')->generate(
                             'app.message.thread',
@@ -145,11 +153,12 @@ class MessagesController extends AbstractController
     /**
      * @Route("/{threadId}/delete", name="app.message.delete_thread")
      */
-    public function deletedAction($threadId)
+    public function deletedAction($threadId, NotificationService $notificationService)
     {
         $thread = $this->provider->getThread($threadId);
         $this->deleter->markAsDeleted($thread);
         $this->threadManager->saveThread($thread);
+        $notificationService->deleteNotificationOnChatDelete($this->getUser(), $threadId);
 
         return new RedirectResponse($this->container->get('router')->generate('app.message.inbox'));
     }

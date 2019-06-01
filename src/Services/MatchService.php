@@ -10,8 +10,6 @@ class MatchService
 {
     private $entityManager;
 
-    private $city;
-
     private $compare;
 
     private $userMatchRepository;
@@ -22,14 +20,12 @@ class MatchService
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        CityService $cityService,
         UserCompareService $compareService,
         UserMatchRepository $userMatchRepository,
         AgeFiltrationService $ageFiltrationService,
         BudgetFiltrationService $budgetFiltrationService
     ) {
         $this->entityManager = $entityManager;
-        $this->city = $cityService;
         $this->compare = $compareService;
         $this->userMatchRepository = $userMatchRepository;
         $this->ageFiltrationService = $ageFiltrationService;
@@ -99,6 +95,7 @@ class MatchService
         $query .="'";
         $query .=$user->getId();
         $query .= "'";
+        
         $this->userMatchRepository->query($query);
     }
 }

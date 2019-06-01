@@ -6,6 +6,7 @@ use App\Entity\Invite;
 use App\Entity\User;
 use App\Services\EmailService;
 use App\Services\MatchesPaginationService;
+use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class InvitationController extends AbstractController
 {
     /**
-     * @Route("/{group}", name="invitation_get", methods={"GET"}, defaults={"group":"received"})
+     * @Route("/{group}", name="invitation_get", methods={"GET"},
+     *     defaults={"group":"received"})
      */
     public function show(
         $group,
@@ -31,9 +33,11 @@ class InvitationController extends AbstractController
         if ($group === 'sent') {
             $invites = $invitesRepo->findSentInvites($this->getUser()->getId());
         } elseif ($group === 'received') {
-            $invites = $invitesRepo->findReceivedInvites($this->getUser()->getId());
+            $invites =
+                $invitesRepo->findReceivedInvites($this->getUser()->getId());
         }
-        $totalInvitesNumber = $invitesRepo->countAllInvites($this->getUser()->getId());
+        $totalInvitesNumber =
+            $invitesRepo->countAllInvites($this->getUser()->getId());
         $invitesPagination = $ps->getPagerfanta($invites);
         $invitesPagination->setMaxPerPage(8);
         $invitesPagination->setCurrentPage($request->query->get('page', 1));
@@ -41,7 +45,7 @@ class InvitationController extends AbstractController
         return $this->render('invitation/index.html.twig', [
             'invites' => $invitesPagination,
             'group' => $group,
-            'totalInvitesNumber' => $totalInvitesNumber
+            'totalInvitesNumber' => $totalInvitesNumber,
         ]);
     }
 
@@ -51,24 +55,23 @@ class InvitationController extends AbstractController
     public function invite(
         EntityManagerInterface $em,
         Request $request,
-        EmailService $emailService
+        EmailService $emailService,
+        NotificationService $notificationService
     ) {
         $uuid = $request->request->get('uuid');
         $invite = new Invite();
         $invite->setSender($this->getUser());
-
         $userRepo = $em->getRepository(User::class);
         $receiver = $userRepo->findOneBy(['id' => $uuid]);
-
         $invite->setReceiver($receiver);
         $invite->setStatus('pending');
         $em->persist($invite);
         $em->flush();
-
         $emailService->sentInvitationEmail(
             $receiver->getEmail(),
             $this->getUser()
         );
+        $notificationService->notifyAboutInviteAction('Pakvietimas', $this->getUser(), $receiver);
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -76,16 +79,25 @@ class InvitationController extends AbstractController
     /**
      * @Route("/cancel", name="invitation_cancel", methods={"POST"})
      */
-    public function cancelInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
-    {
+    public function cancelInvitation(
+        Request $request,
+        EntityManagerInterface $em,
+        EmailService $emailService,
+        NotificationService $notificationService
+    ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
-        $invite = $inviteRepo->findOneBy(['sender'=>$this->getUser(), 'receiver'=>$uuid]);
+        $invite = $inviteRepo->findOneBy([
+            'sender' => $this->getUser(),
+            'receiver' => $uuid,
+        ]);
         $em->remove($invite);
         $em->flush();
-
-        $emailService->sentInviteCancelEmail($invite->getReceiver()->getEmail(), $this->getUser());
+        $emailService->sentInviteCancelEmail(
+            $invite->getReceiver()->getEmail(),
+            $this->getUser()
+        );
+        $notificationService->notifyAboutInviteAction('Atšauktas kvietimas', $this->getUser(), $invite->getReceiver());
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -93,16 +105,23 @@ class InvitationController extends AbstractController
     /**
      * @Route("/decline", name="invitation_decline", methods={"POST"})
      */
-    public function declineInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
-    {
+    public function declineInvitation(
+        Request $request,
+        EntityManagerInterface $em,
+        EmailService $emailService,
+        NotificationService $notificationService
+    ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
-        $invite = $inviteRepo->findOneBy(['receiver'=>$this->getUser(), 'sender'=>$uuid]);
+        $invite = $inviteRepo->findOneBy([
+            'receiver' => $this->getUser(),
+            'sender' => $uuid,
+        ]);
         $invite->setStatus('declined');
         $em->flush();
-
-        $emailService->sentDeclineInvitationEmail($invite->getSender()->getEmail(), $this->getUser());
+        $emailService->sentDeclineInvitationEmail($invite->getSender()
+            ->getEmail(), $this->getUser());
+        $notificationService->notifyAboutInviteAction('Atmestas kvietimas', $this->getUser(), $invite->getSender());
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -110,35 +129,47 @@ class InvitationController extends AbstractController
     /**
      * @Route("/accept", name="invitation_accept", methods={"POST"})
      */
-    public function acceptInvitation(Request $request, EntityManagerInterface $em, EmailService $emailService)
-    {
+    public function acceptInvitation(
+        Request $request,
+        EntityManagerInterface $em,
+        EmailService $emailService,
+        NotificationService $notificationService
+    ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
-        $invite = $inviteRepo->findOneBy(['receiver'=>$this->getUser(), 'sender'=>$uuid]);
+        $invite = $inviteRepo->findOneBy([
+            'receiver' => $this->getUser(),
+            'sender' => $uuid,
+        ]);
         $invite->setStatus('accepted');
-
         $invite->getSender()->setStatus('inactive');
         $this->getUser()->setStatus('inactive');
-
         $em->flush();
-
-        $emailService->sentAcceptInvitationEmail($invite->getSender()->getEmail(), $this->getUser());
-        $emailService->sentContactInfoEmail($this->getUser()->getEmail(), $invite->getSender());
-
+        $emailService->sentAcceptInvitationEmail($invite->getSender()
+            ->getEmail(), $this->getUser());
+        $emailService->sentContactInfoEmail(
+            $this->getUser()->getEmail(),
+            $invite->getSender()
+        );
+        $notificationService->notifyAboutInviteAction('Priimtas kvietimas', $this->getUser(), $invite->getSender());
 
         return $this->redirect($request->headers->get('referer'));
     }
 
     /**
-     * @Route("/decision/cancel", name="invitation_decision_cancel", methods={"POST"})
+     * @Route("/decision/cancel", name="invitation_decision_cancel",
+     *     methods={"POST"})
      */
-    public function cancelInvitationDecision(Request $request, EntityManagerInterface $em)
-    {
+    public function cancelInvitationDecision(
+        Request $request,
+        EntityManagerInterface $em
+    ) {
         $uuid = $request->request->get('uuid');
-
         $inviteRepo = $em->getRepository(Invite::class);
-        $invite = $inviteRepo->findOneBy(['receiver'=>$this->getUser(), 'sender'=>$uuid]);
+        $invite = $inviteRepo->findOneBy([
+            'receiver' => $this->getUser(),
+            'sender' => $uuid,
+        ]);
         $invite->setStatus('pending');
         $em->flush();
 
