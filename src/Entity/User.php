@@ -78,8 +78,8 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $aboutme;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\QuestionnaireScore", inversedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\QuestionnaireScore", inversedBy="user")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $questionnaireScore;
 

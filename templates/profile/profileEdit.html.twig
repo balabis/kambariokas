@@ -57,6 +57,9 @@
                                 <div>
                                     {{ app.user.aboutme }}
                                 </div>
+                                <a href="{{ path('questionnaire_get') }}" class="btn btn-info">
+                                    {{ app.user.questionnaireScore ? 'Retake questionnaire'|trans :
+                                    'Take questionnaire'|trans }}</a>
                             </div>
                         </div>
                     </div>

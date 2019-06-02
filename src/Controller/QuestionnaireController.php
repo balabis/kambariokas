@@ -65,7 +65,7 @@ class QuestionnaireController extends AbstractController
                     'socialFlexibility'
                 );
 
-            $questionnaireScoreService->deleteQuestionnaireScore($user->getId());
+            $questionnaireScoreService->deleteQuestionnaireScore($user);
 
             $questionnaireScore = new QuestionnaireScore();
             $questionnaireScore->setSociability($sociabilityScore);

@@ -35,10 +35,10 @@ class QuestionnaireScoreService
         return number_format($scoreIndex, 2, '.', '');
     }
 
-    public function deleteQuestionnaireScore($userId)
+    public function deleteQuestionnaireScore($user)
     {
         $repo = $this->em->getRepository(QuestionnaireScore::class);
-        $scores = $repo->findBy(['userId' => $userId]);
+        $scores = $repo->findBy(['userId' => $user->getId()]);
 
         foreach ($scores as $score) {
             $this->em->remove($score);
