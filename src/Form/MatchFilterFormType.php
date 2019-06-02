@@ -37,6 +37,7 @@ class MatchFilterFormType extends AbstractType
                 'choice_label' => function ($choice, $key, $value) {
                     return $value;
                 },
+                'placeholder' => false,
                 'required' => false
             ])
             ->add('minAge', Filters\NumberFilterType::class, [
