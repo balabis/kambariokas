@@ -62,7 +62,6 @@ class MatchService
     {
         $users = $this->userMatchRepository->findMatches($user->getId());
 
-        var_dump(count($users));
         return $users;
     }
 
