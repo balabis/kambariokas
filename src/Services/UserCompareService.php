@@ -18,11 +18,11 @@ class UserCompareService
         $this->minCoefficient = 50;
     }
 
-    public function filterByAnswers($users, User $user, ?int $filterCoefficient): array
+    public function filterByAnswers($users, User $user, int $filterCoefficient): array
     {
-        if ($filterCoefficient === null) {
-            $this->minCoefficient = $filterCoefficient;
-        }
+        $this->minCoefficient = $filterCoefficient;
+
+        var_dump($this->minCoefficient);
 
         $selectedUsers = [];
         $userCoefficientAverage = $this->getUserCoefficientAverage($user);
