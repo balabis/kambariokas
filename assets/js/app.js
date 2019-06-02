@@ -19,6 +19,7 @@ require('../css/app.css');
 require('../css/custom.css');
 require('../css/chat.css');
 require('./carousel');
+require('./filter');
 require('@fortawesome/fontawesome-free/scss/fontawesome.scss');
 require('@fortawesome/fontawesome-free/js/all.js');
 
