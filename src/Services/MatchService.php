@@ -18,56 +18,74 @@ class MatchService
 
     private $budgetFiltrationService;
 
+    private $genderService;
+
+    private $matchPercentService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         UserCompareService $compareService,
         UserMatchRepository $userMatchRepository,
         AgeFiltrationService $ageFiltrationService,
-        BudgetFiltrationService $budgetFiltrationService
+        BudgetFiltrationService $budgetFiltrationService,
+        GenderFiltrationService $genderService,
+        MatchPercentFiltrationService $matchPercentService
     ) {
         $this->entityManager = $entityManager;
         $this->compare = $compareService;
         $this->userMatchRepository = $userMatchRepository;
         $this->ageFiltrationService = $ageFiltrationService;
         $this->budgetFiltrationService = $budgetFiltrationService;
+        $this->genderService = $genderService;
+        $this->matchPercentService = $matchPercentService;
     }
 
-    public function filter(User $user, array $formParameters) : void
+    public function filter($matches, array $formParameters): ?array
     {
-        $this->deleteUserInfoAboutMatches($user);
-
-        $users = $this->entityManager
-            ->getRepository(User::class)
-            ->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
-
-        if (!empty($users) && $formParameters['budget'] != null) {
-            $users = $this->budgetFiltrationService->filterByBudget($users, $formParameters["budget"]);
+        $filteredUsers = $matches;
+        if ($formParameters["gender"] != null && !empty($filteredUsers)) {
+            $filteredUsers =
+                $this->genderService->findMatchesByGender(
+                    $filteredUsers,
+                    $formParameters["gender"]
+                );
+        }
+        if ($formParameters['budget'] != null && !empty($filteredUsers)) {
+            $filteredUsers =
+                $this->budgetFiltrationService->filterByBudget(
+                    $filteredUsers,
+                    $formParameters["budget"]
+                );
+        }
+        if (!empty($filteredUsers)) {
+            $filteredUsers = $this
+                ->ageFiltrationService->filterByAge(
+                    $filteredUsers,
+                    [$formParameters["minAge"], $formParameters["maxAge"]]
+                );
+        }
+        if (!empty($filteredUsers) && $formParameters['MatchPercent'] != null) {
+            $filteredUsers =
+                $this->matchPercentService->filterByMatchPercent(
+                    $filteredUsers,
+                    $formParameters['MatchPercent']
+                );
         }
 
-        if (!empty($users)) {
-            $users = $this
-                ->ageFiltrationService->filterByAge($users, [$formParameters["minAge"], $formParameters["maxAge"]]);
-        }
-
-        if (!empty($users) && $formParameters['MatchPercent'] != null) {
-            $users = $this->compare->filterByAnswers($users, $user, $formParameters['MatchPercent']);
-        }
-
-        if (!empty($users)) {
-            $this->addNewMatchesToDatabase($users, $user);
-        }
+        return ($filteredUsers);
     }
 
-    public function getPossibleMatch(User $user) : array
+    public function getPossibleMatch(User $user): array
     {
         $users = $this->userMatchRepository->findMatches($user->getId());
 
         return $users;
     }
 
-    public function addNewMatchesToDatabase($users, User $user) :void
+    public function addNewMatchesToDatabase($users, User $user): void
     {
-        $query = "INSERT INTO user_match (first_user, second_user, coeficient) VALUES ";
+        $query =
+            "INSERT INTO user_match (first_user, second_user, coeficient) VALUES ";
         $i = 1;
 
         foreach ($users as $oneUser) {
@@ -78,33 +96,34 @@ class MatchService
             }
 
             $query .= $user->getId() . "','" . $oneUser->getId() . "',"
-                . round($this->compare->coincidenceCoefficient($this->compare
-                    ->getUserCoefficientAverage($user), $this->compare
-                    ->getUserCoefficientAverage($oneUser)));
-            $query .=")";
+                . round($this->compare->getMatchPercent($user, $oneUser));
+            $query .= ")";
             $i++;
         }
 
         $this->userMatchRepository->query($query);
     }
 
-    private function deleteUserInfoAboutMatches(User $user) : void
+    private function deleteUserInfoAboutMatches(User $user): void
     {
         $query = "DELETE FROM user_match WHERE first_user = ";
-        $query .="'";
-        $query .=$user->getId();
         $query .= "'";
-        
+        $query .= $user->getId();
+        $query .= "'";
+
         $this->userMatchRepository->query($query);
     }
 
-    public function addMatchWithoutFiltration(User $user) : void
+    public function addMatchWithoutFiltration(User $user): void
     {
+        $this->deleteUserInfoAboutMatches($user);
         if ($user->getQuestionnaireScore() != null && $user->getDateOfBirth() != null) {
             $users = $this->entityManager->getRepository(User::class)
                 ->findBy(['city' => $user->getCity(), 'isActive' => 1]);
-            $users = $this->compare->filterByAnswers($users, $user, 50);
-            $this->addNewMatchesToDatabase($users, $user);
+            if (sizeof($users) > 1) {
+                $users = $this->compare->filterByAnswers($users, $user, 50);
+                $this->addNewMatchesToDatabase($users, $user);
+            }
         }
     }
 }

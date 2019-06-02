@@ -20,17 +20,23 @@ class MatchController extends AbstractController
         Request $request
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+        $matches = [];
+        if ($this->getUser()->getIsActive()) {
+            $service->addMatchWithoutFiltration($this->getUser());
+            $matches = $service->getPossibleMatch($this->getUser());
+        }
         $form = $this->createForm(MatchFilterFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->getUser()->getIsActive()) {
-                $service->filter($this->getUser(), $form->getData());
+                $matches = $service->filter($matches, $form->getData());
             }
         }
 
-        $matches = $service->getPossibleMatch($this->getUser());
+
+
+
 
         $matchesPagination = $ps->getPagerfanta($matches);
         $matchesPagination->setMaxPerPage(8);
