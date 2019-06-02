@@ -43,7 +43,7 @@ class QuestionnaireScore
     private $cleanliness;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="questionnaireScore", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="questionnaireScore")
      */
     private $user;
 
