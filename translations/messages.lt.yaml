@@ -30,7 +30,7 @@ Next questionnaire: Kitas klausimynas
 End questionnaire: Baigti klausimyną
 
 Match: Suderinamumas
-Match percent: Suderinamumo procentas
+Match percent: Min suderinamumo %
 Message: Rašyti žinutę
 Profile: Profilis
 Be flatmates: Tapti kambariokais
@@ -80,11 +80,10 @@ Retake questionnaire: Kartoti klausimyną
 Take questionnaire: Atlikti klausimyną
 
 
-Search: Paieška
+Filter: Filtruoti
 Does not matter: Nesvarbu
-Min age: Minimalus amžius
-Max age: Maksimalus amžius
-Match filter: Raskite pačius tinkamiausius vartotojus!
+Min age: Amžius nuo
+Max age: Amžius iki
 Age: Amžius
 
 sociability: socialumas

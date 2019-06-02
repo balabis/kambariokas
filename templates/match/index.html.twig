@@ -5,16 +5,27 @@
 {% block pageHeading %}{{ 'Match'|trans }}{% endblock %}
 
 {% block mainContent %}
-    {% if app.user.questionnaireScore and app.user.city%}
-        {% include 'match/blocks/match_filter.html.twig' %}
+    {% if app.user.questionnaireScore and app.user.city %}
+        <div class="text-center">
+        <button id="filter-toggle-button" class="btn btn-info mb-7 mt--3">Filtras</button>
+        </div>
+
+
     {% endif %}
 
+    <div class="container">
+        {% include 'match/blocks/match_filter.html.twig' %}
+    </div>
     {% if matches is not empty %}
 
     <div class="container">
+
+        <div class="d-flex mb-1 flex-wrap justify-content-center">
             {% for match in matches.currentPageResults %}
+
                 {% include 'reusable_blocks/match_card.html.twig' %}
             {% endfor %}
+        </div>
 
             {% if matches.haveToPaginate %}
                 <div class="pagerfanta">

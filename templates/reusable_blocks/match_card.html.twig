@@ -1,4 +1,4 @@
-<div class="card card-profile shadow user-match-card mx-md-2 mb-6 ">
+<div class="card card-profile shadow user-match-card mx-md-2 mb-6">
     <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
         {% set delay = "now"|date_modify('-2 minutes')|date("Y-m-d H:i:s") %}
         {% if match.last_activity_at > delay %}
