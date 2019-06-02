@@ -17,7 +17,10 @@ class MatchFilterFormType extends AbstractType
                   'Does not matter' => 'default',
                   'Male' => 'male',
                   'Female' => 'female',
+
                   ],
+                    'data'=> 'default',
+                    'placeholder' => false
               ])
             ->add('MatchPercent', Filters\NumberFilterType::class, [
                 'constraints' => [

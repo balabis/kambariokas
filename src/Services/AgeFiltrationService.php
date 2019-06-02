@@ -30,13 +30,27 @@ class AgeFiltrationService
     private function filterBySetAge($users, array $age) :array
     {
         $filterUsers = [];
-
         foreach ($users as $user) {
-            if ($user->getUserAge() >= $age[0] && $user->getUserAge() <= $age[1]) {
+            if ($this->getUserAge($user) >= $age[0] && $this->getUserAge($user) <= $age[1]) {
                 $filterUsers[] = $user;
             }
         }
 
         return $filterUsers;
+    }
+
+    private function getUserAge($user)
+    {
+        $dateOfBirth = new \DateTime($user->date_of_birth);
+        $today = date('Y-m-d');
+        if (isset($dateOfBirth)) {
+            $dateOfBirth = $dateOfBirth->format('Y-m-d');
+        }
+        if (isset($dateOfBirth)) {
+            $diff = date_diff(date_create($dateOfBirth), date_create($today));
+            return $diff->format('%y');
+        } else {
+            return null;
+        }
     }
 }

@@ -18,25 +18,18 @@ class UserCompareService
         $this->minCoefficient = 50;
     }
 
-    public function filterByAnswers($users, User $user, int $filterCoefficient): array
-    {
+    public function filterByAnswers(
+        $users,
+        User $user,
+        int $filterCoefficient
+    ): array {
         $this->minCoefficient = $filterCoefficient;
-
         $selectedUsers = [];
-        $userCoefficientAverage = $this->getUserCoefficientAverage($user);
-
-        if (!empty($userCoefficientAverage)) {
-            foreach ($users as $oneUser) {
-                $oneUserCoefficient =
-                    $this->getUserCoefficientAverage($oneUser);
-
-                if (!empty($oneUserCoefficient)) {
-                    if ($this->coincidenceCoefficient(
-                        $userCoefficientAverage,
-                        $oneUserCoefficient
-                    ) >= $this->minCoefficient) {
-                        $selectedUsers[] = $oneUser;
-                    }
+        foreach ($users as $oneUser) {
+            if ($oneUser->getId() !== $user->getId()) {
+                $matchPercent = $this->getMatchPercent($user, $oneUser);
+                if ($matchPercent >= $this->minCoefficient) {
+                    $selectedUsers[] = $oneUser;
                 }
             }
         }
@@ -44,30 +37,31 @@ class UserCompareService
         return $selectedUsers;
     }
 
-    public function getUserCoefficientAverage(User $user): ?float
+    public function getMatchPercent($currentUser, $compareUser)
     {
-        $questionScores = $this->entityManager
+        $currentUserQuestionnaireScores = $this->entityManager
             ->getRepository(QuestionnaireScore::class)
-            ->findOneBy(['userId' => $user->getId()]);
+            ->findOneBy(['userId' => $currentUser->getId()]);
+        $compareUserQuestionnaireScores = $this->entityManager
+            ->getRepository(QuestionnaireScore::class)
+            ->findOneBy(['userId' => $compareUser->getId()]);
 
-        if (!empty($questionScores)) {
-            return ($questionScores->getCleanliness() + $questionScores->getSociability()
-                    + $questionScores->getSocialOpenness() + $questionScores->getSocialFlexibility()) / 4;
-        }
+        $cleanlinessMatch =
+            abs($currentUserQuestionnaireScores->getCleanliness() -
+                $compareUserQuestionnaireScores->getCleanliness());
+        $sociabilityMatch =
+            abs($currentUserQuestionnaireScores->getSociability() -
+                $compareUserQuestionnaireScores->getSociability());
+        $socialOpennessMatch =
+            abs($currentUserQuestionnaireScores->getSocialOpenness() -
+                $compareUserQuestionnaireScores->getSocialOpenness());
+        $socialFlexibilityMatch =
+            abs($currentUserQuestionnaireScores->getSocialFlexibility() -
+                $compareUserQuestionnaireScores->getSocialFlexibility());
 
-        return null;
-    }
+        $matchPercent =
+            (1 - (($cleanlinessMatch + $sociabilityMatch + $socialOpennessMatch + $socialFlexibilityMatch) / 4)) * 100;
 
-    public function coincidenceCoefficient(float $userScore, float $otherUserScore): float
-    {
-        $score = $userScore - $otherUserScore;
-
-        if ($score < 0) {
-            $score *= -1;
-        }
-
-        $scoreUsingPersent = ($score * 100)/5;
-
-        return 100 - $scoreUsingPersent;
+        return $matchPercent;
     }
 }
