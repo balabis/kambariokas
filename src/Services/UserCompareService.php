@@ -22,8 +22,6 @@ class UserCompareService
     {
         $this->minCoefficient = $filterCoefficient;
 
-        var_dump($this->minCoefficient);
-
         $selectedUsers = [];
         $userCoefficientAverage = $this->getUserCoefficientAverage($user);
 
