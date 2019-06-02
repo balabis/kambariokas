@@ -12,14 +12,10 @@
     {% if matches is not empty %}
 
     <div class="container">
-            <div class="d-flex mb-1 flex-wrap justify-content-center">
-                {% for match in matches.currentPageResults %}
+            {% for match in matches.currentPageResults %}
+                {% include 'reusable_blocks/match_card.html.twig' %}
+            {% endfor %}
 
-                    {% include 'reusable_blocks/match_card.html.twig' %}
-
-
-                {% endfor %}
-            </div>
             {% if matches.haveToPaginate %}
                 <div class="pagerfanta">
                     {{ pagerfanta(matches, 'twitter_bootstrap4', {'prev_message': '&larr;', 'next_message': '&rarr;',
