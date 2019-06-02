@@ -36,7 +36,14 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $fullName;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=320, unique=true)
+     * @Assert\Email(
+     *     message = "This email is not a valid email."
+     * )
+     * @Assert\Length(
+     *     max="320",
+     *     maxMessage = "Your email exceeds characters limit"
+     * )
      */
     private $email;
 
