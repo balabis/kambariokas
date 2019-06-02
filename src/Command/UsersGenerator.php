@@ -21,27 +21,27 @@ class UsersGenerator
 
     public function generateUsers(int $userCount) : void
     {
-//        $cities = ['Vilnius', 'Kaunas'];
-//        $budgets = ['iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn', ''];
-//        $genders = ['male','female'];
-//          $activity = [true,false];
-//        for ($i = 0; $i < $userCount; $i++) {
-//            $user = new User();
-//            $user->setCity($cities[rand(0, 1)]);
-//            $user->setFullName('uName'. $i);
-//            $user->setEmail('email'.$i.'@gmail.com');
-//            $user->setPassword('aaa');
-//            $user->setProfilePicture('uploads/profile_pictures/default/default.png');
-//            $user->setBudget($budgets[rand(0, 3)]);
-//            $user->setUsername("uName".$i);
-//            $date = rand(1950, 2019)."-05-11";
-//            $user->setDateOfBirth(new \DateTime($date));
-//            $user->setGender($genders[rand(0, 1)]);
-//            $this->setIsActive($activity[rand(0, 1)]);
-//            $this->entityManager->persist($user);
-//        }
-//
-//        $this->entityManager->flush();
+        $cities = ['Vilnius', 'Kaunas'];
+        $budgets = ['iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn', ''];
+        $genders = ['male','female'];
+          $activity = [true,false];
+        for ($i = 0; $i < $userCount; $i++) {
+            $user = new User();
+            $user->setCity($cities[rand(0, 1)]);
+            $user->setFullName('uName'. $i);
+            $user->setEmail('email'.$i.'@gmail.com');
+            $user->setPassword('aaa');
+            $user->setProfilePicture('uploads/profile_pictures/default/default.png');
+            $user->setBudget($budgets[rand(0, 3)]);
+            $user->setUsername("uName".$i);
+            $date = rand(1950, 2019)."-05-11";
+            $user->setDateOfBirth(new \DateTime($date));
+            $user->setGender($genders[rand(0, 1)]);
+            $user->setIsActive($activity[rand(0, 1)]);
+            $this->entityManager->persist($user);
+        }
+
+        $this->entityManager->flush();
 
         $this->generateAnswers();
         $this->generateUserMatch();

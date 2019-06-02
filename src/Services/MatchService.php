@@ -36,32 +36,22 @@ class MatchService
     {
         $this->deleteUserInfoAboutMatches($user);
 
-     //   $users = $this->entityManager
-       //     ->getRepository(User::class)
-     //       ->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
-        $users = $this->entityManager->getRepository(User::class)
-            ->findBy(['city' => $user->getCity()]);
-
-        var_dump(count($users));
+        $users = $this->entityManager
+            ->getRepository(User::class)
+            ->findMatchesByCityAndGender($user->getCity(), $user->getId(), $formParameters["gender"]);
 
         if (!empty($users) && $formParameters['budget'] != null) {
             $users = $this->budgetFiltrationService->filterByBudget($users, $formParameters["budget"]);
         }
-
-        var_dump(count($users));
 
         if (!empty($users)) {
             $users = $this
                 ->ageFiltrationService->filterByAge($users, [$formParameters["minAge"], $formParameters["maxAge"]]);
         }
 
-        var_dump(count($users));
-
         if (!empty($users) && $formParameters['MatchPercent'] != null) {
             $users = $this->compare->filterByAnswers($users, $user, $formParameters['MatchPercent']);
         }
-
-        var_dump(count($users));
 
         if (!empty($users)) {
             $this->addNewMatchesToDatabase($users, $user);
@@ -111,11 +101,11 @@ class MatchService
 
     public function addMatchWithoutFiltration(User $user) : void
     {
-      //  if ($user->getQuestionnaireScore() != null && $user->getDateOfBirth() != null) {
+        if ($user->getQuestionnaireScore() != null && $user->getDateOfBirth() != null) {
             $users = $this->entityManager->getRepository(User::class)
                 ->findBy(['city' => $user->getCity(), 'isActive' => 1]);
             $users = $this->compare->filterByAnswers($users, $user, 50);
             $this->addNewMatchesToDatabase($users, $user);
-       // }
+        }
     }
 }
