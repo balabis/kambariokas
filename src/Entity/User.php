@@ -41,11 +41,6 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $username;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $gender;
@@ -83,8 +78,8 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $aboutme;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\QuestionnaireScore", inversedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\QuestionnaireScore", inversedBy="user")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $questionnaireScore;
 
@@ -127,9 +122,14 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
     private $university;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime", name="last_activity_at", nullable=true)
      */
-    private $status = 'active';
+    private $lastActivityAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive = true;
 
     public function __construct()
     {
@@ -187,19 +187,12 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
         return $this;
     }
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -443,24 +436,33 @@ class User implements UserInterface, ParticipantInterface, NotifiableInterface
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function setLastActivityAt($lastActivityAt)
     {
-        return $this->status;
+        $this->lastActivityAt = $lastActivityAt;
     }
 
-    public function setStatus(string $status): self
+    public function getLastActivityAt()
     {
-        $this->status = $status;
+        return $this->lastActivityAt;
+    }
+
+    public function isActiveNow()
+    {
+        // Delay during which the user will be considered as still active
+        $delay = new \DateTime('2 minutes ago');
+
+        return $this->getLastActivityAt() > $delay;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
-    }
-
-    public function isActive() : bool
-    {
-        if ($this->getStatus() === 'active') {
-            return true;
-        }
-
-        return false;
     }
 }

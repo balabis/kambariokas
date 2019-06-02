@@ -49,4 +49,11 @@ services:
         tags:
             - { name: form.type }
 
+    app.activity_listener:
+        class: App\EventListener\ActivityListener
+        arguments: ['@security.token_storage',
+                    '@doctrine.orm.default_entity_manager']
+        tags:
+          - { name: kernel.event_listener, event: kernel.controller, method: onCoreController}
+
     Mgilet\NotificationBundle\Manager\NotificationManager: '@mgilet.notification'

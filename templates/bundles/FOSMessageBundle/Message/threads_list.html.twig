@@ -12,7 +12,7 @@
                                 <div class="message-count">{{ fos_message_nb_unread() }}</div>
                             {% endif %}
                             <img alt=""
-                                 class="img-circle medium-image"
+                                 class="center-cropped-nav rounded-circle"
                                  src="{{ asset(app.user.username == participant1.username ? participant2.profilePicture : participant1.profilePicture) }}"
                             >
                             <div class="vcentered info-combo">

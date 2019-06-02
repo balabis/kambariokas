@@ -11,21 +11,24 @@
         {%- endif -%}
     {%- endblock form_errors -%}
 
+{% block pageHeading %}
+    {{ 'My profile'|trans }}
+{% endblock %}
+
 {% block mainContent %}
-    {% if app.user.status == 'active' %}
+    {% if app.user.isActive %}
         {{ form_start(form) }}
-            <br>
             <div class="row">
                 <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
                     <div class="card card-profile shadow">
                         <div class="row justify-content-center">
                             <div class="col-lg-3 order-lg-2">
                                 <div class="card-profile-image">
-                                    <a href="{{ path('profile.view', {uuid: app.user.id}) }}">
+                                    <a>
                                         {% if not app.user.profilepicture %}
-                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="rounded-circle">
+                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="center-cropped-profile rounded-circle">
                                         {% else %}
-                                            <img src="{{ asset(app.user.profilepicture) }}" class="rounded-circle">
+                                            <img src="{{ asset(app.user.profilepicture) }}" class="center-cropped-profile rounded-circle">
                                         {% endif %}
                                     </a>
                                 </div>
@@ -54,6 +57,9 @@
                                 <div>
                                     {{ app.user.aboutme }}
                                 </div>
+                                <a href="{{ path('questionnaire_get') }}" class="btn btn-info">
+                                    {{ app.user.questionnaireScore ? 'Retake questionnaire'|trans :
+                                    'Take questionnaire'|trans }}</a>
                             </div>
                         </div>
                     </div>
@@ -164,8 +170,11 @@
                                     }) }}
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <button type="submit" class="btn btn-primary my-4">
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-danger" data-toggle="modal" data-target="#becomeInactive">
+                                    {{ 'Inactivate user'|trans }}
+                                </a>
+                                <button type="submit" class="btn btn-primary">
                                     {{ 'Save'|trans }}
                                 </button>
                             </div>
@@ -180,4 +189,5 @@
         {% include 'reusable_blocks/inactive_user.html.twig' %}
     {% endif %}
 
+    {% include'profile/blocks/become_inactive_modal.html.twig' %}
 {% endblock %}

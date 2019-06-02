@@ -1,0 +1,26 @@
+<div class="modal fade" id="becomeInactive" tabindex="-1" role="dialog" aria-labelledby="becomeInactiveModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acceptModalLabel">Ar tikrai norite tapti neaktyviu?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tapęs neaktyviu vartotoju, Jūs nebedalyvausite suderinamumo algoritme - kiti vartotojai negalės
+                    Jums pasiūlyti tapti kambariokais.</p>
+                <p>Paspaudę mygtuką "Tapti aktyviu" vėl galėsite pilnavertiškai naudotis aplikacija</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                <form action="{{ path('user_inactivate') }}" method="POST">
+                    <button class="btn btn-danger">
+                        {{ 'Inactivate user'|trans }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
