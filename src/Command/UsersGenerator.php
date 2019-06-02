@@ -24,7 +24,7 @@ class UsersGenerator
         $cities = ['Vilnius', 'Kaunas'];
         $budgets = ['iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn', ''];
         $genders = ['male','female'];
-
+          $activity = [true,false];
         for ($i = 0; $i < $userCount; $i++) {
             $user = new User();
             $user->setCity($cities[rand(0, 1)]);
@@ -37,6 +37,7 @@ class UsersGenerator
             $date = rand(1950, 2019)."-05-11";
             $user->setDateOfBirth(new \DateTime($date));
             $user->setGender($genders[rand(0, 1)]);
+            $user->setIsActive($activity[rand(0, 1)]);
             $this->entityManager->persist($user);
         }
 
