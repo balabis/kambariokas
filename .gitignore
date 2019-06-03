@@ -30,3 +30,5 @@ yarn-error.log
 
 ### Mac OS custom file ###
 /.DS_Store
+
+/public/uploads/
