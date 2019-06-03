@@ -66,7 +66,8 @@ class UserFixtures extends Fixture
         return $user;
     }
 
-    public function createQuestionnaireScore($userId) {
+    public function createQuestionnaireScore($userId)
+    {
         $answer = new QuestionnaireScore();
         $answer->setUserId($userId);
         $answer->setCleanliness((rand(0, 100)/100));
