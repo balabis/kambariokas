@@ -1,43 +1,62 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Command;
 
 use App\Entity\QuestionnaireScore;
 use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserFixtures extends Fixture
+class LoadUsersCommand extends Command
 {
+
     private $faker;
     private $encoder;
+    private $em;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
     {
-        $this->faker = Factory::create();
+        parent::__construct();
+        $this->em = $em;
         $this->encoder = $encoder;
+        $this->faker = Factory::create();
     }
 
-    public function load(ObjectManager $manager)
+    protected static $defaultName = 'app:loadUsers';
+
+    protected function configure()
+    {
+        $this
+            ->setDescription('Load fake Users')
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cities = ['Vilnius', 'Kaunas', 'Klaipėda', 'Šiauliai', 'Panevėžys', 'Marijampolė'];
 
         foreach ($cities as $city) {
             for ($i = 0; $i < 15; $i++) {
                 $user = $this->createUser($city, $i);
-                $manager->persist($user);
-                $manager->flush();
+                $this->em->persist($user);
+                $this->em->flush();
                 $questionnaireScore = $this->createQuestionnaireScore($user->getId());
                 $user->setQuestionnaireScore($questionnaireScore);
-                $manager->persist($questionnaireScore);
-                $manager->flush();
+                $this->em->persist($questionnaireScore);
+                $this->em->flush();
             }
         }
     }
 
-    public function createUser($city, $i)
+    private function createUser($city, $i)
     {
         $budgets = ['iki 50eur/mėn', 'iki 100eur/mėn', 'iki 200eur/mėn', '> 200eur/mėn'];
         $genders = ['male','female'];
@@ -66,7 +85,7 @@ class UserFixtures extends Fixture
         return $user;
     }
 
-    public function createQuestionnaireScore($userId)
+    private function createQuestionnaireScore($userId)
     {
         $answer = new QuestionnaireScore();
         $answer->setUserId($userId);
