@@ -5,8 +5,10 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "friendsofsymfony/message-bundle": "^2.0",
         "doctrine/doctrine-bundle": "^1.11",
+        "friendsofsymfony/message-bundle": "^2.0",
+        "fzaninotto/faker": "^1.8",
+        "lexik/form-filter-bundle": "~5.0",
         "mgilet/notification-bundle": "^3.1",
         "ramsey/uuid-doctrine": "^1.5",
         "sensio/framework-extra-bundle": "^5.3",
@@ -27,8 +29,7 @@
         "symfony/validator": "4.2.*",
         "symfony/webpack-encore-bundle": "^1.4",
         "symfony/yaml": "4.2.*",
-        "white-october/pagerfanta-bundle": "^1.2",
-        "lexik/form-filter-bundle": "~5.0"
+        "white-october/pagerfanta-bundle": "^1.2"
     },
     "config": {
         "preferred-install": {
