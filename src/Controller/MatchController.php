@@ -33,11 +33,6 @@ class MatchController extends AbstractController
                 $matches = $service->filter($matches, $form->getData());
             }
         }
-
-
-
-
-
         $matchesPagination = $ps->getPagerfanta($matches);
         $matchesPagination->setMaxPerPage(8);
         $matchesPagination->setCurrentPage($request->query->get('page', 1));

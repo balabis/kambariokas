@@ -1,28 +1,18 @@
 
         <div id="match-filter" class="card bg-secondary shadow d-none mb-7 p-3 px-md-5 ">
 
-            {{ form_start(filterForm) }}
-            <div class="d-flex flex-wrap justify-content-between mb-3">
-
+            {{ form_start(filterForm, {'action': path('matched'), 'method': 'POST'}) }}
+            <div class="d-flex flex-wrap mb-3">
+                <div class="mr-3">
                     {{ form_row(filterForm.gender, {
                         attr: {class: 'form-control' }
                     }) }}
-
-                    {{ form_row(filterForm.MatchPercent, {
-                        attr: {class: 'form-control' }
-                    }) }}
-
-                    {{ form_row(filterForm.minAge, {
-                        attr: {class: 'form-control' }
-                    }) }}
-
-                    {{ form_row(filterForm.maxAge, {
-                        attr: {class: 'form-control' }
-                    }) }}
-
+                </div>
+                <div class="mr-3">
                     {{ form_row(filterForm.budget, {
                         attr: {class: 'form-control' }
                     }) }}
+                </div>
 
             </div>
             <div class="d-flex justify-content-start">

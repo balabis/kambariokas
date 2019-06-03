@@ -14,30 +14,22 @@ class MatchService
 
     private $userMatchRepository;
 
-    private $ageFiltrationService;
-
     private $budgetFiltrationService;
 
     private $genderService;
-
-    private $matchPercentService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         UserCompareService $compareService,
         UserMatchRepository $userMatchRepository,
-        AgeFiltrationService $ageFiltrationService,
         BudgetFiltrationService $budgetFiltrationService,
-        GenderFiltrationService $genderService,
-        MatchPercentFiltrationService $matchPercentService
+        GenderFiltrationService $genderService
     ) {
         $this->entityManager = $entityManager;
         $this->compare = $compareService;
         $this->userMatchRepository = $userMatchRepository;
-        $this->ageFiltrationService = $ageFiltrationService;
         $this->budgetFiltrationService = $budgetFiltrationService;
         $this->genderService = $genderService;
-        $this->matchPercentService = $matchPercentService;
     }
 
     public function filter($matches, array $formParameters): ?array
@@ -55,20 +47,6 @@ class MatchService
                 $this->budgetFiltrationService->filterByBudget(
                     $filteredUsers,
                     $formParameters["budget"]
-                );
-        }
-        if (!empty($filteredUsers)) {
-            $filteredUsers = $this
-                ->ageFiltrationService->filterByAge(
-                    $filteredUsers,
-                    [$formParameters["minAge"], $formParameters["maxAge"]]
-                );
-        }
-        if (!empty($filteredUsers) && $formParameters['MatchPercent'] != null) {
-            $filteredUsers =
-                $this->matchPercentService->filterByMatchPercent(
-                    $filteredUsers,
-                    $formParameters['MatchPercent']
                 );
         }
 
