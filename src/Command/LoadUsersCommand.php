@@ -97,4 +97,3 @@ class LoadUsersCommand extends Command
         return $answer;
     }
 }
-
