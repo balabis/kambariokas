@@ -34,6 +34,7 @@ footer .row {
 
 .user-match-card {
     min-width: 250px;
+    max-width: 260px;
 }
 
 .user-match-card:hover
