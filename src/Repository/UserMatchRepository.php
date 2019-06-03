@@ -34,7 +34,7 @@ class UserMatchRepository extends ServiceEntityRepository
         $conn = $this->entityManager->getConnection();
 
         $sql = "
-        SELECT um.*, user.*, invite.*
+        SELECT user.id as user_id, um.*, user.*, invite.*
         FROM user_match um
         LEFT JOIN user ON um.second_user = user.id
         LEFT JOIN invite ON (invite.sender_id = :id 

@@ -1,5 +1,5 @@
 <div class="card card-profile shadow user-match-card mx-md-2 mb-6">
-    <a href="{{ path('profile.view', { 'uuid': match.second_user }) }}">
+    <a href="{{ path('profile.view', { 'uuid': match.user_id }) }}">
         {% set delay = "now"|date_modify('-2 minutes')|date("Y-m-d H:i:s") %}
         {% if match.last_activity_at > delay %}
             <span class="position-absolute">
@@ -27,7 +27,7 @@
                         {{ match.full_name }}
                         <span>&bull;</span> {{ date().diff(date(match.date_of_birth)).y }}
                     </h3>
-                    <div class="h5 font-weight-300">
+                    <div class="h5 font-weight-300 {{ match.coeficient is defined ? '' : 'alert alert-danger' }}">
                         <i class="far fa-building"></i>{{ match.city }}
                     </div>
 
@@ -38,9 +38,13 @@
                     <div
                             class="card-profile-stats d-flex justify-content-center"
                     >
-                        <div class="rounded-circle bg-primary">
-                            <span class="lead text-secondary">{{ match.coeficient }}%</span>
-                        </div>
+                        {% if match.coeficient is defined %}
+                            <div class="rounded-circle bg-primary">
+                                <span class="lead text-secondary">{{ match.coeficient }}%</span>
+                            </div>
+                        {% else %}
+                            <div class="py-1">Miestai nesutampa</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

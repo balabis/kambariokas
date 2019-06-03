@@ -32,9 +32,11 @@ class InvitationController extends AbstractController
         $invitesRepo = $em->getRepository(Invite::class);
         if ($group === 'sent') {
             $invites = $invitesRepo->findSentInvites($this->getUser()->getId());
+            $invites = array_merge($invites, $invitesRepo->findSentInvitesOtherCity($this->getUser()->getId()));
         } elseif ($group === 'received') {
             $invites =
                 $invitesRepo->findReceivedInvites($this->getUser()->getId());
+            $invites = array_merge($invites, $invitesRepo->findReceivedInvitesOtherCity($this->getUser()->getId()));
         }
         $totalInvitesNumber =
             $invitesRepo->countAllInvites($this->getUser()->getId());

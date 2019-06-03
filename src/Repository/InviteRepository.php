@@ -25,11 +25,30 @@ class InviteRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-        SELECT um.*, u.*, i.*
+        SELECT u.id as user_id, um.*, u.*, i.*
         FROM invite i
         LEFT JOIN user u ON i.receiver_id = u.id 
         LEFT JOIN user_match um ON um.second_user = i.receiver_id
         WHERE i.sender_id = :id AND um.first_user = :id
+        ORDER BY i.created_at ASC
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id'=>$userId]);
+
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function findSentInvitesOtherCity($userId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT otheruser.id as user_id, otheruser.*, i.*
+        FROM invite i
+        LEFT JOIN user u ON i.sender_id = u.id 
+        LEFT JOIN user otheruser ON i.receiver_id = otheruser.id 
+        WHERE i.sender_id = :id AND otheruser.city != u.city
         ORDER BY i.created_at ASC
         ';
 
@@ -45,11 +64,30 @@ class InviteRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-        SELECT um.*, u.*, i.*
+        SELECT u.id as user_id, um.*, u.*, i.*
         FROM invite i
         LEFT JOIN user u ON i.sender_id = u.id
         LEFT JOIN user_match um ON um.first_user = i.receiver_id AND um.second_user = i.sender_id
         WHERE i.receiver_id = :id AND um.first_user = :id
+        ORDER BY i.created_at ASC
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id'=>$userId]);
+
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function findReceivedInvitesOtherCity($userId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT otheruser.id as user_id, otheruser.*, i.*
+        FROM invite i
+        LEFT JOIN user u ON i.receiver_id = u.id 
+        LEFT JOIN user otheruser ON i.sender_id = otheruser.id 
+        WHERE i.receiver_id = :id AND otheruser.city != u.city
         ORDER BY i.created_at ASC
         ';
 
