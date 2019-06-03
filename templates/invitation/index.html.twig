@@ -18,14 +18,7 @@
 
             <div class="d-flex mb-1 flex-wrap justify-content-center">
                 {% for match in invites.currentPageResults %}
-                    {% if match is not iterable %}
-                        {% include 'reusable_blocks/match_card.html.twig' %}
-                    {% else %}
-                        {% for match in match %}
-                            {% include 'reusable_blocks/match_card_incompatible_city.html.twig' %}
-                        {% endfor %}
-                    {% endif %}
-
+                    {% include 'reusable_blocks/match_card.html.twig' %}
                 {% endfor %}
             </div>
             {% if invites.haveToPaginate %}
