@@ -115,6 +115,10 @@ class MessagesController extends AbstractController
             $threadParticipants = $thread->getParticipants();
             foreach ($threadParticipants as $threadParticipant) {
                 if ($threadParticipant->getId() == $participantId) {
+                    if (in_array($thread, $deletedThreads)) {
+                        $this->deleter->markAsUndeleted($thread);
+                        $this->threadManager->saveThread($thread);
+                    };
                     return new RedirectResponse(
                         $this->container->get('router')->generate(
                             'app.message.thread',
