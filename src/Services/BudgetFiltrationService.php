@@ -18,7 +18,9 @@ class BudgetFiltrationService
 
         foreach ($users as $user) {
             $userBudgetType = $budgets[$user->budget];
-            if ($filterBudgetType <= $userBudgetType) {
+            if ($filterBudgetType >= $userBudgetType && $filterBudgetType < 3) {
+                $filteredUsers[] = $user;
+            } elseif ($filterBudgetType == 3 && $userBudgetType == 3) {
                 $filteredUsers[] = $user;
             }
         }
