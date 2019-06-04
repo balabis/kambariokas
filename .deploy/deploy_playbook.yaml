@@ -16,6 +16,7 @@
               - public/uploads/profile_pictures/default/male.png
           linked_directories: # <-- Common place to add your files, that should be reused between deployments
               - var/log
+              - public/uploads/profile_pictures/default
               - public/uploads/profile_pictures
 
   tasks:
