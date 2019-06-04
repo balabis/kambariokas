@@ -26,7 +26,7 @@
                                 <div class="card-profile-image">
                                     <a>
                                         {% if not app.user.profilepicture %}
-                                            <img src="{{ asset('uploads/profile_pictures/default/default.png') }}" class="center-cropped-profile rounded-circle">
+                                            <img src="{{ asset('build/default.png') }}" class="center-cropped-profile rounded-circle">
                                         {% else %}
                                             <img src="{{ asset(app.user.profilepicture) }}" class="center-cropped-profile rounded-circle">
                                         {% endif %}
