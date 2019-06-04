@@ -89,10 +89,10 @@ class UserController extends AbstractController
             if (isset($file)) {
                 $fileName = $fileUploader->uploadProfilePicture($file, $userId);
                 $user->setProfilePicture($fileName);
-            } elseif (!preg_match('/uploads\/profile_pictures\/default\/.*/', $userProfilePicture)) {
+            } elseif (!preg_match('/build\/.*/', $userProfilePicture)) {
                 $user->setProfilePicture($userProfilePicture);
             } else {
-                $user->setProfilePicture('uploads/profile_pictures/default/' . $gender . '.png');
+                $user->setProfilePicture('build/' . $gender . '.png');
             }
 
             $entityManager = $this->getDoctrine()->getManager();

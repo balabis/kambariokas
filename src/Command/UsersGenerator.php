@@ -31,7 +31,7 @@ class UsersGenerator
             $user->setFullName('uName'. $i);
             $user->setEmail('email'.$i.'@gmail.com');
             $user->setPassword('aaa');
-            $user->setProfilePicture('uploads/profile_pictures/default/default.png');
+            $user->setProfilePicture('build/default.png');
             $user->setBudget($budgets[rand(0, 3)]);
             $user->setUsername("uName".$i);
             $date = rand(1950, 2019)."-05-11";
